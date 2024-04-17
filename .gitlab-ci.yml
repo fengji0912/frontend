@@ -1,0 +1,21 @@
+image: node:latest
+
+stages:
+  - install
+  - lint
+  - release
+
+install:
+  stage: install
+  script:
+    - npm install --force
+  artifacts:
+    paths:
+      - node_modules/
+    
+release:
+  stage: release
+  only:
+    - main
+  script:
+    - npm run semantic-release

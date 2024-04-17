@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  a {
+    @apply text-primary-500;
+  }
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+html.dark .bg {
+  background: #000000 !important;
+}
+
+.bg {
+  background: linear-gradient(248.92deg, #c1d0d8 27.73%, #ebebeb 100%);
+  height: 100%;
+  width: 100%;
+  background-attachment: fixed;
+  // padding-top: 65px;
+  @apply min-h-screen;
+}
+
+.box {
+  @apply rounded-3xl shadow-box p-5 bg-white/50;
+}
+html.dark .box {
+  @apply bg-secondary-950;
+}
+
+a:not([class*='btn']) {
+  text-decoration: none;
+}
+a:not([class*='btn']):not([class*='dropdown-item']):not(
+    [class*='nav-link']
+  ):hover {
+  text-decoration: underline;
+}
+
+.btn-group button {
+  margin-right: 2px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.box-white {
+  background: #fff;
+  box-shadow: 0px 0px 34px rgba(12, 63, 94, 0.12);
+  border-radius: 20px;
+  padding: 0.9rem;
+}
+html.dark .box-white {
+  @apply bg-secondary-950;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.popover {
+  box-shadow: var(--bs-popover-box-shadow);
+}
+
+.dropdown-menu {
+  box-shadow: var(--bs-dropdown-box-shadow);
+}
+
+.container-box {
+  @apply container mt-5 box-white;
+  @apply px-5 #{!important};
+  @apply py-5 #{!important};
+}
+
+@media (min-width: theme('screens.md')) {
+  .container-box {
+    @apply mt-20;
+  }
+}
+
+html.dark .container-box {
+  @apply bg-secondary-950;
+}
+
+@layer base {
+  h1 {
+    @apply text-3xl font-semibold mb-2;
+  }
+  h2 {
+    @apply text-2xl  font-semibold mb-2;
+  }
+  h3 {
+    @apply text-xl font-semibold mb-2;
+  }
+  h4 {
+    @apply text-xl  font-semibold mb-2;
+  }
+  h4 {
+    @apply text-lg  font-semibold mb-2;
+  }
+}

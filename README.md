@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ORKG Ask
+
+Frontend repository of ORKG Ask, as deployed on https://ask.orkg.org
 
 ## Getting Started
 
-First, run the development server:
+1. Clone this repository:
+
+```bash
+git clone
+```
+
+2. Go to the directory:
+
+```bash
+cd orkg-ask
+```
+
+3. Install the dependencies:
+
+```bash
+npm install
+```
+
+4. Copy the file `default.env.local` to `.env.local`:
+
+```bash
+cp default.env.local .env.local
+```
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the ORKG Ask frontend. By default the production environment of the ORKG Ask backend is used, so you don't need to run additional services to get started with frontend development.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+ORKG Ask is using a modern stack of technologies, as listed below. We use [Next.js](https://nextjs.org/docs) as our main framework. Specifically, we use the latest _app router_ features, including server components. We use the [colocation pattern](https://nextjs.org/docs/app/building-your-application/routing/colocation) for file organization. For more details regarding the setup.
 
-## Learn More
+- Programming language: [TypeScript](https://www.typescriptlang.org/)
+- Framework: [Next.js](https://nextjs.org/)
+- UI library: [NextUI](https://nextui.org/)
+- Styling: [Tailwind](https://tailwindcss.com/)
+- Fetch API: [Ky](https://github.com/sindresorhus/ky)
+- Fetching library: [SWR](https://swr.vercel.app/)
+- Global state management: [React Context](https://react.dev/reference/react/createContext)
+- URL statement management: [nuqs](https://nuqs.47ng.com/)
+- Icons: [FontAwesome](https://fontawesome.com/)
+- Animations: [Framer Motion](https://www.framer.com/motion/)
+- Pre-commit linting: [Husky](https://typicode.github.io/husky/)
+- Releasing and changelog generation: [semantic-release](https://github.com/semantic-release/semantic-release)
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Ensure your linting setup picks up the rules from `.eslintrc.json`. We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/). To help you generate correct commits, you can use `npm run commit` instead of `git commit`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Then code is pushed to the `main` branch, automatically a release is created, also the version number and the changelog are updated automatically.
 
-## Deploy on Vercel
+### TypeScript
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The codebase is written in TypeScript. We use the type definitions from the Pocketbase backend and the API directly in the code. In order to regenerate those definitions, you can use the following commands:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+API
+
+```bash:
+npm run openapi-typescript [backend-openapi.json]
+```
+
+Pocketbase
+
+```bash:
+npm run pocketbase-typegen [/pocketbase/data/data.db]
+```
