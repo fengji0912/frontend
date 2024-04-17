@@ -7,13 +7,13 @@ Frontend repository of ORKG Ask, as deployed on https://ask.orkg.org
 1. Clone this repository:
 
 ```bash
-git clone
+git clone git@gitlab.com:TIBHannover/orkg/orkg-ask/frontend.git
 ```
 
 2. Go to the directory:
 
 ```bash
-cd orkg-ask
+cd frontend
 ```
 
 3. Install the dependencies:
@@ -22,7 +22,7 @@ cd orkg-ask
 npm install
 ```
 
-4. Copy the file `default.env.local` to `.env.local`:
+4. Copy the file `default.env.local` to `.env.local` configure the values yourself:
 
 ```bash
 cp default.env.local .env.local
