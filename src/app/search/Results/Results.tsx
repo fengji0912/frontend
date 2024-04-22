@@ -3,6 +3,7 @@ import { IData } from 'csl-json';
 import getItemsById from '@/app/search/Results/helpers/getItemsById';
 import Table from '@/app/search/Results/Table/Table';
 import { searchParamsCache } from '@/app/search/searchParams/searchParams';
+import Synthesis from '@/app/search/Synthesis/Synthesis';
 import { checkIfAuthenticated } from '@/components/User/actions/actions';
 import {
   CollectionItemsResponse,
@@ -26,6 +27,8 @@ export default async function Results() {
 
   return (
     <div className="ms-0 lg:ms-4 grow" style={{ minWidth: 0 }}>
+      <Synthesis />
+
       <Table collectionItems={collectionItems} />
     </div>
   );

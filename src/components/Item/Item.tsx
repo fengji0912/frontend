@@ -86,6 +86,7 @@ export default function Item({
       className={`rounded-xl ${
         type === 'collectionItem' ? 'bg-secondary-200' : 'bg-secondary-50'
       } py-1 px-3 relative`}
+      id={`item-${id}`}
     >
       {!isVisibleActions && (
         <div className="absolute top-[-6px] left-[-4px]">

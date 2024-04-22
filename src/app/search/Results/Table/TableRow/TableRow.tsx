@@ -36,7 +36,7 @@ type SearchItem = {
   cslData: Data;
 };
 
-type Item = {
+export type Item = {
   type: ItemType;
 } & (CollectionItem | SearchItem);
 
@@ -147,11 +147,25 @@ export default function TableRow({ item }: TableRowProps) {
             ) : column === 'answer' ? (
               llmData?.payload?.values?.[query]?.toString() ?? ''
             ) : (
-              upperFirst(llmData?.payload?.values?.[column]?.toString() ?? '')
+              <CellRenderer
+                cell={llmData?.payload?.values?.[column]?.toString()}
+              />
             )}
           </div>
         ))}
       </div>
     </div>
+  );
+}
+
+function CellRenderer({ cell }: { cell: string | undefined }) {
+  return (
+    <>
+      {cell && cell.toLowerCase() !== 'unknown' ? (
+        upperFirst(cell)
+      ) : (
+        <span className="text-secondary-700 italic">N/A</span>
+      )}
+    </>
   );
 }

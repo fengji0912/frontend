@@ -24,6 +24,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/llm/synthesize/items/abstracts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Synthesize Abstracts For Question
+     * @description Synthesizes a citable answer for a given research question from the abstracts of the given items.
+     */
+    get: operations['synthesize_abstracts_for_question_llm_synthesize_items_abstracts_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/index/add': {
     parameters: {
       query?: never;
@@ -198,7 +218,7 @@ export interface components {
     };
     /** ExtractItemValuesFromPropertiesResponse */
     ExtractItemValuesFromPropertiesResponse: {
-      payload: components['schemas']['Payload'];
+      payload: components['schemas']['app__models__llm__ExtractItemValuesFromPropertiesResponse__Payload'];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -332,33 +352,6 @@ export interface components {
        * @description The inferred document type
        */
       document_type?: string | null;
-    };
-    /** Payload */
-    Payload: {
-      /**
-       * Item Id
-       * @description The ID of the item to extract properties from
-       */
-      item_id: number | string;
-      /**
-       * Properties
-       * @description The properties to extract from the item
-       */
-      properties: string[];
-      /**
-       * Values
-       * @description The extracted values for the properties
-       */
-      values: {
-        [key: string]: (string | unknown[] | number) | undefined;
-      };
-      /**
-       * Extra
-       * @description Extra values detected by the LLM
-       */
-      extra: {
-        [key: string]: (string | unknown[] | number) | undefined;
-      };
     };
     /** QdrantDictResponse */
     QdrantDictResponse: {
@@ -577,6 +570,10 @@ export interface components {
       /** @description The item that matches the selection criteria */
       payload: components['schemas']['QdrantDocument'];
     };
+    /** SynthesisAnswerOfQuestionFromAbstractsResponse */
+    SynthesisAnswerOfQuestionFromAbstractsResponse: {
+      payload: components['schemas']['app__models__llm__SynthesisAnswerOfQuestionFromAbstractsResponse__Payload'];
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -585,6 +582,60 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+    };
+    /** Payload */
+    app__models__llm__ExtractItemValuesFromPropertiesResponse__Payload: {
+      /**
+       * Item Id
+       * @description The ID of the item to extract properties from
+       */
+      item_id: number | string;
+      /**
+       * Properties
+       * @description The properties to extract from the item
+       */
+      properties: string[];
+      /**
+       * Values
+       * @description The extracted values for the properties
+       */
+      values: {
+        [key: string]: (string | unknown[] | number) | undefined;
+      };
+      /**
+       * Extra
+       * @description Extra values detected by the LLM
+       */
+      extra: {
+        [key: string]: (string | unknown[] | number) | undefined;
+      };
+    };
+    /** Payload */
+    app__models__llm__SynthesisAnswerOfQuestionFromAbstractsResponse__Payload: {
+      /**
+       * Items Mapping
+       * @description The item IDs mappings to the citations
+       */
+      items_mapping: {
+        [key: string]: (string | number) | undefined;
+      };
+      /**
+       * Collection Items Mapping
+       * @description The collection item IDs mappings to the citations
+       */
+      collection_items_mapping: {
+        [key: string]: (string | number) | undefined;
+      };
+      /**
+       * Question
+       * @description The question to synthesize the answer for
+       */
+      question: string;
+      /**
+       * Synthesis
+       * @description The synthesized answer for the question
+       */
+      synthesis: string;
     };
   };
   responses: never;
@@ -620,6 +671,44 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ExtractItemValuesFromPropertiesResponse'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  synthesize_abstracts_for_question_llm_synthesize_items_abstracts_get: {
+    parameters: {
+      query: {
+        /** @description The question to synthesize the abstracts for */
+        question: string;
+        /** @description The item ID to extract the values from */
+        item_ids?: (string | number)[];
+        /** @description The custom collection item ID to extract the values from */
+        custom_item_ids?: (string | number)[];
+        /** @description Whether to invalidate the cache for the item */
+        invalidate_cache?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SynthesisAnswerOfQuestionFromAbstractsResponse'];
         };
       };
       /** @description Validation Error */

@@ -145,3 +145,28 @@ export async function getLlmExtraction({
     })
     .json();
 }
+
+export async function synthesize({
+  question,
+  item_ids,
+  custom_item_ids,
+}: operations['synthesize_abstracts_for_question_llm_synthesize_items_abstracts_get']['parameters']['query']): Promise<
+  components['schemas']['SynthesisAnswerOfQuestionFromAbstractsResponse']
+> {
+  return backendApi
+    .get('llm/synthesize/items/abstracts', {
+      searchParams: new URLSearchParams([
+        ...(item_ids
+          ? item_ids.map((itemId) => ['item_ids', itemId.toString()])
+          : []),
+        ...(custom_item_ids
+          ? custom_item_ids.map((collectionItemId) => [
+              'custom_item_ids',
+              collectionItemId.toString(),
+            ])
+          : []),
+        ['question', question],
+      ]).toString(),
+    })
+    .json();
+}
