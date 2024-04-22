@@ -144,7 +144,7 @@ export default function TableRow({ item }: TableRowProps) {
           >
             {isLoading ? (
               <CellLoading />
-            ) : column === 'answer' ? (
+            ) : column === 'Answer' ? (
               llmData?.payload?.values?.[query]?.toString() ?? ''
             ) : (
               <CellRenderer

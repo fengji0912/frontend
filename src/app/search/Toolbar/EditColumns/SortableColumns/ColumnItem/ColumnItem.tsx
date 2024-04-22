@@ -47,6 +47,7 @@ export default function ColumnItem({
         size="sm"
         className="py-0 px-1 lh-1"
         onPress={() => handleDelete(column)}
+        isDisabled={column === 'Answer'}
       >
         <FontAwesomeIcon icon={faTimes} className="text-secondary" size="lg" />
       </Button>
