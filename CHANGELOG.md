@@ -1,3 +1,10 @@
+## [1.1.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.0...v1.1.1) (2024-04-22)
+
+
+### Bug Fixes
+
+* answer not displayed in column ([e1f2c1f](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/e1f2c1f1726e31efaa8da467ff4671e393100df7))
+
 # [1.1.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.0.0...v1.1.0) (2024-04-22)
 
 
