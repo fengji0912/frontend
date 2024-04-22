@@ -111,9 +111,8 @@ export default function Synthesis() {
             synthesisData?.payload.synthesis,
             /\[(\d+)\]/gm,
             (match, i) => (
-              <Tooltip content={getTooltipContent(match)}>
+              <Tooltip key={i} content={getTooltipContent(match)}>
                 <LinkButton
-                  key={i}
                   onClick={() => handleCitationClick(match)}
                   className="text-base"
                 >
