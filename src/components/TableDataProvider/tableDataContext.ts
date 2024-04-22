@@ -1,21 +1,6 @@
-import { Data } from 'csl-json';
 import { createContext, SetStateAction } from 'react';
 
-import {
-  CollectionItemsResponse,
-  CollectionsResponse,
-} from '@/types/pocketbase-types';
-
-export type Item =
-  | CollectionItemsResponse<
-      Data,
-      {
-        collection?: CollectionsResponse | undefined;
-      }
-    >
-  | {
-      cslData: Data;
-    };
+import { Item } from '@/app/search/Results/Table/TableRow/TableRow';
 
 export type LlmData = {
   [itemId: string]: {

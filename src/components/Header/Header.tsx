@@ -47,6 +47,7 @@ export default function Header() {
       onMenuOpenChange={setIsMenuOpen}
       isMenuOpen={isMenuOpen}
       className="bg-[#dbe3e8bd] dark:bg-secondary-950 backdrop-blur"
+      id="header"
     >
       <NavbarContent className="flex gap-10" justify="start">
         <NavbarMenuToggle
