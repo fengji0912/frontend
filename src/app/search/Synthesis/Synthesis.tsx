@@ -24,7 +24,7 @@ export default function Synthesis() {
     const collectionItemIds = [];
     const searchItemIds = [];
 
-    for (const item of items) {
+    for (const item of items.slice(0, 5)) {
       if (item.type === 'collectionItem') {
         collectionItemIds.push(item.id);
       } else if (item.type === 'searchItem') {
@@ -113,6 +113,8 @@ export default function Synthesis() {
             (match, i) => (
               <Tooltip key={i} content={getTooltipContent(match)}>
                 <LinkButton
+                  color="primary"
+                  variant="link"
                   onClick={() => handleCitationClick(match)}
                   className="text-base"
                 >
