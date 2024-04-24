@@ -144,11 +144,13 @@ export default function TableRow({ item }: TableRowProps) {
           >
             {isLoading ? (
               <CellLoading />
-            ) : column === 'Answer' ? (
-              llmData?.payload?.values?.[query]?.toString() ?? ''
             ) : (
               <CellRenderer
-                cell={llmData?.payload?.values?.[column]?.toString()}
+                cell={
+                  column === 'Answer'
+                    ? llmData?.payload?.values?.[query]?.toString()
+                    : llmData?.payload?.values?.[column]?.toString()
+                }
               />
             )}
           </div>
