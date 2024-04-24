@@ -122,7 +122,7 @@ export default function Item({
             />
           </div>
           <div className="min-w-0">
-            <div className="font-semibold">
+            <div className="font-semibold space-x-2">
               {linkedItemId ? (
                 <Link
                   href={`${ROUTES.ITEM}/${linkedItemId}/${slugify(
