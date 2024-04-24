@@ -17,7 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const count = await getCount();
+  let count = 0;
+  try {
+    count = (await getCount()).payload.count;
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <main>
@@ -43,7 +48,7 @@ export default async function Home() {
             <div className="w-full md:w-4/12 flex flex-col">
               <Explainer />
 
-              <ItemCount count={count.payload.count} />
+              <ItemCount count={count} />
             </div>
           </div>
         </div>
