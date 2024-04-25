@@ -1,3 +1,10 @@
+## [1.1.3](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.2...v1.1.3) (2024-04-25)
+
+
+### Bug Fixes
+
+* import correct type for TableDataProvider ([7ba8602](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/7ba8602b01157e9d2cd4cacdf9b57d68b4320628))
+
 ## [1.1.2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.1...v1.1.2) (2024-04-24)
 
 
