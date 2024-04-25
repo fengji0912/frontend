@@ -2,8 +2,8 @@
 
 import { ReactNode, useState } from 'react';
 
+import { Item } from '@/app/search/Results/Table/TableRow/TableRow';
 import TableDataContext, {
-  Item,
   LlmData,
 } from '@/components/TableDataProvider/tableDataContext';
 
