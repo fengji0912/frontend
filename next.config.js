@@ -67,6 +67,7 @@ const nextConfig = {
   env: {
     version, // ensure the version is available for display in the footer
   },
+  swcMinify: false, // disable SWC minification to avoid issues with @citation-js, which doesn't work when running nextjs build
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
