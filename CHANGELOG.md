@@ -1,3 +1,11 @@
+## [1.1.4](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.3...v1.1.4) (2024-04-25)
+
+
+### Bug Fixes
+
+* changelog, migrate to turbopack ([1b1b719](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/1b1b719bac315e6498a486b9d3f215472a6d3242))
+* citations not working in production ([c461bbe](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/c461bbe7d507504a8529a3bd26a23e35a9a407f2))
+
 ## [1.1.3](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.2...v1.1.3) (2024-04-25)
 
 
