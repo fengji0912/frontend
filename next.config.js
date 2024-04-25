@@ -67,6 +67,23 @@ const nextConfig = {
   env: {
     version, // ensure the version is available for display in the footer
   },
+  // webpack config required for building only, once turbo support build, this can be removed
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.md$/i,
+      loader: 'raw-loader',
+    });
+    return config;
+  },
+  experimental: {
+    turbo: {
+      rules: {
+        '*.md': {
+          loaders: ['raw-loader'],
+        },
+      },
+    },
+  },
   swcMinify: false, // disable SWC minification to avoid issues with @citation-js, which doesn't work when running nextjs build
 };
 

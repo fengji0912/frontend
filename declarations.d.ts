@@ -1,3 +1,5 @@
+declare module '*.md';
+
 // unfortunately, the types for citation-js are not available,
 // so we need to declare them ourselves.
 // The declaration file is not complete! only the used functionalities are implemented
