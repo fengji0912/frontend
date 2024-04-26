@@ -5,6 +5,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+    # image: registry.gitlab.com/tibhannover/orkg/orkg-ask/frontend
     ports:
       - '127.0.0.1:3000:3000'
     env_file:
