@@ -1,3 +1,10 @@
+# [1.3.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.2.0...v1.3.0) (2024-04-26)
+
+
+### Features
+
+* support dynamic env vars ([f2425ba](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/f2425ba834f3063c563e3adc296a5f5f4f317c2d))
+
 # [1.2.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.4...v1.2.0) (2024-04-26)
 
 
