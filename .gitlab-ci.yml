@@ -31,8 +31,3 @@ release:
     - main
   script:
     - npm run semantic-release
-  artifacts:
-    paths:
-      - CHANGELOG.md
-      - package.json
-      - package-lock.json
