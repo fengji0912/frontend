@@ -2,16 +2,28 @@ image: node:latest
 
 stages:
   - install
-  - lint
+  - build
   - release
+  - containerize
+
+include:
+  - remote: https://gitlab.com/TIBHannover/gitlab-ci-templates/raw/master/templates/Docker.gitlab-ci.yml
 
 install:
   stage: install
   script:
-    - npm install --force
+    - npm install
   artifacts:
     paths:
       - node_modules/
+  
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - .next
     
 release:
   stage: release
@@ -19,3 +31,8 @@ release:
     - main
   script:
     - npm run semantic-release
+  artifacts:
+    paths:
+      - CHANGELOG.md
+      - package.json
+      - package-lock.json
