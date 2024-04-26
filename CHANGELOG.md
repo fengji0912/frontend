@@ -1,3 +1,10 @@
+# [1.2.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.4...v1.2.0) (2024-04-26)
+
+
+### Features
+
+* add organization logos ([39fe474](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/39fe4741777d1e80fc3c76ed47063655e9bf2a16))
+
 ## [1.1.4](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.1.3...v1.1.4) (2024-04-25)
 
 
