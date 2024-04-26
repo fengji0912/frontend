@@ -1,3 +1,10 @@
+## [1.3.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.0...v1.3.1) (2024-04-26)
+
+
+### Bug Fixes
+
+* add missing sentence ending ([1088166](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/1088166f52fc78c62a99f1cba2e9ea640294c68a))
+
 # [1.3.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.2.0...v1.3.0) (2024-04-26)
 
 
