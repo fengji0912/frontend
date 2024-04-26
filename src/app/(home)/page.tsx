@@ -5,6 +5,7 @@ import AnimatedSearchBar from '@/app/(home)/AnimatedSearchBar/AnimatedSearchBar'
 import Explainer from '@/app/(home)/Explainer/Explainer';
 import GettingStarted from '@/app/(home)/GettingStarted/GettingStarted';
 import ItemCount from '@/app/(home)/ItemCount/ItemCount';
+import Logos from '@/app/(home)/Logos/Logos';
 import logo from '@/assets/images/logo.svg';
 import { getCount } from '@/services/backend';
 
@@ -43,12 +44,14 @@ export default async function Home() {
           <AnimatedSearchBar />
           <div className="md:flex gap-4 mt-4">
             <div className="w-full md:w-8/12">
+              <Explainer />
+
               <GettingStarted />
             </div>
             <div className="w-full md:w-4/12 flex flex-col">
-              <Explainer />
-
               <ItemCount count={count} />
+
+              <Logos />
             </div>
           </div>
         </div>

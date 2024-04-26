@@ -75,15 +75,17 @@ const nextConfig = {
     });
     return config;
   },
-  experimental: {
-    turbo: {
-      rules: {
-        '*.md': {
-          loaders: ['raw-loader'],
-        },
-      },
-    },
-  },
+  // turbopack is disabled for now as it caused issues with nextjs button on server components,
+  // a solution might be to import components as individual ones instead of from the main nextjs package
+  // experimental: {
+  //   turbo: {
+  //     rules: {
+  //       '*.md': {
+  //         loaders: ['raw-loader'],
+  //       },
+  //     },
+  //   },
+  // },
   swcMinify: false, // disable SWC minification to avoid issues with @citation-js, which doesn't work when running nextjs build
 };
 

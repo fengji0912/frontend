@@ -8,6 +8,7 @@ import tailwindConfig from '@/../tailwind.config.js';
 import Collapsible from '@/app/search/Sidebar/Filters/Collapsable/Collapsable';
 import Filters from '@/app/search/Sidebar/Filters/Filters';
 import Query from '@/app/search/Sidebar/Query/Query';
+import LogoCarousel from '@/components/LogoCarousel/LogoCarousel';
 
 export default function Sidebar() {
   const fullConfig = resolveConfig(tailwindConfig);
@@ -20,6 +21,9 @@ export default function Sidebar() {
       <Collapsible isExpanded={isOpenFilters || isWide}>
         <Filters />
       </Collapsible>
+      <div className="box mt-5 text-center">
+        <LogoCarousel />
+      </div>
     </div>
   );
 }

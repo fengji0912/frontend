@@ -72,7 +72,7 @@ export default function GettingStarted() {
 
   return (
     <motion.div
-      className="h-full box"
+      className="box"
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={TRANSITION_MOVE}
