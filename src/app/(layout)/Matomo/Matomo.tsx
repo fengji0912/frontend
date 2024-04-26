@@ -2,13 +2,14 @@
 
 import { init, push } from '@socialgouv/matomo-next';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { env } from 'next-runtime-env';
 import { Suspense, useEffect, useState } from 'react';
 
 /**
  * @remarks Copied from {@link https://github.com/SocialGouv/matomo-next/issues/99}
  */
-const MATOMO_URL = process.env.NEXT_PUBLIC_MATOMO_URL;
-const MATOMO_SITE_ID = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+const MATOMO_URL = env('NEXT_PUBLIC_MATOMO_URL');
+const MATOMO_SITE_ID = env('NEXT_PUBLIC_MATOMO_SITE_ID');
 
 const MatomoComponent = () => {
   const [initialised, setInitialised] = useState(false);

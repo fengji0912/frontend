@@ -52,6 +52,7 @@ ORKG Ask is using a modern stack of technologies, as listed below. We use [Next.
 - Animations: [Framer Motion](https://www.framer.com/motion/)
 - Pre-commit linting: [Husky](https://typicode.github.io/husky/)
 - Releasing and changelog generation: [semantic-release](https://github.com/semantic-release/semantic-release)
+- Runtime env variables: [next-runtime-env](https://github.com/expatfile/next-runtime-env)
 
 ## Contributing
 

@@ -1,11 +1,12 @@
 import { IData } from 'csl-json';
 import ky from 'ky';
+import { env } from 'next-runtime-env';
 
 import transformBackendToJsonCsl from '@/app/search/Results/helpers/transformCoreToJsonCsl';
 import { components, operations } from '@/services/backend/types';
 
 const backendApi = ky.create({
-  prefixUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
+  prefixUrl: env('NEXT_PUBLIC_BACKEND_URL'),
   timeout: 120000, // 2 minutes
 });
 

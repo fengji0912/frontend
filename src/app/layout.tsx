@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { PublicEnvScript } from 'next-runtime-env';
 import NextTopLoader from 'nextjs-toploader';
 
 import CookieNotification from '@/app/(layout)/CookieNotification/CookieNotification';
@@ -32,6 +33,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="light">
+      <head>
+        <PublicEnvScript />
+      </head>
       <body className={`${inter.className} min-h-screen`}>
         <NextTopLoader color="#e86161" />
         <Providers>
