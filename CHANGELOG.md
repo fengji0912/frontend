@@ -1,3 +1,10 @@
+## [1.3.3](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.2...v1.3.3) (2024-04-26)
+
+
+### Bug Fixes
+
+* add sharp for production image optimization ([debcf1c](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/debcf1c56855fc8a1a933b2d97d856f35432c3dd))
+
 ## [1.3.2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.1...v1.3.2) (2024-04-26)
 
 
