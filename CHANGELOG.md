@@ -1,3 +1,10 @@
+## [1.3.2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.1...v1.3.2) (2024-04-26)
+
+
+### Bug Fixes
+
+* add missing artifacts ([092fa21](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/092fa21136c12987250ff8acd34d4bbfcf16fc30))
+
 ## [1.3.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.0...v1.3.1) (2024-04-26)
 
 
