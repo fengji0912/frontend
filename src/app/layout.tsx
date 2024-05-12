@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { CookiesProvider } from 'next-client-cookies/server';
 import { PublicEnvScript } from 'next-runtime-env';
 import NextTopLoader from 'nextjs-toploader';
 
@@ -37,17 +38,19 @@ export default function RootLayout({
         <PublicEnvScript />
       </head>
       <body className={`${inter.className} min-h-screen`}>
-        <NextTopLoader color="#e86161" />
-        <Providers>
-          <div className="bg">
-            <Feedback />
-            <Header />
-            <div className="px-2">{children}</div>
-            <Footer />
-            <CookieNotification />
-          </div>
-        </Providers>
-        <Matomo />
+        <CookiesProvider>
+          <NextTopLoader color="#e86161" />
+          <Providers>
+            <div className="bg">
+              <Feedback />
+              <Header />
+              <div className="px-2">{children}</div>
+              <Footer />
+              <CookieNotification />
+            </div>
+          </Providers>
+          <Matomo />
+        </CookiesProvider>
       </body>
     </html>
   );
