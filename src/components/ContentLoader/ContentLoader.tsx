@@ -10,7 +10,7 @@ export default function ContentLoader({
 }: IContentLoaderProps) {
   const [mounted, setMounted] = useState(false);
 
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -22,8 +22,8 @@ export default function ContentLoader({
 
   return (
     <ReactContentLoader
-      foregroundColor={theme === 'light' ? '#f3f3f3' : '#303237'}
-      backgroundColor={theme === 'light' ? '#ecebeb' : '#1D2024'}
+      foregroundColor={resolvedTheme === 'light' ? '#f3f3f3' : '#303237'}
+      backgroundColor={resolvedTheme === 'light' ? '#ecebeb' : '#1D2024'}
       {...props}
     >
       {children}

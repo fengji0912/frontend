@@ -28,7 +28,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const { isAuthenticated } = useAuth();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   const MENU_ITEMS = [
     {
@@ -81,10 +81,10 @@ export default function Header() {
           isIconOnly
           color="secondary"
           variant="flat"
-          onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          onPress={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
         >
           <FontAwesomeIcon
-            icon={theme === 'light' ? faMoon : faLightbulb}
+            icon={resolvedTheme === 'light' ? faMoon : faLightbulb}
             size="lg"
           />
         </Button>

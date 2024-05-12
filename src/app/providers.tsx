@@ -10,9 +10,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <SWRConfig
         value={{ shouldRetryOnError: false, revalidateOnFocus: false }}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          {children}
-        </ThemeProvider>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
       </SWRConfig>
     </NextUIProvider>
   );
