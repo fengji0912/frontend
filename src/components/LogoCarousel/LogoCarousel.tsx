@@ -11,8 +11,10 @@ import Slider from 'react-slick';
 import erc from '@/components/LogoCarousel/images/erc.png';
 import eulist from '@/components/LogoCarousel/images/eulist.png';
 import l3s from '@/components/LogoCarousel/images/l3s.png';
+import leibnizAssociation from '@/components/LogoCarousel/images/leibniz-association.svg';
 import nfdi from '@/components/LogoCarousel/images/nfdi.png';
 import tib from '@/components/LogoCarousel/images/tib.png';
+import uniHannover from '@/components/LogoCarousel/images/uni-hannover.png';
 
 const LOGOS = [
   {
@@ -39,6 +41,16 @@ const LOGOS = [
     name: 'European Research Council',
     src: erc,
     width: 90,
+  },
+  {
+    name: 'University of Hannover',
+    src: uniHannover,
+    width: 170,
+  },
+  {
+    name: 'Leibniz Association',
+    src: leibnizAssociation,
+    width: 120,
   },
 ];
 
