@@ -42,7 +42,7 @@ export default async function Home() {
         </h1>
         <div className="container mt-10 max-w-[1000px]">
           <AnimatedSearchBar />
-          <div className="md:flex gap-4 mt-4">
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
             <div className="w-full md:w-8/12">
               <Explainer />
 

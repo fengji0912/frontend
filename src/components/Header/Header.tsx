@@ -49,7 +49,7 @@ export default function Header() {
       className="bg-[#dbe3e8bd] dark:bg-secondary-950 backdrop-blur"
       id="header"
     >
-      <NavbarContent className="flex md:gap-10 px-0" justify="start">
+      <NavbarContent className="flex md:gap-10" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className="md:hidden"
