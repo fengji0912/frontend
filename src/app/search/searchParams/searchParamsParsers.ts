@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { createParser, parseAsArrayOf, parseAsInteger } from 'nuqs';
 import QueryString from 'qs';
 
@@ -111,24 +110,6 @@ export const excludeItemsParser = parseAsArrayOf(parseAsStringUriEncoded)
     shallow: false,
   });
 
-export const filterParser = qsParser
-  .withDefault([
-    {
-      field: 'year',
-      operator: 'greaterThan',
-      value: '1950',
-    },
-    {
-      field: 'year',
-      operator: 'smallerThan',
-      value: moment().year().toString(),
-    },
-    {
-      field: 'language',
-      operator: 'inList',
-      value: ['en', 'zz'],
-    },
-  ])
-  .withOptions({
-    shallow: false,
-  });
+export const filterParser = qsParser.withDefault([]).withOptions({
+  shallow: false,
+});

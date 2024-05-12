@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
+import moment from 'moment';
 import { useQueryState } from 'nuqs';
 import { useState, useTransition } from 'react';
 
@@ -58,6 +59,7 @@ export default function Year() {
           onChange={(e) => setStartYearLocal(parseInt(e.target.value))}
           onBlur={handleChange}
           size="sm"
+          placeholder="1950"
         />
         <div className="mx-2">till</div>
         <Input
@@ -66,6 +68,7 @@ export default function Year() {
           onChange={(e) => setEndYearLocal(parseInt(e.target.value))}
           onBlur={handleChange}
           size="sm"
+          placeholder={moment().year().toString()}
         />
       </div>
       <div className="mt-2">
