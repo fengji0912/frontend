@@ -3,13 +3,13 @@
 import {
   faBookmark,
   faCalendar,
-  faCircleDot,
   faMinus,
   faQuoteLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, useDisclosure } from '@nextui-org/react';
 import { IData } from 'csl-json';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, ReactElement } from 'react';
@@ -20,6 +20,7 @@ import {
   excludeItemsParser,
   listFilterParser,
 } from '@/app/search/searchParams/searchParamsParsers';
+import doiIcon from '@/assets/images/doi-icon.svg';
 import CiteModal from '@/components/CiteModal/CiteModal';
 import ActionDropdown from '@/components/Item/ActionDropdown/ActionDropdown';
 import Authors from '@/components/Item/Authors/Authors';
@@ -180,12 +181,15 @@ export default function Item({
                 </div>
               )}
               {cslData?.DOI && (
-                <div className="whitespace-nowrap">
-                  <FontAwesomeIcon
-                    icon={faCircleDot}
-                    className="opacity-75 me-2"
-                  />
-                  {cslData?.DOI}
+                <div className="whitespace-nowrap flex gap-1">
+                  <Image src={doiIcon} width="17" alt="DOI icon" />
+                  <a
+                    href={`https://doi.org/${cslData?.DOI}`}
+                    target="_blank"
+                    className="whitespace-nowrap text-inherit !underline"
+                  >
+                    {cslData?.DOI}
+                  </a>
                 </div>
               )}
               {cslData?.URL && (

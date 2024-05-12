@@ -3,13 +3,14 @@ import {
   faBook,
   faBuildingColumns,
   faCalendar,
-  faCircle,
   faLanguage,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IData } from 'csl-json';
+import Image from 'next/image';
 
 import { LANGUAGES } from '@/app/search/Sidebar/Filters/helpers/languages';
+import doiIcon from '@/assets/images/doi-icon.svg';
 import formatCslJsonDate from '@/lib/formatCslJsonDate';
 
 type MetadataGridProps = {
@@ -25,7 +26,7 @@ export default function MetadataGrid({ item }: MetadataGridProps) {
     },
     {
       label: 'DOI',
-      icon: faCircle,
+      icon: doiIcon,
       value: item?.DOI,
     },
     {
@@ -58,13 +59,32 @@ export default function MetadataGrid({ item }: MetadataGridProps) {
             key={item.label}
           >
             <div className="text-secondary-700 text-small mb-1">
-              <FontAwesomeIcon
-                icon={item.icon}
-                className="text-secondary-600"
-              />{' '}
+              {item.label === 'DOI' ? (
+                <Image
+                  src={item.icon}
+                  width="17"
+                  alt="Icon"
+                  className="inline"
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={item.icon}
+                  className="text-secondary-600"
+                />
+              )}{' '}
               {item.label}
             </div>
-            {item.value}
+            {item.label === 'DOI' ? (
+              <a
+                href={`https://doi.org/${item.value}`}
+                target="_blank"
+                className="whitespace-nowrap text-inherit !underline"
+              >
+                {item.value}
+              </a>
+            ) : (
+              item.value
+            )}
           </div>
         ) : null;
       })}
