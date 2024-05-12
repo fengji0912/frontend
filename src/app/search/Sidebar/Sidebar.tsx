@@ -21,7 +21,7 @@ export default function Sidebar() {
       <Collapsible isExpanded={isOpenFilters || isWide}>
         <Filters />
       </Collapsible>
-      <div className="box mt-5 text-center">
+      <div className="box mt-5 text-center hidden lg:block">
         <LogoCarousel />
       </div>
     </div>

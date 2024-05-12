@@ -50,11 +50,12 @@ export default function SignIn() {
     <div>
       <Button
         color="secondary"
-        className="me-2 px-4"
+        className="md:me-2 px-4"
         variant="bordered"
         onPress={onOpenSignInModal}
       >
-        <FontAwesomeIcon icon={faUser} /> Sign in
+        <FontAwesomeIcon icon={faUser} className="hidden md:inline-block" />{' '}
+        Sign in
       </Button>
       {isOpenSignInModal && (
         <SignInModal

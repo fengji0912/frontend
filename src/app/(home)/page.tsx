@@ -40,7 +40,7 @@ export default async function Home() {
         >
           Find research you are <em>actually</em> looking for
         </h1>
-        <div className="mt-10 max-w-[1000px]">
+        <div className="container mt-10 max-w-[1000px]">
           <AnimatedSearchBar />
           <div className="md:flex gap-4 mt-4">
             <div className="w-full md:w-8/12">
