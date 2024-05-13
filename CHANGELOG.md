@@ -1,3 +1,23 @@
+# [1.4.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.3...v1.4.0) (2024-05-13)
+
+
+### Bug Fixes
+
+* broken release pipeline ([eaa44c3](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/eaa44c35aeb72cf5eaa6d07cc8c54b8808c5c8cf))
+* dark mode for cookie notification ([392c135](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/392c135467843aa8838427e97aa2394fdc0f6ea9))
+* responsiveness for several components ([3d8e1f2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/3d8e1f237711f3f02d6b05758942ef96b319ead9))
+* responsiveness home page ([9c7b81b](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/9c7b81b3b81a9ca7e413e71f83e9844841425da8))
+* use system theme instead of default dark ([957e2db](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/957e2db3040d72ce6cdcc14698672475f123da0d)), closes [#13](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/13)
+
+
+### Features
+
+* add additional partner logos ([65c6b0a](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/65c6b0a99adedd4417a5eca276cf0d723c39af81)), closes [#8](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/8)
+* add disclaimer to results page ([5fa3904](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/5fa39047a9ea397eadc833a3e08d66a0f11b28eb)), closes [#7](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/7)
+* add ORKG Ask references to exports ([542ec6f](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/542ec6fdcfda2e952219703ba8055d91ecd6fa87)), closes [#9](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/9)
+* make DOIs clickable ([9da8e07](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/9da8e072fe8294ef8aaa7a58fc025c24f44b16cd)), closes [#11](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/11)
+* remove default filters to increase performance ([fd03d1a](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/fd03d1a461b4945af7dae356cb744dddaf41c6b3)), closes [#12](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/12)
+
 ## [1.3.3](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.2...v1.3.3) (2024-04-26)
 
 
