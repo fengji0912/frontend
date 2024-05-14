@@ -1,3 +1,10 @@
+# [1.6.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.5.0...v1.6.0) (2024-05-14)
+
+
+### Features
+
+* add LLM extracted data to item page ([d016c75](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/d016c751cd26359416471d7d209c13b68a1fd955)), closes [#10](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/10)
+
 # [1.5.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.4.0...v1.5.0) (2024-05-14)
 
 
