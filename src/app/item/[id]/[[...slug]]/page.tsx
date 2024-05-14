@@ -9,6 +9,7 @@ import slugify from 'slugify';
 
 import ActionButtons from '@/app/item/[id]/[[...slug]]/ActionButtons/ActionsButtons';
 import OrkgButton from '@/app/item/[id]/[[...slug]]/ActionButtons/OrkgButton/OrkgButton';
+import LlmData from '@/app/item/[id]/[[...slug]]/LlmData/LlmData';
 import MetadataGrid from '@/app/item/[id]/[[...slug]]/MetadataGrid/MetadataGrid';
 import ReadMore from '@/app/item/[id]/[[...slug]]/ReadMore/ReadMore';
 import LoadingRelatedItems from '@/app/item/[id]/[[...slug]]/RelatedItems/LoadingRelatedItems/LoadingRelatedItems';
@@ -80,9 +81,14 @@ export default async function Page({ params }: PageProps) {
       <div className="container mt-5">
         <MetadataGrid item={item} />
       </div>
-      <div className="container-box !mt-5">
-        <h2 className="text-xl font-semibold">Abstract</h2>
-        <ReadMore text={item.abstract} />
+      <div className="flex container !mt-5 gap-x-5">
+        <div className="box-white w-1/2">
+          <h2 className="text-xl font-semibold">Abstract</h2>
+          <ReadMore text={item.abstract} />
+        </div>
+        <div className="box-white w-1/2">
+          <LlmData />
+        </div>
       </div>
       <Suspense fallback={<LoadingRelatedItems />}>
         <RelatedItems itemId={params.id} />

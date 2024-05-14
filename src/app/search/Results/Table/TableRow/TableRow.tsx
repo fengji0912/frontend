@@ -2,7 +2,6 @@ import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
 import { Data, IData } from 'csl-json';
-import { upperFirst } from 'lodash';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, useContext, useEffect } from 'react';
 import useSWR from 'swr';
@@ -15,6 +14,7 @@ import {
 } from '@/app/search/searchParams/searchParamsParsers';
 import AddToCollection from '@/components/Item/AddToCollection/AddToCollection';
 import Item from '@/components/Item/Item';
+import LlmAnswerRenderer from '@/components/LlmAnswerRenderer/LlmAnswerRenderer';
 import selectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import useAuth from '@/components/User/hooks/useAuth';
@@ -145,7 +145,7 @@ export default function TableRow({ item }: TableRowProps) {
             {isLoading ? (
               <CellLoading />
             ) : (
-              <CellRenderer
+              <LlmAnswerRenderer
                 cell={
                   column === 'Answer'
                     ? llmData?.payload?.values?.[query]?.toString()
@@ -157,17 +157,5 @@ export default function TableRow({ item }: TableRowProps) {
         ))}
       </div>
     </div>
-  );
-}
-
-function CellRenderer({ cell }: { cell: string | undefined }) {
-  return (
-    <>
-      {cell && cell.toLowerCase() !== 'unknown' ? (
-        upperFirst(cell)
-      ) : (
-        <span className="text-secondary-700 italic">N/A</span>
-      )}
-    </>
   );
 }
