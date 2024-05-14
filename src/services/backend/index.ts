@@ -7,7 +7,7 @@ import { components, operations } from '@/services/backend/types';
 
 const backendApi = ky.create({
   prefixUrl: env('NEXT_PUBLIC_BACKEND_URL'),
-  timeout: 120000, // 2 minutes
+  timeout: 1000 * 60 * 5, // 5 minutes
 });
 
 export type SearchResponse = components['schemas']['QdrantDocument'];
