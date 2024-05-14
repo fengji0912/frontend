@@ -1,3 +1,10 @@
+# [1.5.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.4.0...v1.5.0) (2024-05-14)
+
+
+### Features
+
+* increase timeout for backend requests ([fcc96af](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/fcc96af5359697dba75e0995ce5155eba670a6b6))
+
 # [1.4.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.3.3...v1.4.0) (2024-05-13)
 
 
