@@ -7,11 +7,12 @@ import { ClientResponseError } from 'pocketbase';
 import { initPocketbase } from '@/components/User/actions/actions';
 import CACHE from '@/constants/cache';
 import ROUTES from '@/constants/routes';
+import { Collections } from '@/types/pocketbase-types';
 
 export async function createCollection(prevState: unknown, formData: FormData) {
   try {
     const pb = await initPocketbase();
-    await pb.collection('collections').create({
+    await pb.collection(Collections.Collections).create({
       title: formData.get('title') as string,
       user: pb.authStore.model?.id,
     });
@@ -28,7 +29,7 @@ export async function createCollection(prevState: unknown, formData: FormData) {
 export async function deleteCollection(id: string) {
   try {
     const pb = await initPocketbase();
-    await pb.collection('collections').delete(id);
+    await pb.collection(Collections.Collections).delete(id);
     revalidateTag(CACHE.MY_LIBRARY_COLLECTIONS);
   } catch (error) {
     console.error(error);
@@ -49,7 +50,7 @@ export async function updateCollection({
 }) {
   try {
     const pb = await initPocketbase();
-    await pb.collection('collections').update(id, {
+    await pb.collection(Collections.Collections).update(id, {
       title,
     });
     revalidateTag(CACHE.MY_LIBRARY_COLLECTIONS);

@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { cookies } from 'next/headers';
 import PocketBase, { ClientResponseError } from 'pocketbase';
 
-import { TypedPocketBase } from '@/types/pocketbase-types';
+import { Collections, TypedPocketBase } from '@/types/pocketbase-types';
 
 export type User = {
   name: string;
@@ -29,8 +29,9 @@ export async function initPocketbase() {
 export async function signIn(prevState: unknown, formData: FormData) {
   try {
     const pb = await initPocketbase();
+    // TODO: use signInWithEmailAndPassword instead
     await pb
-      .collection('users')
+      .collection(Collections.Users)
       .authWithPassword(
         formData.get('email') as string,
         formData.get('password') as string
@@ -55,7 +56,7 @@ export async function signInWithEmailAndPassword({
   password: string;
 }) {
   const pb = await initPocketbase();
-  await pb.collection('users').authWithPassword(email, password);
+  await pb.collection(Collections.Users).authWithPassword(email, password);
   cookies().set('pb_token', pb.authStore.exportToCookie());
 }
 
@@ -65,7 +66,7 @@ export async function checkIfAuthenticated() {
 
   try {
     if (pb.authStore.isValid) {
-      await pb.collection('users').authRefresh();
+      await pb.collection(Collections.Users).authRefresh();
       return true;
     }
   } catch (e) {
@@ -80,7 +81,7 @@ export async function getUserData(): Promise<User> {
   if (!pb.authStore.isValid) {
     return null;
   }
-  await pb.collection('users').authRefresh();
+  await pb.collection(Collections.Users).authRefresh();
 
   return {
     name: pb.authStore.model?.name,
@@ -102,7 +103,7 @@ export async function requestPassword(prevState: unknown, formData: FormData) {
   try {
     const pb = await initPocketbase();
     await pb
-      .collection('users')
+      .collection(Collections.Users)
       .requestPasswordReset(formData.get('email') as string);
     return { success: true };
   } catch (error) {
@@ -116,7 +117,7 @@ export async function requestPassword(prevState: unknown, formData: FormData) {
 export async function signUp(prevState: unknown, formData: FormData) {
   try {
     const pb = await initPocketbase();
-    await pb.collection('users').create({
+    await pb.collection(Collections.Users).create({
       email: formData.get('email') as string,
       password: formData.get('password') as string,
       passwordConfirm: formData.get('password') as string,
@@ -143,13 +144,13 @@ export async function update(
   if (!userId) throw new Error('No user ID provided');
   try {
     const pb = await initPocketbase();
-    await pb.collection('users').update(userId, {
+    await pb.collection(Collections.Users).update(userId, {
       email: formData.get('email') as string,
       password: formData.get('password') as string,
       passwordConfirm: formData.get('password') as string,
       name: formData.get('name') as string,
     });
-    await pb.collection('users').authRefresh();
+    await pb.collection(Collections.Users).authRefresh();
     return { success: true };
   } catch (error) {
     console.error(error);
@@ -171,7 +172,7 @@ export async function updatePassword(
   if (!userId) throw new Error('No user ID provided');
   try {
     const pb = await initPocketbase();
-    await pb.collection('users').update(userId, {
+    await pb.collection(Collections.Users).update(userId, {
       oldPassword: formData.get('oldPassword') as string,
       password: formData.get('password') as string,
       passwordConfirm: formData.get('passwordConfirm') as string,
