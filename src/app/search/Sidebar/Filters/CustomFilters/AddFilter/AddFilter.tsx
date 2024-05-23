@@ -8,6 +8,7 @@ import {
   FilterOperator,
   filterParser,
 } from '@/app/search/searchParams/searchParamsParsers';
+import ImpactFilter from '@/app/search/Sidebar/Filters/CustomFilters/AddFilter/ImpactFilter/ImpactFilter';
 import {
   FILTER_FIELDS,
   FILTER_OPERATORS,
@@ -17,7 +18,7 @@ import Input from '@/components/NextUi/Input/Input';
 import Select from '@/components/NextUi/Select/Select';
 
 export default function AddFilter() {
-  const [field, setField] = useState('');
+  const [field, setField] = useState('impact');
   const [, setFilter] = useQueryState('filter', filterParser);
   const ref = useRef<HTMLFormElement>(null);
   const labelId = useId();
@@ -53,32 +54,35 @@ export default function AddFilter() {
             ))}
           </Select>
           <div>
-            <Input
-              type="text"
-              placeholder="Filter value"
-              isRequired
-              name="value"
-              startContent={
-                <div className="flex items-center">
-                  <label className="sr-only" htmlFor={labelId}>
-                    Filter operator
-                  </label>
-                  <select
-                    className="outline-none border-0 bg-transparent text-small"
-                    id={labelId}
-                    name="operator"
-                  >
-                    {FILTER_OPERATORS.filter((operator) => operator.label).map(
-                      (operator) => (
+            {field === 'impact' && <ImpactFilter />}
+            {field !== 'impact' && (
+              <Input
+                type="text"
+                placeholder="Filter value"
+                isRequired
+                name="value"
+                startContent={
+                  <div className="flex items-center">
+                    <label className="sr-only" htmlFor={labelId}>
+                      Filter operator
+                    </label>
+                    <select
+                      className="outline-none border-0 bg-transparent text-small"
+                      id={labelId}
+                      name="operator"
+                    >
+                      {FILTER_OPERATORS.filter(
+                        (operator) => operator.label
+                      ).map((operator) => (
                         <option value={operator.value} key={operator.label}>
                           {operator.label}
                         </option>
-                      )
-                    )}
-                  </select>
-                </div>
-              }
-            />
+                      ))}
+                    </select>
+                  </div>
+                }
+              />
+            )}
           </div>
           <div className="flex justify-end">
             <Button color="primary" type="submit">

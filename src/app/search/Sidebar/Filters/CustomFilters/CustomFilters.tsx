@@ -9,16 +9,20 @@ import CustomFilterItem from '@/app/search/Sidebar/Filters/CustomFilters/CustomF
 
 export const FILTER_FIELDS = [
   {
+    label: 'Impact',
+    value: 'impact',
+  },
+  {
+    label: 'Citation count (estimate)',
+    value: 'citation_count',
+  },
+  {
     label: 'Title',
     value: 'title',
   },
   {
     label: 'Abstract',
     value: 'abstract',
-  },
-  {
-    label: 'Citation count (estimate)',
-    value: 'citation_count',
   },
   {
     label: 'Publisher',
