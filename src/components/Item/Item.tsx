@@ -2,12 +2,13 @@
 
 import {
   faBookmark,
+  faBuildingColumns,
   faCalendar,
   faMinus,
   faQuoteLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, Tooltip, useDisclosure } from '@nextui-org/react';
 import { IData } from 'csl-json';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -190,6 +191,26 @@ export default function Item({
                   >
                     {cslData?.DOI}
                   </a>
+                </div>
+              )}
+              {cslData?.custom?.['citation-count'] && (
+                <Tooltip content="Citation count (estimate)">
+                  <div className="whitespace-nowrap">
+                    <FontAwesomeIcon
+                      icon={faQuoteLeft}
+                      className="opacity-75 me-1"
+                    />
+                    {cslData?.custom?.['citation-count']}
+                  </div>
+                </Tooltip>
+              )}
+              {(cslData?.publisher || cslData?.journalAbbreviation) && (
+                <div className="whitespace-nowrap">
+                  <FontAwesomeIcon
+                    icon={faBuildingColumns}
+                    className="opacity-75 me-1"
+                  />
+                  {cslData?.publisher || cslData?.journalAbbreviation}
                 </div>
               )}
               {cslData?.URL && (

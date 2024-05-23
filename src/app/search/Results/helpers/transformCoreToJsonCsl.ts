@@ -19,7 +19,7 @@ export default function transformBackendToJsonCsl(item: SearchResponse): IData {
     DOI: item.doi ?? undefined,
     URL: item.download_url ?? undefined,
     abstract: item.abstract ?? undefined,
-    publisher: item.publisher ?? undefined,
+    publisher: item.publisher?.replaceAll("'", '') ?? undefined, // fix issue with unneeded quotes in publisher name
     issued: item.date_published
       ? {
           'date-parts': [
@@ -33,5 +33,8 @@ export default function transformBackendToJsonCsl(item: SearchResponse): IData {
     journalAbbreviation: item.journals?.[0] ?? undefined,
     ISSN: item.issn ?? undefined,
     language: item.language ?? undefined,
+    custom: {
+      'citation-count': item.citation_count,
+    },
   };
 }

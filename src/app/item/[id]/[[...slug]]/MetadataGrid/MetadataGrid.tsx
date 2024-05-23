@@ -4,6 +4,7 @@ import {
   faBuildingColumns,
   faCalendar,
   faLanguage,
+  faQuoteLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IData } from 'csl-json';
@@ -48,6 +49,11 @@ export default function MetadataGrid({ item }: MetadataGridProps) {
       label: 'Language',
       icon: faLanguage,
       value: item?.language ? LANGUAGES[item.language] : '',
+    },
+    {
+      label: 'Citation count (estimate)',
+      icon: faQuoteLeft,
+      value: item?.custom?.['citation-count'],
     },
   ];
   return (
