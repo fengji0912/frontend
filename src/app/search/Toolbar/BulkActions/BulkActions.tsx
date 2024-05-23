@@ -7,6 +7,7 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from '@nextui-org/react';
+import { push } from '@socialgouv/matomo-next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useQueryState } from 'nuqs';
 import { useContext, useTransition } from 'react';
@@ -55,6 +56,7 @@ export default function BulkActions() {
         setCollectionItemIds(newCollectionItemIds);
         setExcludeItems(newExcludeItems);
         setSelectedItems([]);
+        push(['trackEvent', 'exclude item']);
       });
     }
   };

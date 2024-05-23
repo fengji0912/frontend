@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
+import { push } from '@socialgouv/matomo-next';
 import { IData } from 'csl-json';
 import { useQueryState } from 'nuqs';
 import { useContext, useEffect, useMemo } from 'react';
@@ -118,6 +119,15 @@ export default function Table({
     setItems(items);
   }, [items, setItems]);
 
+  useEffect(() => {
+    push(['trackEvent', 'search query', query]);
+  }, [query]);
+
+  const loadMore = () => {
+    setSize(size + 1);
+    push(['trackEvent', 'load more results', size + 1]);
+  };
+
   return (
     <>
       <div className="box-white !px-0">
@@ -148,7 +158,7 @@ export default function Table({
       <div className="flex items-center mt-3">
         <Button
           color="primary"
-          onPress={() => setSize(size + 1)}
+          onPress={loadMore}
           isLoading={
             isLoading ||
             (size > 0 && data && typeof data[size - 1] === 'undefined')

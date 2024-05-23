@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, SelectItem } from '@nextui-org/react';
+import { push } from '@socialgouv/matomo-next';
 import { useQueryState } from 'nuqs';
 import { useId, useRef, useState } from 'react';
 
@@ -38,6 +39,13 @@ export default function AddFilter() {
           ]);
           setField(''); // form reset doesn't work with NextUI Select, so make it a controlled component
           ref.current?.reset();
+          push([
+            'trackEvent',
+            'add custom filter',
+            `${field} filter added ${formData.get('operator')} ${formData.get(
+              'value'
+            )}`,
+          ]);
         }}
       >
         <div className="space-y-3">

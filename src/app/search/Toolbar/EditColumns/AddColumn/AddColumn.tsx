@@ -1,6 +1,8 @@
 'use client';
+
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { push } from '@socialgouv/matomo-next';
 import { useState } from 'react';
 
 import useColumns from '@/app/search/Toolbar/EditColumns/hooks/useColumns';
@@ -11,6 +13,7 @@ export default function AddColumn() {
   const { isPending, setColumns } = useColumns();
 
   const handleAdd = () => {
+    push(['trackEvent', 'add custom column', label]);
     setColumns((items) => [...items, label]);
     setLabel('');
   };

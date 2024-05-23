@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip, useDisclosure } from '@nextui-org/react';
+import { push } from '@socialgouv/matomo-next';
 import { IData } from 'csl-json';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -75,6 +76,8 @@ export default function Item({
 
   const handleExcludeItem = () => {
     if (confirm('Are you sure you want to exclude this item?')) {
+      push(['trackEvent', 'exclude item']);
+
       if (type === 'searchItem') {
         setExcludeItems((prev) => [...prev, id]);
       } else {
