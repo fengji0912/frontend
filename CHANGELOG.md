@@ -1,3 +1,18 @@
+# [1.7.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.6.0...v1.7.0) (2024-05-24)
+
+
+### Bug Fixes
+
+* type of CSL JSON, add precommit check of types ([bfc95f8](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/bfc95f804f7f2e6f9d55bc549084be0dc1ed813f))
+
+
+### Features
+
+* add additional event tracking ([b02fa72](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/b02fa724736c466b4d71445b38f9666e17777c76)), closes [#20](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/20)
+* add citation count and publication info for items ([eb1095e](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/eb1095eab99556aaab5a21e59328f50e7a6efcd0)), closes [#15](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/15)
+* support for CMS pages ([d694bd2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/d694bd2dfe35b82077f48be6a663118f036e3ab2)), closes [#19](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/19)
+* support new 'impact' filter, set default for ([fea241b](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/fea241b96d98c173292c7386fe7b07b88a49eaeb)), closes [#14](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/14)
+
 # [1.6.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.5.0...v1.6.0) (2024-05-14)
 
 
