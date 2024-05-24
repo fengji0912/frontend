@@ -1,6 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+
+import ROUTES from '@/constants/routes';
 
 export default function Explainer() {
   const TRANSITION_MOVE = {
@@ -19,7 +22,8 @@ export default function Explainer() {
         ORKG Ask is a scholarly search and exploration system powered by{' '}
         <strong className="text-semibold">Vector Search</strong>,{' '}
         <strong className="text-semibold">Large Language Models</strong> and{' '}
-        <strong className="text-semibold">Knowledge Graphs</strong>.
+        <strong className="text-semibold">Knowledge Graphs</strong>.{' '}
+        <Link href={`${ROUTES.PAGES}/about`}>Learn more</Link>.
       </div>
     </motion.div>
   );

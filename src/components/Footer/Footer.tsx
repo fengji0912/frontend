@@ -10,6 +10,9 @@ export default function Footer() {
     <footer className="text-center">
       <ul className="inline-block mt-[35px] pb-[35px] flex-wrap text-center">
         <ListItem>
+          <Link href={`${ROUTES.PAGES}/about`}>About</Link>
+        </ListItem>
+        <ListItem>
           <Link href={ROUTES.CONTACT}>Contact</Link>
         </ListItem>
         <ListItem>

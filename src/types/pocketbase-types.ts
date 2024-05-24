@@ -8,6 +8,8 @@ import type { RecordService } from 'pocketbase';
 export enum Collections {
   CollectionItems = 'collectionItems',
   Collections = 'collections',
+  ItemsCache = 'itemsCache',
+  Pages = 'pages',
   SavedSearches = 'savedSearches',
   SharedLinks = 'sharedLinks',
   Users = 'users',
@@ -48,10 +50,24 @@ export type CollectionsRecord = {
   user: RecordIdString;
 };
 
+export type ItemsCacheRecord<TllmResponse = unknown> = {
+  isCollectionItem?: boolean;
+  itemId?: string;
+  llmResponse?: null | TllmResponse;
+  parameter?: string;
+  promptId: string;
+};
+
+export type PagesRecord = {
+  content?: HTMLString;
+  title?: string;
+  url: string;
+};
+
 export type SavedSearchesRecord<TsearchData = unknown> = {
   searchData: null | TsearchData;
   title?: string;
-  user?: RecordIdString;
+  user: RecordIdString;
 };
 
 export type SharedLinksRecord<TsearchData = unknown> = {
@@ -71,6 +87,12 @@ export type CollectionItemsResponse<
 > = Required<CollectionItemsRecord<TcslData>> & BaseSystemFields<Texpand>;
 export type CollectionsResponse<Texpand = unknown> =
   Required<CollectionsRecord> & BaseSystemFields<Texpand>;
+export type ItemsCacheResponse<
+  TllmResponse = unknown,
+  Texpand = unknown,
+> = Required<ItemsCacheRecord<TllmResponse>> & BaseSystemFields<Texpand>;
+export type PagesResponse<Texpand = unknown> = Required<PagesRecord> &
+  BaseSystemFields<Texpand>;
 export type SavedSearchesResponse<
   TsearchData = unknown,
   Texpand = unknown,
@@ -87,6 +109,8 @@ export type UsersResponse<Texpand = unknown> = Required<UsersRecord> &
 export type CollectionRecords = {
   collectionItems: CollectionItemsRecord;
   collections: CollectionsRecord;
+  itemsCache: ItemsCacheRecord;
+  pages: PagesRecord;
   savedSearches: SavedSearchesRecord;
   sharedLinks: SharedLinksRecord;
   users: UsersRecord;
@@ -95,6 +119,8 @@ export type CollectionRecords = {
 export type CollectionResponses = {
   collectionItems: CollectionItemsResponse;
   collections: CollectionsResponse;
+  itemsCache: ItemsCacheResponse;
+  pages: PagesResponse;
   savedSearches: SavedSearchesResponse;
   sharedLinks: SharedLinksResponse;
   users: UsersResponse;
@@ -108,6 +134,8 @@ export type TypedPocketBase = PocketBase & {
     idOrName: 'collectionItems'
   ): RecordService<CollectionItemsResponse>;
   collection(idOrName: 'collections'): RecordService<CollectionsResponse>;
+  collection(idOrName: 'itemsCache'): RecordService<ItemsCacheResponse>;
+  collection(idOrName: 'pages'): RecordService<PagesResponse>;
   collection(idOrName: 'savedSearches'): RecordService<SavedSearchesResponse>;
   collection(idOrName: 'sharedLinks'): RecordService<SharedLinksResponse>;
   collection(idOrName: 'users'): RecordService<UsersResponse>;

@@ -9,6 +9,7 @@ const ROUTES = {
   ACCESSIBILITY: '/accessibility',
   IMPRINT: '/imprint',
   CHANGELOG: '/changelog',
+  PAGES: '/pages',
 };
 
 export default ROUTES;
