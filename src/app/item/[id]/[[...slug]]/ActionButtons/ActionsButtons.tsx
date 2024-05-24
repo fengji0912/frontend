@@ -12,13 +12,13 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from '@nextui-org/react';
-import { IData } from 'csl-json';
 import Link from 'next/link';
 import { ReactElement } from 'react';
 
 import CiteModal from '@/components/CiteModal/CiteModal';
 import Popover from '@/components/NextUi/Popover/Popover';
 import ShareButtons from '@/components/ShareButtons/ShareButtons';
+import { IData } from '@/types/csl-json';
 
 type ActionButtonsProps = {
   item: IData;

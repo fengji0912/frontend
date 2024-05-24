@@ -2,12 +2,12 @@
 
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Person } from 'csl-json';
 import { useRef, useState } from 'react';
 
 import useIsOverflow from '@/components/Item/Authors/hooks/useIsOverflowing';
 import { LinkButton } from '@/components/NextUi/LinkButton/LinkButton';
 import formatCslJsonAuthor from '@/lib/formatCslJsonAuthor';
+import { Person } from '@/types/csl-json';
 
 type AuthorsProps = {
   authors?: Person[];

@@ -1,7 +1,6 @@
-import { IData } from 'csl-json';
-
 import ItemCarousel from '@/app/item/[id]/[[...slug]]/RelatedItems/ItemCarousel/ItemCarousel';
 import { getRelatedItems } from '@/services/backend';
+import { IData } from '@/types/csl-json';
 
 type RelatedItemsProps = {
   itemId: string;

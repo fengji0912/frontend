@@ -10,7 +10,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip, useDisclosure } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
-import { IData } from 'csl-json';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useQueryState } from 'nuqs';
@@ -29,6 +28,7 @@ import Authors from '@/components/Item/Authors/Authors';
 import Checkbox from '@/components/NextUi/Checkbox/Checkbox';
 import ROUTES from '@/constants/routes';
 import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import { IData } from '@/types/csl-json';
 import { CollectionsResponse } from '@/types/pocketbase-types';
 
 type ItemProps = {

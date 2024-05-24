@@ -1,3 +1,5 @@
+import { sortBy, upperFirst } from 'lodash';
+
 import {
   Date,
   DateFieldKey,
@@ -6,8 +8,7 @@ import {
   Person,
   PersonFieldKey,
   StringFieldKey,
-} from 'csl-json';
-import { sortBy, upperFirst } from 'lodash';
+} from '@/types/csl-json';
 export type Field = {
   title: string;
   cslType: keyof IData;

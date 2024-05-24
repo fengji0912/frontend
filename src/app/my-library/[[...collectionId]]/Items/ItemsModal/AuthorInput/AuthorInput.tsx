@@ -15,12 +15,12 @@ import {
 } from '@dnd-kit/sortable';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Person } from 'csl-json';
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import AuthorFields from '@/app/my-library/[[...collectionId]]/Items/ItemsModal/AuthorInput/AuthorFields/AuthorFields';
 import AuthorItem from '@/app/my-library/[[...collectionId]]/Items/ItemsModal/AuthorInput/AuthorItem/AuthorItem';
+import { Person } from '@/types/csl-json';
 
 export default function AuthorInput({
   cslType,

@@ -7,12 +7,12 @@ import {
   faQuoteLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IData } from 'csl-json';
 import Image from 'next/image';
 
 import { LANGUAGES } from '@/app/search/Sidebar/Filters/helpers/languages';
 import doiIcon from '@/assets/images/doi-icon.svg';
 import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import { IData } from '@/types/csl-json';
 
 type MetadataGridProps = {
   item: IData;

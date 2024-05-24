@@ -6,9 +6,9 @@ import '@citation-js/plugin-doi';
 import '@citation-js/plugin-ris';
 
 import { Cite } from '@citation-js/core';
-import { IData } from 'csl-json';
 
 import FORMATS from '@/components/CiteModal/constants/formats';
+import { IData } from '@/types/csl-json';
 
 export default async function generateCitation({
   type,

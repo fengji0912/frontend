@@ -15,11 +15,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
-import { Person } from 'csl-json';
 import { useState } from 'react';
 
 import AuthorFields from '@/app/my-library/[[...collectionId]]/Items/ItemsModal/AuthorInput/AuthorFields/AuthorFields';
 import Dropdown from '@/components/NextUi/Dropdown/Dropdown';
+import { Person } from '@/types/csl-json';
 
 export default function AuthorItem({
   id,

@@ -1,7 +1,6 @@
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
-import { Data, IData } from 'csl-json';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, useContext, useEffect } from 'react';
 import useSWR from 'swr';
@@ -19,6 +18,7 @@ import selectedItemsContext from '@/components/SelectedItemsProvider/selectedIte
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import useAuth from '@/components/User/hooks/useAuth';
 import { getLlmExtraction } from '@/services/backend';
+import { Data, IData } from '@/types/csl-json';
 import {
   CollectionItemsResponse,
   CollectionsResponse,

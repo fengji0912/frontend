@@ -11,7 +11,6 @@ import {
   SelectItem,
   SelectSection,
 } from '@nextui-org/react';
-import { Date, IData, Person } from 'csl-json';
 import { sortBy } from 'lodash';
 import moment from 'moment';
 import { useParams } from 'next/navigation';
@@ -33,6 +32,7 @@ import Input from '@/components/NextUi/Input/Input';
 import Modal from '@/components/NextUi/Modal/Modal';
 import Select from '@/components/NextUi/Select/Select';
 import Textarea from '@/components/NextUi/Textarea/Textarea';
+import { Date, IData, Person } from '@/types/csl-json';
 
 type ItemsModalProps = {
   onOpenChange: () => void;
@@ -56,7 +56,11 @@ export default function ItemsModal({
       : sortBy(
           FIELDS.filter((field) =>
             Object.keys(cslData).includes(field.cslType)
-          ).map((field) => ({ ...field, value: cslData[field.cslType] })),
+          ).map((field) => ({
+            ...field,
+            value:
+              field.cslType !== 'custom' ? cslData[field.cslType] : undefined,
+          })),
           [(v) => v.cslType !== 'title', 'title']
         )
   );

@@ -1,4 +1,4 @@
-import { IPerson } from 'csl-json';
+import { IPerson } from '@/types/csl-json';
 
 export default function formatCslJsonAuthor(
   author: IPerson | undefined

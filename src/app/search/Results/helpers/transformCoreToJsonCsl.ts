@@ -1,7 +1,7 @@
-import { IData } from 'csl-json';
 import moment from 'moment';
 
 import { SearchResponse } from '@/services/backend';
+import { IData } from '@/types/csl-json';
 
 /**
  * Transforms an item object from a backend response into a CSL-JSON format.

@@ -2,7 +2,6 @@
 
 import { Button } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
-import { IData } from 'csl-json';
 import { useQueryState } from 'nuqs';
 import { useContext, useEffect, useMemo } from 'react';
 import useSWRInfinite from 'swr/infinite';
@@ -19,6 +18,7 @@ import {
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import { search } from '@/services/backend';
 import { components } from '@/services/backend/types';
+import { IData } from '@/types/csl-json';
 import {
   CollectionItemsResponse,
   CollectionsResponse,

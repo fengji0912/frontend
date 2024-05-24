@@ -1,6 +1,5 @@
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IData } from 'csl-json';
 import Link from 'next/link';
 import slugify from 'slugify';
 
@@ -8,6 +7,7 @@ import ReadMore from '@/app/item/[id]/[[...slug]]/ReadMore/ReadMore';
 import Authors from '@/components/Item/Authors/Authors';
 import ROUTES from '@/constants/routes';
 import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import { IData } from '@/types/csl-json';
 
 type ItemProps = {
   item: IData;

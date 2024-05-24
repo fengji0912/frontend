@@ -1,7 +1,6 @@
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
-import { IData } from 'csl-json';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -19,6 +18,7 @@ import Authors from '@/components/Item/Authors/Authors';
 import { checkIfAuthenticated } from '@/components/User/actions/actions';
 import ROUTES from '@/constants/routes';
 import { getItem } from '@/services/backend';
+import { IData } from '@/types/csl-json';
 
 type PageProps = {
   params: { id: string; slug?: string[] };

@@ -6,7 +6,6 @@ import {
   ModalHeader,
   SelectItem,
 } from '@nextui-org/react';
-import { IData } from 'csl-json';
 import { useEffect, useState, useTransition } from 'react';
 
 import generateCitation from '@/components/CiteModal/actions/actions';
@@ -14,6 +13,7 @@ import FORMATS from '@/components/CiteModal/constants/formats';
 import Modal from '@/components/NextUi/Modal/Modal';
 import Select from '@/components/NextUi/Select/Select';
 import Textarea from '@/components/NextUi/Textarea/Textarea';
+import { IData } from '@/types/csl-json';
 
 type CiteModalProps = {
   onOpenChange: () => void;

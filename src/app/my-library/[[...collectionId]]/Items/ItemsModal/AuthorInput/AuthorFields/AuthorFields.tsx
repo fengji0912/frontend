@@ -1,7 +1,7 @@
-import { Person } from 'csl-json';
 import { KeyboardEvent, useState } from 'react';
 
 import Input from '@/components/NextUi/Input/Input';
+import { Person } from '@/types/csl-json';
 
 export default function AuthorFields({
   handleSubmit,

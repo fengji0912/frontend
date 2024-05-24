@@ -1,10 +1,10 @@
 'use server';
 
-import { IData } from 'csl-json';
 import { ListResult } from 'pocketbase';
 
 import { initPocketbase } from '@/components/User/actions/actions';
 import CACHE from '@/constants/cache';
+import { IData } from '@/types/csl-json';
 import {
   CollectionItemsResponse,
   Collections,

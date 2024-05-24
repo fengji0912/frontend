@@ -1,5 +1,6 @@
-import { IDate } from 'csl-json';
 import moment from 'moment';
+
+import { IDate } from '@/types/csl-json';
 
 export default function formatCslJsonDate(
   date: IDate | undefined

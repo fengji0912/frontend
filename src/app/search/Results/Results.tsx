@@ -1,11 +1,10 @@
-import { IData } from 'csl-json';
-
 import Disclaimer from '@/app/search/Results/Disclaimer/Disclaimer';
 import getItemsById from '@/app/search/Results/helpers/getItemsById';
 import Table from '@/app/search/Results/Table/Table';
 import { searchParamsCache } from '@/app/search/searchParams/searchParams';
 import Synthesis from '@/app/search/Synthesis/Synthesis';
 import { checkIfAuthenticated } from '@/components/User/actions/actions';
+import { IData } from '@/types/csl-json';
 import {
   CollectionItemsResponse,
   CollectionsResponse,

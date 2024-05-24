@@ -1,12 +1,12 @@
 'use client';
 
-import { IData } from 'csl-json';
 import { uniqBy } from 'lodash';
 import { ChangeEvent, useContext } from 'react';
 
 import Item from '@/components/Item/Item';
 import Checkbox from '@/components/NextUi/Checkbox/Checkbox';
 import SelectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
+import { IData } from '@/types/csl-json';
 import { CollectionItemsResponse } from '@/types/pocketbase-types';
 
 export type MetaData = {

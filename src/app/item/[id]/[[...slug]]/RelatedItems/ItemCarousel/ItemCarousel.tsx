@@ -10,10 +10,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
-import { IData } from 'csl-json';
 import Slider, { CustomArrowProps } from 'react-slick';
 
 import Item from '@/app/item/[id]/[[...slug]]/RelatedItems/ItemCarousel/Item/Item';
+import { IData } from '@/types/csl-json';
 
 type ItemCarouselProps = {
   items: IData[];
