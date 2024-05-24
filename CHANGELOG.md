@@ -1,3 +1,11 @@
+## [1.7.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.7.0...v1.7.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* error secure content on Safari ([44a5445](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/44a544569f61f0d2b3711610b7e8ea6304991b88))
+* issue with footer width on Safari ([91ca668](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/91ca6683829e3e421755c113d2dbc80ab46dbc1f))
+
 # [1.7.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.6.0...v1.7.0) (2024-05-24)
 
 
