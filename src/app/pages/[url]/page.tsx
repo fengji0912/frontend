@@ -40,7 +40,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <div className="container-box [&>p]:mb-3">
+    <div className="container-box [&>p]:mb-3 [&_ul]:list-disc [&_ul]:pl-9 [&_ol]:list-decimal [&_ol]:pl-9">
       <h1>{page.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: page.content }} />
     </div>
