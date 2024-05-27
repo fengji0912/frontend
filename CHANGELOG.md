@@ -1,3 +1,10 @@
+# [1.8.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.7.1...v1.8.0) (2024-05-27)
+
+
+### Features
+
+* add default list styling for CMS pages ([a3fd0ea](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/a3fd0ea3bd6048844cb766da2a58ea2e3a7509d8))
+
 ## [1.7.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.7.0...v1.7.1) (2024-05-24)
 
 
