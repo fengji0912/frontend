@@ -22,7 +22,7 @@ export default function ItemCount({ count }: ItemCountProps) {
       <div className="text-3xl font-semibold mb-0">
         {count.toLocaleString()}
       </div>
-      Papers
+      Items with abstracts
     </motion.div>
   );
 }
