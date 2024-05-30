@@ -44,7 +44,12 @@ export default function LlmData() {
                 title={property}
               >
                 <LlmAnswerRenderer
-                  cell={llmData?.payload?.values?.[property]?.toString()}
+                  cell={
+                    llmData?.payload?.values?.[property] as
+                      | string[]
+                      | string
+                      | undefined // TODO: remove when backend updates type
+                  }
                 />
               </AccordionItem>
             ))}

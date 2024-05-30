@@ -148,8 +148,14 @@ export default function TableRow({ item }: TableRowProps) {
               <LlmAnswerRenderer
                 cell={
                   column === 'Answer'
-                    ? llmData?.payload?.values?.[query]?.toString()
-                    : llmData?.payload?.values?.[column]?.toString()
+                    ? (llmData?.payload?.values?.[query] as
+                        | string
+                        | string[]
+                        | undefined) // TODO: remove when backend updates type
+                    : (llmData?.payload?.values?.[column] as
+                        | string
+                        | string[]
+                        | undefined) // TODO: remove when backend updates type
                 }
               />
             )}
