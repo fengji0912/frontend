@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function Changelog() {
   // const changelog = await getChangelog();
   return (
-    <div className="container-box [&>p]:mb-3">
+    <div className="container-box [&>p]:mb-3 [&_ul]:list-disc [&_ul]:ps-7 [&_h1]:mt-5 [&_h2]:mt-5 [&_h3]:mt-5">
       <ReactMarkdown>{changelogPath}</ReactMarkdown>
     </div>
   );
