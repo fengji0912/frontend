@@ -1,3 +1,17 @@
+# [1.9.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.8.0...v1.9.0) (2024-05-30)
+
+
+### Bug Fixes
+
+* styling issues table ([1a580ef](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/1a580ef2fdf510f5a3c71f1f1f07db53de7ab5b7))
+
+
+### Features
+
+* display cell content as lists when multiple items are present ([6cf53f5](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/6cf53f50da37f3e109d41e508d7c8841d5384c9c))
+* select first collection when bookmarking items ([5850a7c](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/5850a7c205756c155bdd29ae6132e225b8fccfca)), closes [#6](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/6)
+* update homepage papers label ([0d7bbf2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/0d7bbf2375a0e3bbdecc2a14e35233aea17b2658))
+
 # [1.8.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.7.1...v1.8.0) (2024-05-27)
 
 
