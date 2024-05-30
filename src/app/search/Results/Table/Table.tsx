@@ -132,7 +132,7 @@ export default function Table({
     <>
       <div className="box-white !px-0">
         <div className="overflow-x-scroll">
-          <div className="flex">
+          <div className="flex ms-[0.8rem]">
             {columns.map((column) => (
               <div
                 className="min-w-[300px] w-full px-5 border-secondary-100 border-r-2 font-semibold mb-2 first:pl-[40px] last:border-r-0"
@@ -145,7 +145,7 @@ export default function Table({
           <div
             style={
               columns && columns?.length
-                ? { minWidth: columns.length * 300 }
+                ? { minWidth: `calc(${columns.length * 300}px + 1.5rem + 4px)` } // column width + padding + border
                 : {}
             }
           >
