@@ -1,3 +1,15 @@
+# [1.10.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.9.0...v1.10.0) (2024-05-31)
+
+
+### Bug Fixes
+
+* styling changelog page ([4eb3b48](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/4eb3b4817be9291d7ac3e108c9510064e97bc705))
+
+
+### Features
+
+* acknowledging supporting organizations ([a5770a0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/a5770a0d913de06d6f454d53a58aa0116ba14736)), closes [#16](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/16)
+
 # [1.9.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.8.0...v1.9.0) (2024-05-30)
 
 
