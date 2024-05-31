@@ -8,6 +8,7 @@ import tailwindConfig from '@/../tailwind.config.js';
 import Collapsible from '@/app/search/Sidebar/Filters/Collapsable/Collapsable';
 import Filters from '@/app/search/Sidebar/Filters/Filters';
 import Query from '@/app/search/Sidebar/Query/Query';
+import SupportingOrganizations from '@/app/search/Sidebar/SupportingOrganizations/SupportingOrganizations';
 import LogoCarousel from '@/components/LogoCarousel/LogoCarousel';
 
 export default function Sidebar() {
@@ -18,6 +19,7 @@ export default function Sidebar() {
   return (
     <div className="w-full shrink-0 lg:max-w-[330px] mb-4 lg:mb-0">
       <Query setIsOpenFilters={setIsOpenFilters} />
+      <SupportingOrganizations />
       <Collapsible isExpanded={isOpenFilters || isWide}>
         <Filters />
       </Collapsible>
