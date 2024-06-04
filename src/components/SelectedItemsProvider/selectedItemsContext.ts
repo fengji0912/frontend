@@ -1,6 +1,6 @@
 import { createContext, SetStateAction } from 'react';
 
-import { ItemType } from '@/app/search/SavedSearches/types';
+import { ItemType } from '@/app/[locale]/search/SavedSearches/types';
 import { IData } from '@/types/csl-json';
 
 export type SelectedItemsType = {

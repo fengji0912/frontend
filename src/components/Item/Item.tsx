@@ -11,20 +11,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip, useDisclosure } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, ReactElement } from 'react';
 import slugify from 'slugify';
 
-import { ItemType } from '@/app/search/SavedSearches/types';
+import { ItemType } from '@/app/[locale]/search/SavedSearches/types';
 import {
   excludeItemsParser,
   listFilterParser,
-} from '@/app/search/searchParams/searchParamsParsers';
+} from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import doiIcon from '@/assets/images/doi-icon.svg';
 import CiteModal from '@/components/CiteModal/CiteModal';
 import ActionDropdown from '@/components/Item/ActionDropdown/ActionDropdown';
 import Authors from '@/components/Item/Authors/Authors';
+import { Link } from '@/components/Navigation/Navigation';
 import Checkbox from '@/components/NextUi/Checkbox/Checkbox';
 import ROUTES from '@/constants/routes';
 import formatCslJsonDate from '@/lib/formatCslJsonDate';

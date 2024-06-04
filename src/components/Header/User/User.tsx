@@ -12,10 +12,10 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
+import { useRouter } from '@/components/Navigation/Navigation';
 import Dropdown from '@/components/NextUi/Dropdown/Dropdown';
 import AccountSettingsModal from '@/components/User/AccountSettings/AccountSettingsModal';
 import { getUserData, signOut } from '@/components/User/actions/actions';

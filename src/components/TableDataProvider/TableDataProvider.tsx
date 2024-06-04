@@ -2,7 +2,7 @@
 
 import { ReactNode, useState } from 'react';
 
-import { Item } from '@/app/search/Results/Table/TableRow/TableRow';
+import { Item } from '@/app/[locale]/search/Results/Table/TableRow/TableRow';
 import TableDataContext, {
   LlmData,
 } from '@/components/TableDataProvider/tableDataContext';

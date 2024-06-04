@@ -3,14 +3,17 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
+import { useRouter } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const router = useRouter();
+  const t = useTranslations('SearchBar');
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push(ROUTES.SEARCH + '?query=' + searchValue);
@@ -20,7 +23,7 @@ export default function SearchBar() {
       <div className="bg-white dark:bg-secondary-950 flex items-stretch rounded-3xl shadow-box">
         <input
           type="text"
-          placeholder="Ask your question..."
+          placeholder={t('placeholder')}
           className="md:!text-2xl text-xl text-foreground grow px-4 py-3 md:py-4 rounded-3xl outline-primary-300 bg-transparent min-w-0"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}

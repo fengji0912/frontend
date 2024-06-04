@@ -1,6 +1,6 @@
 import { createContext, SetStateAction } from 'react';
 
-import { Item } from '@/app/search/Results/Table/TableRow/TableRow';
+import { Item } from '@/app/[locale]/search/Results/Table/TableRow/TableRow';
 
 export type LlmData = {
   [itemId: string]: {

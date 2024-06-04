@@ -13,13 +13,13 @@ import {
   NavbarMenuToggle,
 } from '@nextui-org/react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
 
 import logo from '@/assets/images/logo.svg';
 import User from '@/components/Header/User/User';
+import { Link } from '@/components/Navigation/Navigation';
+import { usePathname } from '@/components/Navigation/Navigation';
 import useAuth from '@/components/User/hooks/useAuth';
 import SignIn from '@/components/User/SignIn/SignIn';
 import ROUTES from '@/constants/routes';

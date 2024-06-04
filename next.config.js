@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { version } = require('./package.json');
+const createNextIntlPlugin = require('next-intl/plugin');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+
+const withNextIntl = createNextIntlPlugin();
 
 const cspHeader = `
     default-src 'self'
@@ -88,4 +91,4 @@ const nextConfig = {
   swcMinify: false, // disable SWC minification to avoid issues with @citation-js, which doesn't work when running nextjs build
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withBundleAnalyzer(withNextIntl(nextConfig));

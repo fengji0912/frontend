@@ -15,8 +15,8 @@ import {
 } from 'react';
 import useSWR from 'swr';
 
-import getCollections from '@/app/my-library/[[...collectionId]]/helpers/getCollections';
-import getCollectionItemsByLinkedItemId from '@/app/search/Results/helpers/getCollectionItemsByLinkedItemId';
+import getCollections from '@/app/[locale]/my-library/[[...collectionId]]/helpers/getCollections';
+import getCollectionItemsByLinkedItemId from '@/app/[locale]/search/Results/helpers/getCollectionItemsByLinkedItemId';
 import bookmarkItem from '@/components/Item/actions/bookmarkItem';
 import Popover from '@/components/NextUi/Popover/Popover';
 import Select from '@/components/NextUi/Select/Select';

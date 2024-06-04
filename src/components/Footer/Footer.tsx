@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { ReactNode } from 'react';
 
+import { Link } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
 
 export default function Footer() {

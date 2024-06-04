@@ -14,8 +14,8 @@ import {
 } from '@nextui-org/react';
 import { useContext, useTransition } from 'react';
 
-import { deleteCollectionItem } from '@/app/my-library/[[...collectionId]]/Items/actions/actions';
-import ItemsModal from '@/app/my-library/[[...collectionId]]/Items/ItemsModal/ItemsModal';
+import { deleteCollectionItem } from '@/app/[locale]/my-library/[[...collectionId]]/Items/actions/actions';
+import ItemsModal from '@/app/[locale]/my-library/[[...collectionId]]/Items/ItemsModal/ItemsModal';
 import Dropdown from '@/components/NextUi/Dropdown/Dropdown';
 import selectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 import { IData } from '@/types/csl-json';

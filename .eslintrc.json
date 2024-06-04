@@ -21,6 +21,22 @@
     ],
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
-    "prettier/prettier": "warn"
+    "prettier/prettier": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "next/link",
+            "message": "Please import from `@/components/Navigation/Navigation` instead."
+          },
+          {
+            "name": "next/navigation",
+            "importNames": ["redirect", "usePathname", "useRouter"],
+            "message": "Please import from `@/components/Navigation/Navigation` instead."
+          }
+        ]
+      }
+    ]
   }
 }

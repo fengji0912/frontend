@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { env } from 'next-runtime-env';
 
-import transformBackendToJsonCsl from '@/app/search/Results/helpers/transformCoreToJsonCsl';
+import transformBackendToJsonCsl from '@/app/[locale]/search/Results/helpers/transformCoreToJsonCsl';
 import { components, operations } from '@/services/backend/types';
 import { IData } from '@/types/csl-json';
 

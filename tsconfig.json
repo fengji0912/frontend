@@ -27,8 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/search/Sidebar/Filters/FilterItem",
-    "src/app/search/Sidebar/Filters/OptionList"
+    "src/app/[locale]/search/Sidebar/Filters/FilterItem",
+    "src/app/[locale]/search/Sidebar/Filters/OptionList"
   ],
   "exclude": ["node_modules"]
 }

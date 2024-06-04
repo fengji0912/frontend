@@ -1,0 +1,16 @@
+{
+  "HomePage": {
+    "teaser": "Find research you are <em>actually</em> looking for"
+  },
+  "Explainer": {
+    "text": "ORKG Ask is a scholarly search and exploration system powered by",
+    "vectorSearch": "Vector Search",
+    "llms": "Large Language Models",
+    "and": "and",
+    "kgs": "Knowledge Graphs",
+    "learnMore": "Learn more"
+  },
+  "SearchBar": {
+    "placeholder": "Ask your question..."
+  }
+}
