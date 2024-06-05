@@ -204,10 +204,64 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/backend/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Data Stats
+     * @description Get the statistics of the dataset.
+     */
+    get: operations['get_data_stats_backend_stats_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/backend/version': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Backend Version
+     * @description Get the backend version
+     */
+    get: operations['get_backend_version_backend_version_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** BackendVersionResponse */
+    BackendVersionResponse: {
+      /**
+       * Uuid
+       * Format: uuid
+       */
+      uuid: string;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
+      payload: components['schemas']['app__models__backend__BackendVersionResponse__Payload'];
+    };
     /** BulkIndexRequest */
     BulkIndexRequest: {
       /**
@@ -216,8 +270,32 @@ export interface components {
        */
       documents: components['schemas']['IndexRequest'][];
     };
+    /** DatasetStatsResponse */
+    DatasetStatsResponse: {
+      /**
+       * Uuid
+       * Format: uuid
+       */
+      uuid: string;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
+      payload: components['schemas']['app__models__backend__DatasetStatsResponse__Payload'];
+    };
     /** ExtractItemValuesFromPropertiesResponse */
     ExtractItemValuesFromPropertiesResponse: {
+      /**
+       * Uuid
+       * Format: uuid
+       */
+      uuid: string;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
       payload: components['schemas']['app__models__llm__ExtractItemValuesFromPropertiesResponse__Payload'];
     };
     /** HTTPValidationError */
@@ -572,6 +650,16 @@ export interface components {
     };
     /** SynthesisAnswerOfQuestionFromAbstractsResponse */
     SynthesisAnswerOfQuestionFromAbstractsResponse: {
+      /**
+       * Uuid
+       * Format: uuid
+       */
+      uuid: string;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
       payload: components['schemas']['app__models__llm__SynthesisAnswerOfQuestionFromAbstractsResponse__Payload'];
     };
     /** ValidationError */
@@ -582,6 +670,107 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+    };
+    /** VectorConfig */
+    VectorConfig: {
+      /**
+       * Vector Size
+       * @description The size of the vectors in the vector store
+       */
+      vector_size: number;
+      /**
+       * Distance Method
+       * @description The method used to calculate the distance between vectors
+       */
+      distance_method: string;
+    };
+    /** Payload */
+    app__models__backend__BackendVersionResponse__Payload: {
+      /**
+       * Version
+       * @description The version of the backend service
+       */
+      version: string;
+    };
+    /** Payload */
+    app__models__backend__DatasetStatsResponse__Payload: {
+      /**
+       * Num Indexed Vectors
+       * @description The number of indexed vectors in the vector store
+       */
+      num_indexed_vectors: number;
+      /** @description The configuration of the vectors in the vector store */
+      vector_config: components['schemas']['VectorConfig'];
+      /**
+       * Num Items With Authors
+       * @description The number of items with authors
+       */
+      num_items_with_authors?: number | null;
+      /**
+       * Num Items With Abstracts
+       * @description The number of items with abstracts
+       */
+      num_items_with_abstracts?: number | null;
+      /**
+       * Num Items With Languages
+       * @description The number of items with language tags
+       */
+      num_items_with_languages?: number | null;
+      /**
+       * Num Items With Topics
+       * @description The number of items with topics
+       */
+      num_items_with_topics?: number | null;
+      /**
+       * Num Items With Subjects
+       * @description The number of items with subjects
+       */
+      num_items_with_subjects?: number | null;
+      /**
+       * Num Items With Year
+       * @description The number of items with year values
+       */
+      num_items_with_year?: number | null;
+      /**
+       * Num Items With Identifiers
+       * @description The number of items with identifiers
+       */
+      num_items_with_identifiers?: number | null;
+      /**
+       * Num Items With Type
+       * @description The number of items with a specific document type
+       */
+      num_items_with_type?: number | null;
+      /**
+       * Num Items With Issn
+       * @description The number of items with an ISSN
+       */
+      num_items_with_issn?: number | null;
+      /**
+       * Num Items With Doi
+       * @description The number of items with a DOI
+       */
+      num_items_with_doi?: number | null;
+      /**
+       * Num Items With Citations
+       * @description The number of items with citation counts
+       */
+      num_items_with_citations?: number | null;
+      /**
+       * Num Items With Publication Date
+       * @description The number of items with publication dates
+       */
+      num_items_with_publication_date?: number | null;
+      /**
+       * Num Items With Publisher
+       * @description The number of items with publishers
+       */
+      num_items_with_publisher?: number | null;
+      /**
+       * Num Items With Journal
+       * @description The number of items with journal names
+       */
+      num_items_with_journal?: number | null;
     };
     /** Payload */
     app__models__llm__ExtractItemValuesFromPropertiesResponse__Payload: {
@@ -689,10 +878,10 @@ export interface operations {
       query: {
         /** @description The question to synthesize the abstracts for */
         question: string;
-        /** @description The item ID to extract the values from */
+        /** @description The item ID to use during synthesis */
         item_ids?: (string | number)[];
-        /** @description The custom collection item ID to extract the values from */
-        custom_item_ids?: (string | number)[];
+        /** @description The custom collection item IDs to use during synthesis */
+        collection_item_ids?: (string | number)[];
         /** @description Whether to invalidate the cache for the item */
         invalidate_cache?: boolean;
       };
@@ -983,6 +1172,46 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['QdrantDictResponse'];
+        };
+      };
+    };
+  };
+  get_data_stats_backend_stats_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DatasetStatsResponse'];
+        };
+      };
+    };
+  };
+  get_backend_version_backend_version_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BackendVersionResponse'];
         };
       };
     };

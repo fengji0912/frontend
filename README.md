@@ -67,11 +67,11 @@ The codebase is written in TypeScript. We use the type definitions from the Pock
 API
 
 ```bash:
-npm run openapi-typescript [backend-openapi.json]
+npm run typegen-backend [./path/to/backend-openapi.json]
 ```
 
 Pocketbase
 
 ```bash:
-npm run pocketbase-typegen [/pocketbase/data/data.db]
+npm run typegen-pocketbase [./path/to/pocketbase/data/data.db]
 ```

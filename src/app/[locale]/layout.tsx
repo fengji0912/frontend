@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import { PublicEnvScript } from 'next-runtime-env';
 import NextTopLoader from 'nextjs-toploader';
+import { Suspense } from 'react';
 
 import CookieNotification from '@/app/[locale]/(layout)/CookieNotification/CookieNotification';
 import Feedback from '@/app/[locale]/(layout)/Feedback/Feedback';
@@ -57,7 +58,9 @@ export default async function RootLayout({
                 <Feedback />
                 <Header />
                 <div className="px-2">{children}</div>
-                <Footer />
+                <Suspense fallback={null}>
+                  <Footer />
+                </Suspense>
                 <CookieNotification />
               </div>
             </Providers>

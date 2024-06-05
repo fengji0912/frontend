@@ -1,11 +1,17 @@
-'use client';
-
 import { ReactNode } from 'react';
 
 import { Link } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
+import { getBackendVersion } from '@/services/backend';
 
-export default function Footer() {
+export default async function Footer() {
+  let backendVersion = '';
+  try {
+    backendVersion = (await getBackendVersion())?.payload?.version ?? '';
+  } catch (e) {
+    console.error(e);
+  }
+
   return (
     <footer className="text-center">
       <ul className="inline-block mt-[35px] pb-[35px] flex-wrap text-center leading-7">
@@ -27,7 +33,8 @@ export default function Footer() {
         <ListItem>
           <Link href={ROUTES.CHANGELOG}>Changelog</Link>
         </ListItem>
-        <ListItem>Version: {process.env.version}</ListItem>
+        <ListItem>Frontend: v{process.env.version}</ListItem>
+        <ListItem>Backend: v{backendVersion}</ListItem>
       </ul>
     </footer>
   );

@@ -115,7 +115,7 @@ export default function Synthesis() {
       setIsReloading(true);
       const updatedSynthesis = await synthesize({
         item_ids: synthesisItems.searchItemIds,
-        custom_item_ids: synthesisItems.collectionItemIds,
+        collection_item_ids: synthesisItems.collectionItemIds,
         question: query,
         invalidate_cache: true,
       });
