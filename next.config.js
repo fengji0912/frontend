@@ -69,7 +69,7 @@ const nextConfig = {
   env: {
     version, // ensure the version is available for display in the footer
   },
-  // webpack config required for building only, once turbo support build, this can be removed
+  // webpack config required for building only, once turbo supports building (and turbo is actually activated), this can be removed
   webpack: (config) => {
     config.module.rules.push({
       test: /\.md$/i,
@@ -77,6 +77,10 @@ const nextConfig = {
     });
     return config;
   },
+  experimental: {
+    serverComponentsExternalPackages: ['citeproc'], // @citation-js doesn't work with SWC minification, so await Cite.async(items).format won't work. This is a workaround
+  },
+
   // turbopack is disabled for now as it caused issues with nextjs button on server components,
   // a solution might be to import components as individual ones instead of from the main nextjs package
   // experimental: {
@@ -88,7 +92,6 @@ const nextConfig = {
   //     },
   //   },
   // },
-  swcMinify: false, // disable SWC minification to avoid issues with @citation-js, which doesn't work when running nextjs build
 };
 
 module.exports = withBundleAnalyzer(withNextIntl(nextConfig));
