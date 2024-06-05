@@ -131,6 +131,7 @@ export async function getLlmExtraction({
   item_id,
   collection_item_id,
   properties,
+  invalidate_cache,
 }: operations['extract_item_values_llm_extract_item_values_get']['parameters']['query']): Promise<
   components['schemas']['ExtractItemValuesFromPropertiesResponse']
 > {
@@ -142,6 +143,9 @@ export async function getLlmExtraction({
         ...(collection_item_id
           ? [['collection_item_id', collection_item_id.toString()]]
           : []),
+        ...(invalidate_cache
+          ? [['invalidate_cache', invalidate_cache.toString()]]
+          : []),
       ]).toString(),
     })
     .json();
@@ -151,6 +155,7 @@ export async function synthesize({
   question,
   item_ids,
   custom_item_ids,
+  invalidate_cache,
 }: operations['synthesize_abstracts_for_question_llm_synthesize_items_abstracts_get']['parameters']['query']): Promise<
   components['schemas']['SynthesisAnswerOfQuestionFromAbstractsResponse']
 > {
@@ -167,6 +172,9 @@ export async function synthesize({
             ])
           : []),
         ['question', question],
+        ...(invalidate_cache
+          ? [['invalidate_cache', invalidate_cache.toString()]]
+          : []),
       ]).toString(),
     })
     .json();

@@ -18,7 +18,6 @@ export default function LoadingOverlay({ isVisible }: { isVisible: boolean }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: 20,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

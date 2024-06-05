@@ -1,13 +1,16 @@
 'use client';
 
-import { Tooltip } from '@nextui-org/react';
+import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Tooltip } from '@nextui-org/react';
 import { useQueryState } from 'nuqs';
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import reactStringReplace from 'react-string-replace';
 import useSWR from 'swr';
 
 import CellLoading from '@/app/[locale]/search/Results/Table/CellLoading/CellLoading';
 import { queryParser } from '@/app/[locale]/search/searchParams/searchParamsParsers';
+import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
 import { Link } from '@/components/Navigation/Navigation';
 import { LinkButton } from '@/components/NextUi/LinkButton/LinkButton';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
@@ -19,6 +22,7 @@ import { synthesize } from '@/services/backend';
 export default function Synthesis() {
   const [query] = useQueryState('query', queryParser);
   const { items } = useContext(tableDataContext);
+  const [isReloading, setIsReloading] = useState(false);
 
   const synthesisItems = useMemo(() => {
     const collectionItemIds = [];
@@ -35,7 +39,11 @@ export default function Synthesis() {
     return { collectionItemIds, searchItemIds };
   }, [items]);
 
-  const { data: synthesisData, isLoading } = useSWR(
+  const {
+    data: synthesisData,
+    isLoading,
+    mutate,
+  } = useSWR(
     synthesisItems.collectionItemIds.length > 0 ||
       synthesisItems.searchItemIds.length > 0
       ? [
@@ -102,11 +110,27 @@ export default function Synthesis() {
     });
   };
 
+  const handleReload = () => {
+    mutate(async () => {
+      setIsReloading(true);
+      const updatedSynthesis = await synthesize({
+        item_ids: synthesisItems.searchItemIds,
+        custom_item_ids: synthesisItems.collectionItemIds,
+        question: query,
+        invalidate_cache: true,
+      });
+      setIsReloading(false);
+      return updatedSynthesis;
+    });
+  };
+
   return (
-    <div className="box mb-4 !py-3 max-h-[400px] overflow-y-auto">
+    <div className="box mb-4 !py-3 max-h-[400px] overflow-y-auto group relative">
       <h2 className="semibold text-base m-0">Answer (based on top 5 papers)</h2>
       {!isLoading ? (
         <p>
+          <LoadingOverlay isVisible={isReloading} />
+
           {reactStringReplace(
             synthesisData?.payload.synthesis,
             /\[(\d+)\]/gm,
@@ -123,6 +147,19 @@ export default function Synthesis() {
               </Tooltip>
             )
           )}
+          <Tooltip content="Regenerate content">
+            <Button
+              onClick={handleReload}
+              aria-label="Regenerate content"
+              isIconOnly
+              color="secondary"
+              variant="light"
+              size="sm"
+              className="absolute top-[5px] right-[15px] opacity-70 hidden group-hover:block z-10 bg-secondary-300 data-[hover=true]:bg-secondary-400 data-[hover=true]:opacity-100"
+            >
+              <FontAwesomeIcon icon={faRotateRight} size="lg" />
+            </Button>
+          </Tooltip>
         </p>
       ) : (
         <CellLoading />

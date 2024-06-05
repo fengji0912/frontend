@@ -5,7 +5,7 @@ import { useQueryState } from 'nuqs';
 import { ChangeEvent, useContext, useEffect } from 'react';
 import useSWR from 'swr';
 
-import CellLoading from '@/app/[locale]/search/Results/Table/CellLoading/CellLoading';
+import TableCell from '@/app/[locale]/search/Results/Table/TableRow/TableCell/TableCell';
 import { ItemType } from '@/app/[locale]/search/SavedSearches/types';
 import {
   columnsParser,
@@ -13,7 +13,6 @@ import {
 } from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import AddToCollection from '@/components/Item/AddToCollection/AddToCollection';
 import Item from '@/components/Item/Item';
-import LlmAnswerRenderer from '@/components/LlmAnswerRenderer/LlmAnswerRenderer';
 import selectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import useAuth from '@/components/User/hooks/useAuth';
@@ -50,14 +49,16 @@ export default function TableRow({ item }: TableRowProps) {
 
   const { isAuthenticated } = useAuth();
 
-  const { data: llmData, isLoading } = useSWR(
-    item.id ? [item.id, ...columns] : null,
-    () =>
-      getLlmExtraction({
-        ...(item.type === 'searchItem' && { item_id: item.id }),
-        ...(item.type === 'collectionItem' && { collection_item_id: item.id }),
-        properties: [query, ...columns.slice(1)],
-      })
+  const {
+    data: llmData,
+    isLoading,
+    mutate,
+  } = useSWR(item.id ? [item.id, ...columns] : null, () =>
+    getLlmExtraction({
+      ...(item.type === 'searchItem' && { item_id: item.id }),
+      ...(item.type === 'collectionItem' && { collection_item_id: item.id }),
+      properties: [query, ...columns.slice(1)],
+    })
   );
 
   const { selectedItems, setSelectedItems } = useContext(selectedItemsContext);
@@ -138,28 +139,14 @@ export default function TableRow({ item }: TableRowProps) {
       />
       <div className="flex">
         {columns.map((column) => (
-          <div
-            className="min-w-[300px] w-full text-sm py-3 px-4 border-r-2 border-secondary-100 break-words first:pl-[40px] last:border-r-0"
+          <TableCell
             key={column}
-          >
-            {isLoading ? (
-              <CellLoading />
-            ) : (
-              <LlmAnswerRenderer
-                cell={
-                  column === 'Answer'
-                    ? (llmData?.payload?.values?.[query] as
-                        | string
-                        | string[]
-                        | undefined) // TODO: remove when backend updates type
-                    : (llmData?.payload?.values?.[column] as
-                        | string
-                        | string[]
-                        | undefined) // TODO: remove when backend updates type
-                }
-              />
-            )}
-          </div>
+            isLoading={isLoading}
+            llmData={llmData}
+            property={column === 'Answer' ? query : column}
+            item={item}
+            mutate={mutate}
+          />
         ))}
       </div>
     </div>
