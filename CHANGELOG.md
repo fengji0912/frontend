@@ -1,3 +1,12 @@
+# [1.11.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.10.0...v1.11.0) (2024-06-05)
+
+
+### Features
+
+* include backend version, fix: synthesis for collection items ([082c44f](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/082c44fdff34eaec6be1f4ee23e03ef4cce0d0d0))
+* integrate next-intl to prepare for localization ([09bb108](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/09bb1085a6df7f41f46a48bc83a98df194c494c3))
+* reload LLM content buttons for synthesis and cells ([3e24f8e](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/3e24f8ec2bbfc8708d822785048b42d60ac473a9))
+
 # [1.10.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.9.0...v1.10.0) (2024-05-31)
 
 
