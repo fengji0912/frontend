@@ -23,6 +23,7 @@ export default function AddFilter() {
   const [, setFilter] = useQueryState('filter', filterParser);
   const ref = useRef<HTMLFormElement>(null);
   const labelId = useId();
+  const selectedFilter = FILTER_FIELDS.find((f) => f.value === field);
 
   return (
     <FilterItem label="Add filter...">
@@ -61,42 +62,48 @@ export default function AddFilter() {
               </SelectItem>
             ))}
           </Select>
-          <div>
-            {field === 'impact' && <ImpactFilter />}
-            {field !== 'impact' && (
-              <Input
-                type="text"
-                placeholder="Filter value"
-                isRequired
-                name="value"
-                startContent={
-                  <div className="flex items-center">
-                    <label className="sr-only" htmlFor={labelId}>
-                      Filter operator
-                    </label>
-                    <select
-                      className="outline-none border-0 bg-transparent text-small"
-                      id={labelId}
-                      name="operator"
-                    >
-                      {FILTER_OPERATORS.filter(
-                        (operator) => operator.label
-                      ).map((operator) => (
-                        <option value={operator.value} key={operator.label}>
-                          {operator.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                }
-              />
-            )}
-          </div>
-          <div className="flex justify-end">
-            <Button color="primary" type="submit">
-              Add
-            </Button>
-          </div>
+          {selectedFilter && (
+            <>
+              <div>
+                {field === 'impact' && <ImpactFilter />}
+                {field !== 'impact' && (
+                  <Input
+                    type="text"
+                    placeholder="Filter value"
+                    isRequired
+                    name="value"
+                    startContent={
+                      <div className="flex items-center">
+                        <label className="sr-only" htmlFor={labelId}>
+                          Filter operator
+                        </label>
+                        <select
+                          className="outline-none border-0 bg-transparent text-small"
+                          id={labelId}
+                          name="operator"
+                        >
+                          {FILTER_OPERATORS.filter(
+                            (operator) =>
+                              operator.label &&
+                              operator.types?.includes(selectedFilter.type)
+                          ).map((operator) => (
+                            <option value={operator.value} key={operator.label}>
+                              {operator.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    }
+                  />
+                )}
+              </div>
+              <div className="flex justify-end">
+                <Button color="primary" type="submit">
+                  Add
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </form>
     </FilterItem>
