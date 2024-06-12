@@ -1,3 +1,15 @@
+# [1.12.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.11.0...v1.12.0) (2024-06-12)
+
+
+### Bug Fixes
+
+* broken 404 not found page ([54faffb](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/54faffb3a5850d73d88cf6830a046b50e22f7841))
+
+
+### Features
+
+* support filtering by authors ([2cb3d67](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/2cb3d67d62315ac4f17815cb5fc226444e78e3c4))
+
 # [1.11.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.10.0...v1.11.0) (2024-06-05)
 
 
