@@ -10,6 +10,7 @@ const ROUTES = {
   IMPRINT: '/imprint',
   CHANGELOG: '/changelog',
   PAGES: '/pages',
+  TERMS_OF_USE: '/terms-of-use',
 };
 
 export default ROUTES;
