@@ -16,6 +16,7 @@ import Item from '@/components/Item/Item';
 import selectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import useAuth from '@/components/User/hooks/useAuth';
+import useLoadingTime from '@/lib/useLoadingTime';
 import { getLlmExtraction } from '@/services/backend';
 import { Data, IData } from '@/types/csl-json';
 import {
@@ -46,20 +47,32 @@ type TableRowProps = {
 export default function TableRow({ item }: TableRowProps) {
   const [columns] = useQueryState('columns', columnsParser);
   const [query] = useQueryState('query', queryParser);
-
   const { isAuthenticated } = useAuth();
 
   const {
     data: llmData,
     isLoading,
+    isValidating,
     mutate,
-  } = useSWR(item.id ? [item.id, ...columns] : null, () =>
-    getLlmExtraction({
-      ...(item.type === 'searchItem' && { item_id: item.id }),
-      ...(item.type === 'collectionItem' && { collection_item_id: item.id }),
-      properties: [query, ...columns.slice(1)],
-    })
+  } = useSWR(
+    item.id ? [item.id, ...columns] : null,
+    () =>
+      getLlmExtraction({
+        ...(item.type === 'searchItem' && { item_id: item.id }),
+        ...(item.type === 'collectionItem' && { collection_item_id: item.id }),
+        properties: [query, ...columns.slice(1)],
+      }),
+    {
+      onSuccess: () => {
+        trackLoadingTime();
+      },
+    }
   );
+
+  const { trackLoadingTime } = useLoadingTime({
+    isValidating,
+    actionLabel: 'LLM extraction loading time',
+  });
 
   const { selectedItems, setSelectedItems } = useContext(selectedItemsContext);
 

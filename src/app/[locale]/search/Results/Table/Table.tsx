@@ -16,6 +16,7 @@ import {
   queryParser,
 } from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
+import useLoadingTime from '@/lib/useLoadingTime';
 import { search } from '@/services/backend';
 import { components } from '@/services/backend/types';
 import { IData } from '@/types/csl-json';
@@ -58,7 +59,7 @@ export default function Table({
     return { type: 'search', query, pageIndex, filter, collectionItems }; // SWR key
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(
+  const { data, size, setSize, isLoading, isValidating } = useSWRInfinite(
     getKey,
     (keyData) =>
       search({
@@ -69,8 +70,16 @@ export default function Table({
       }),
     {
       initialSize: pages,
+      onSuccess: () => {
+        trackLoadingTime();
+      },
     }
   );
+
+  const { trackLoadingTime } = useLoadingTime({
+    isValidating,
+    actionLabel: 'Search results loading time',
+  });
 
   useEffect(() => {
     if (size > 1) {
