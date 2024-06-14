@@ -14,6 +14,8 @@ import {
 
 import { queryParser } from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import Textarea from '@/components/NextUi/Textarea/Textarea';
+import { MAX_QUESTION_LENGTH } from '@/constants/misc';
+import REGEX from '@/constants/regex';
 
 type QueryProps = {
   setIsOpenFilters: Dispatch<SetStateAction<boolean>>;
@@ -40,7 +42,16 @@ export default function Query({ setIsOpenFilters }: QueryProps) {
           placeholder="Ask your question..."
           rows={3}
           value={localQuery}
-          onChange={(e) => setLocalQuery(e.target.value)}
+          onChange={(e) =>
+            setLocalQuery(e.target.value.replace(REGEX.LINE_BREAKS, ''))
+          }
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              setQuery(e.currentTarget.value);
+            }
+          }}
+          maxLength={MAX_QUESTION_LENGTH}
         />
         <div className="mt-3 flex justify-between lg:justify-end">
           <Button

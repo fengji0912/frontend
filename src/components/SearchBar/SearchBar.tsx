@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { useRouter } from '@/components/Navigation/Navigation';
+import { MAX_QUESTION_LENGTH } from '@/constants/misc';
 import ROUTES from '@/constants/routes';
 
 export default function SearchBar() {
@@ -27,6 +28,7 @@ export default function SearchBar() {
           className="md:!text-2xl text-xl text-foreground grow px-4 py-3 md:py-4 rounded-3xl outline-primary-300 bg-transparent min-w-0"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
+          maxLength={MAX_QUESTION_LENGTH}
         />
         <Button
           type="submit"

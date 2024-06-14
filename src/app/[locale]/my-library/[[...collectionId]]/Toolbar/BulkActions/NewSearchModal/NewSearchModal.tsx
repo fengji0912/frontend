@@ -13,6 +13,8 @@ import ButtonFormSubmit from '@/components/ButtonFormSubmit/ButtonFormSubmit';
 import { useRouter } from '@/components/Navigation/Navigation';
 import Modal from '@/components/NextUi/Modal/Modal';
 import selectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
+import { MAX_QUESTION_LENGTH } from '@/constants/misc';
+import REGEX from '@/constants/regex';
 import ROUTES from '@/constants/routes';
 
 type NewSearchModalProps = {
@@ -46,7 +48,10 @@ export default function NewSearchModal({ onOpenChange }: NewSearchModalProps) {
               placeholder="Ask your question..."
               rows={3}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) =>
+                setSearchQuery(e.target.value.replace(REGEX.LINE_BREAKS, ''))
+              }
+              maxLength={MAX_QUESTION_LENGTH}
             />
           </ModalBody>
           <ModalFooter>
