@@ -42,6 +42,12 @@ export default function LlmData() {
                 key={property}
                 aria-label="Accordion 1"
                 title={property}
+                isDisabled={
+                  Array.isArray(llmData?.payload?.values?.[property]) &&
+                  (
+                    llmData?.payload?.values?.[property] as string[]
+                  )?.[0]?.toLowerCase() === 'unknown'
+                }
               >
                 <LlmAnswerRenderer
                   cell={
