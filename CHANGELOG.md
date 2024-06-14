@@ -1,3 +1,10 @@
+# [1.14.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.13.0...v1.14.0) (2024-06-14)
+
+
+### Features
+
+* max length for questions, prevent line breaks in questions ([8ebe65f](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/8ebe65f6f0fdad3ce73a770f1f628d7b97e490e8)), closes [#31](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/31)
+
 # [1.13.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.12.0...v1.13.0) (2024-06-14)
 
 
