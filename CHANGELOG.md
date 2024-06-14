@@ -1,3 +1,11 @@
+# [1.13.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.12.0...v1.13.0) (2024-06-14)
+
+
+### Features
+
+* add terms of use page ([7545646](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/7545646f3047607c5bfa28ae0d093c1cf62ac9ef))
+* quick feedback component for questions and general feedback ([8a7821c](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/8a7821cfdd56daac5b2a29d8abb355b6c9cdd9b8))
+
 # [1.12.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.11.0...v1.12.0) (2024-06-12)
 
 
