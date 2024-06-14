@@ -1,3 +1,11 @@
+# [1.15.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.14.0...v1.15.0) (2024-06-14)
+
+
+### Features
+
+* disable extracted data items if no data exists ([c3de923](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/c3de923e64b01a3bd776deac428ad5fcf0625e56))
+* measure loading times of LLM extraction and search results ([7b4c2a1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/7b4c2a17c6b63080cabf1f1291b93debb5ba0a18))
+
 # [1.14.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.13.0...v1.14.0) (2024-06-14)
 
 
