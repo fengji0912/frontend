@@ -15,6 +15,7 @@ const cspHeader = `
       https://*.orkg.org
       https://*.ngrok-free.app
       https://support.tib.eu
+      https://docs.google.com
     ;
     script-src 'self' 'unsafe-eval' 'unsafe-inline'
       https://support.tib.eu

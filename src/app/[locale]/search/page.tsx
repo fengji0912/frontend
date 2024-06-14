@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
+import Feedback from '@/app/[locale]/search/Feedback/Feedback';
 import LoadingResults from '@/app/[locale]/search/Results/LoadingResults/LoadingResults';
 import Results from '@/app/[locale]/search/Results/Results';
 import SavedSearches from '@/app/[locale]/search/SavedSearches/SavedSearches';
@@ -40,17 +41,20 @@ export default function Search({ searchParams }: SearchProps) {
   return (
     <div>
       {query ? (
-        <SelectedItemsProvider>
-          <TableDataProvider>
-            <Toolbar />
-            <div className="container mt-4 lg:flex max-w-full lg:max-w-[calc(100%-100px)]">
-              <Sidebar />
-              <Suspense fallback={<LoadingResults />}>
-                <Results />
-              </Suspense>
-            </div>
-          </TableDataProvider>
-        </SelectedItemsProvider>
+        <>
+          <SelectedItemsProvider>
+            <TableDataProvider>
+              <Toolbar />
+              <div className="container mt-4 lg:flex max-w-full lg:max-w-[calc(100%-100px)]">
+                <Sidebar />
+                <Suspense fallback={<LoadingResults />}>
+                  <Results />
+                </Suspense>
+              </div>
+            </TableDataProvider>
+          </SelectedItemsProvider>
+          <Feedback />
+        </>
       ) : (
         <div className="container mt-16 max-w-[1000px]">
           <SearchBar />

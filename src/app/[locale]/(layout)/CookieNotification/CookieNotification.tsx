@@ -12,7 +12,7 @@ export default function CookieNotification() {
 
   return !isCookieWarningDismissed ? (
     <div
-      className="w-72 box-white rounded-3xl shadow-box p-6 fixed bottom-4 right-4"
+      className="w-72 box-white rounded-3xl shadow-box p-6 fixed bottom-4 right-4 z-10"
       style={{ cursor: 'auto' }}
     >
       <div className="flex justify-center -mt-10 mb-3">
