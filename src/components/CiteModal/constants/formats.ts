@@ -25,8 +25,8 @@ const FORMATS = [
     format: 'ris',
   },
   {
-    value: 'cls-json',
-    label: 'CLS JSON',
+    value: 'csl-json',
+    label: 'CSL JSON',
     format: 'data',
   },
 ];
