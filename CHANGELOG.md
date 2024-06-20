@@ -1,3 +1,10 @@
+## [1.15.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.15.0...v1.15.1) (2024-06-20)
+
+
+### Bug Fixes
+
+* typo in CSL JSON export format ([3231889](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/3231889c17005a14e67e4eb130a6eaee6fb91a85))
+
 # [1.15.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.14.0...v1.15.0) (2024-06-14)
 
 
