@@ -80,19 +80,14 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ['citeproc'], // @citation-js doesn't work with SWC minification, so await Cite.async(items).format won't work. This is a workaround
+    turbo: {
+      rules: {
+        '*.md': {
+          loaders: ['raw-loader'],
+        },
+      },
+    },
   },
-
-  // turbopack is disabled for now as it caused issues with nextjs button on server components,
-  // a solution might be to import components as individual ones instead of from the main nextjs package
-  // experimental: {
-  //   turbo: {
-  //     rules: {
-  //       '*.md': {
-  //         loaders: ['raw-loader'],
-  //       },
-  //     },
-  //   },
-  // },
 };
 
 module.exports = withBundleAnalyzer(withNextIntl(nextConfig));
