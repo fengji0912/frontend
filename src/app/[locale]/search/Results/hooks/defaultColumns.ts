@@ -5,5 +5,4 @@ export const DEFAULT_COLUMNS = [
   'Conclusions',
   'Results',
   'Methods',
-  'Limitations',
 ];
