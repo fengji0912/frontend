@@ -15,5 +15,5 @@ export default async function OrkgButton({ doi, title }: OrkgButtonProps) {
     paper = await getPaperByTitle(title);
   }
 
-  return <ButtonLinks paper={paper} doi={doi} />;
+  return <ButtonLinks paper={paper} doi={doi} title={title} />;
 }

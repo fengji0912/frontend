@@ -10,9 +10,10 @@ import { Paper } from '@/services/orkg';
 type ButtonLinksProps = {
   paper: Paper | null;
   doi?: string;
+  title?: string;
 };
 
-export default function OrkgButton({ paper, doi }: ButtonLinksProps) {
+export default function OrkgButton({ paper, doi, title }: ButtonLinksProps) {
   return paper ? (
     <Button
       color="secondary"
@@ -31,7 +32,9 @@ export default function OrkgButton({ paper, doi }: ButtonLinksProps) {
       href={
         doi
           ? `https://orkg.org/add-paper?entry=${doi}`
-          : `https://orkg.org/add-paper`
+          : `https://orkg.org/add-paper?title=${encodeURIComponent(
+              title ?? ''
+            )}`
       }
       target="_blank"
     >
