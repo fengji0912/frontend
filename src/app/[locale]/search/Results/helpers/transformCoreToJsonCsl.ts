@@ -35,6 +35,7 @@ export default function transformBackendToJsonCsl(item: SearchResponse): IData {
     language: item.language ?? undefined,
     custom: {
       'citation-count': item.citation_count,
+      urls: item.urls,
     },
   };
 }
