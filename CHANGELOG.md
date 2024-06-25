@@ -1,3 +1,13 @@
+# [1.16.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.15.1...v1.16.0) (2024-06-25)
+
+
+### Features
+
+* add aria-labels to icon buttons ([642bc6c](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/642bc6cac259c7702b658689d5a7c0f791240a9b)), closes [#37](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/37)
+* feat: add button to open paper URLs ([d9709a1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/d9709a1d8d853e7035d6b12b14e544600b5151b8)), closes [#22](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/22)
+* provide title when adding paper to ORKG ([4cad5e9](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/4cad5e99ab1e4ef6c1e8fe25a9fd77c662281c64)), closes [#23](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/23)
+* remove limitations from default columns ([dcbc403](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/dcbc403335e8dbb243d54f109e74a89b9dd80cf0)), closes [#39](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/issues/39)
+
 ## [1.15.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.15.0...v1.15.1) (2024-06-20)
 
 
