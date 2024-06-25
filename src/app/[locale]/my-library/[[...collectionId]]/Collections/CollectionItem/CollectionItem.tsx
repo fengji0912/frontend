@@ -88,7 +88,13 @@ export default function CollectionItem({
             </Link>
             <Dropdown isDisabled={isEditing || isLoading}>
               <DropdownTrigger>
-                <Button isIconOnly color="secondary" variant="light" size="sm">
+                <Button
+                  isIconOnly
+                  color="secondary"
+                  variant="light"
+                  size="sm"
+                  aria-label="show action menu"
+                >
                   {!isLoading ? (
                     <FontAwesomeIcon
                       className="text-secondary text-base"

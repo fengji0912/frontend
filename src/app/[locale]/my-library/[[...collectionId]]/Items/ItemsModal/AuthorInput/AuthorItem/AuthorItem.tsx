@@ -80,14 +80,20 @@ export default function AuthorItem({
       {!isEditing && (
         <Dropdown>
           <DropdownTrigger>
-            <Button isIconOnly color="secondary" variant="light" size="sm">
+            <Button
+              isIconOnly
+              color="secondary"
+              variant="light"
+              size="sm"
+              aria-label="show items menu"
+            >
               <FontAwesomeIcon
                 className="text-secondary text-base"
                 icon={faEllipsisH}
               />
             </Button>
           </DropdownTrigger>
-          <DropdownMenu aria-label="Add item actions">
+          <DropdownMenu aria-label="item actions menu">
             <DropdownItem
               onPress={() => setIsEditing(true)}
               startContent={

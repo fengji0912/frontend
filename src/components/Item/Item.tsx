@@ -106,6 +106,7 @@ export default function Item({
                 ? 'bg-secondary-300'
                 : 'bg-secondary-200'
             } p-0 w-[24px] min-w-[24px] h-[24px] data-[hover=true]:bg-primary data-[hover=true]:opacity-1 data-[hover=true]:text-white`}
+            aria-label="exclude item from search results"
           >
             <FontAwesomeIcon icon={faMinus} className="" size="1x" />
           </Button>
@@ -161,7 +162,7 @@ export default function Item({
                 variant="light"
                 size="sm"
                 onPress={onOpenCiteModal}
-                aria-label="Cite this article"
+                aria-label="cite this article"
                 className="mt-[-5px]"
               >
                 <FontAwesomeIcon icon={faQuoteLeft} size="lg" />

@@ -104,7 +104,13 @@ export default function SavedSearchItem({
           </div>
           <Dropdown>
             <DropdownTrigger>
-              <Button isIconOnly color="secondary" variant="light" size="sm">
+              <Button
+                isIconOnly
+                color="secondary"
+                variant="light"
+                size="sm"
+                aria-label="show actions menu"
+              >
                 {!isLoading ? (
                   <FontAwesomeIcon
                     className="text-secondary text-base"

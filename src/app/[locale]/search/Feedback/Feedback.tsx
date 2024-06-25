@@ -100,6 +100,7 @@ export default function Feedback() {
                 variant="light"
                 className="absolute right-3 top-3"
                 onClick={() => setIsManuallyHidden(true)}
+                aria-label="close feedback form"
               >
                 <FontAwesomeIcon icon={faTimes} size="lg" />
               </Button>

@@ -150,7 +150,7 @@ export default function Synthesis() {
           <Tooltip content="Regenerate content">
             <Button
               onClick={handleReload}
-              aria-label="Regenerate content"
+              aria-label="regenerate content"
               isIconOnly
               color="secondary"
               variant="light"

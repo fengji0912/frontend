@@ -82,6 +82,7 @@ export default function Header() {
           color="secondary"
           variant="flat"
           onPress={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
+          aria-label="toggle dark mode"
         >
           <FontAwesomeIcon
             icon={resolvedTheme === 'light' ? faMoon : faLightbulb}

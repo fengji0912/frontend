@@ -109,6 +109,7 @@ export default function FeedbackOrkgGeneral({
                 satisfaction === option.score ? 'border-primary' : ''
               }`}
               onClick={() => setSatisfaction(option.score)}
+              aria-label="satisfaction score"
             >
               <FontAwesomeIcon icon={option.icon} size="2x" />
             </Button>

@@ -84,7 +84,7 @@ export default function TableCell({
           <Tooltip content="Regenerate cell content">
             <Button
               onClick={() => handleReloadCell(property)}
-              aria-label="Reload cell"
+              aria-label="reload cell"
               isIconOnly
               color="secondary"
               variant="light"

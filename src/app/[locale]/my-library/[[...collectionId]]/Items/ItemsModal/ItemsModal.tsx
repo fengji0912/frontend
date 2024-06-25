@@ -210,6 +210,7 @@ export default function ItemsModal({
                       className="text-secondary p-0 mr-[-5px] mt-[-5px]"
                       size="sm"
                       onPress={() => handleDelete(field.cslType)}
+                      aria-label="remove metadata item"
                     >
                       <FontAwesomeIcon
                         icon={faCircleXmark}

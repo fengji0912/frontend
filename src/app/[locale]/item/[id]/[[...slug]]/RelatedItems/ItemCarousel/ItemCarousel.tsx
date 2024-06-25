@@ -72,6 +72,7 @@ function NextArrow({ style, onClick }: CustomArrowProps) {
       className="absolute top-[50%] transform -translate-y-1/2  right-[-25px]"
       style={style}
       onClick={onClick}
+      aria-label="next items"
     >
       <FontAwesomeIcon
         className="text-secondary text-xl"
@@ -91,6 +92,7 @@ function PrevArrow({ style, onClick }: CustomArrowProps) {
       className="absolute top-[50%] transform -translate-y-1/2 left-[-25px]"
       style={style}
       onClick={onClick}
+      aria-label="previous items"
     >
       <FontAwesomeIcon
         className="text-secondary text-xl"

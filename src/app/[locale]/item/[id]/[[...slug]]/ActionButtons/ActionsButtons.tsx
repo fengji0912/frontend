@@ -75,7 +75,12 @@ export default function ActionButtons({
           {links.length > 1 ? (
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
-                <Button isIconOnly color="secondary" variant="bordered">
+                <Button
+                  isIconOnly
+                  color="secondary"
+                  variant="bordered"
+                  aria-label="show more links"
+                >
                   <FontAwesomeIcon icon={faCaretDown} />
                 </Button>
               </DropdownTrigger>

@@ -64,6 +64,7 @@ export default function CustomFilterItem({
               variant="light"
               size="sm"
               onPress={() => handleDelete(filter)}
+              aria-label="remove filter"
             >
               <FontAwesomeIcon icon={faTimes} size="lg" />
             </Button>

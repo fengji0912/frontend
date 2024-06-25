@@ -133,6 +133,7 @@ export default function TableRow({ item }: TableRowProps) {
                   variant="light"
                   size="sm"
                   isDisabled={!isAuthenticated}
+                  aria-label="add to collection"
                 >
                   <FontAwesomeIcon icon={faBookmark} size="lg" />
                 </Button>
