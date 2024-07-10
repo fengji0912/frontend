@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useId, useState } from 'react';
 import { useFormState } from 'react-dom';
 
@@ -28,6 +29,8 @@ export default function AccountSettingsModal({
 }) {
   const [user, setUser] = useState<User>(null);
   const id = useId();
+  const t = useTranslations();
+
   const updateWithId = update.bind(null, user?.recordId || '');
   const [state, formAction] = useFormState(updateWithId, {
     error: '',
@@ -48,15 +51,15 @@ export default function AccountSettingsModal({
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>Account settings</ModalHeader>
+        <ModalHeader>{t('pretty_slimy_finch_create')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && <Alert color="danger">{state.error}</Alert>}
             {state?.success && (
-              <Alert color="success">Settings update successfully.</Alert>
+              <Alert color="success">{t('bold_awful_crocodile_spin')}</Alert>
             )}
             <Input
-              label="Name"
+              label={t('slimy_aware_snake_quiz')}
               name="name"
               type="text"
               id={`${id}-name`}
@@ -66,7 +69,7 @@ export default function AccountSettingsModal({
               defaultValue={user?.name}
             />
             <Input
-              label="Email address"
+              label={t('lime_small_hound_clip')}
               name="email"
               type="email"
               required
@@ -85,7 +88,7 @@ export default function AccountSettingsModal({
                 rel="noreferrer"
                 className="ms-2 text-decoration-underline"
               >
-                Change your avatar at gravatar.com{' '}
+                {t('big_simple_ocelot_ask')}{' '}
                 <FontAwesomeIcon icon={faExternalLink} />
               </a>
             </div>
@@ -97,10 +100,10 @@ export default function AccountSettingsModal({
               onPress={handleChangePasswordClick}
               className="dark:!bg-secondary-200"
             >
-              Change password
+              {t('fair_grassy_albatross_treasure')}
             </Button>
             <ButtonFormSubmit color="primary" type="submit">
-              Save
+              {t('known_knotty_slug_walk')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

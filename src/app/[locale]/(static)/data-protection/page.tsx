@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 
+import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
+
 export const metadata: Metadata = {
   title: 'Data protection',
 };
@@ -8,6 +10,8 @@ export default function DataProtection() {
   return (
     <div>
       <div className="container-box [&>p]:mb-3">
+        <TranslationMissingAlert />
+
         <h1>Data protection</h1>
         <h2>Privacy statement</h2>
         <p>

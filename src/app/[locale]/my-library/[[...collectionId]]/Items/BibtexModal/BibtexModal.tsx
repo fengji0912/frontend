@@ -7,6 +7,7 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { ChangeEvent, useEffect, useId, useState } from 'react';
 import { useFormState } from 'react-dom';
 
@@ -27,6 +28,7 @@ export default function BibtexModal({
 }: BibtexModalProps) {
   const [bibtex, setBibtex] = useState('');
   const id = useId();
+  const t = useTranslations();
   const params = useParams<{ collectionId: string }>();
   const updateWithId = importItem.bind(null, params.collectionId?.[0]);
   const [state, formAction] = useFormState(updateWithId, {
@@ -52,7 +54,7 @@ export default function BibtexModal({
   return (
     <Modal isOpen onOpenChange={onOpenChange} size="lg">
       <ModalContent>
-        <ModalHeader>BibTeX import</ModalHeader>
+        <ModalHeader>{t('steep_drab_newt_clip')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && (
@@ -60,7 +62,9 @@ export default function BibtexModal({
                 {state.error}
               </Alert>
             )}
-            <label htmlFor={`${id}file`}>BibTeX file (optional)</label>
+            <label htmlFor={`${id}file`}>
+              {t('solid_inclusive_impala_hike')}
+            </label>
             <input
               type="file"
               name="file"
@@ -69,7 +73,7 @@ export default function BibtexModal({
               className="mb-2"
             />
             <Textarea
-              label="BibTeX"
+              label={t('sharp_polite_crab_mend')}
               name="importString"
               minRows={10}
               maxRows={30}
@@ -79,7 +83,7 @@ export default function BibtexModal({
           </ModalBody>
           <ModalFooter>
             <ButtonFormSubmit color="primary" type="submit">
-              Import
+              {t('day_trite_moose_enjoy')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

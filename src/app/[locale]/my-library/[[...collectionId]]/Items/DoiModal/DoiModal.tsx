@@ -7,6 +7,7 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 
@@ -23,6 +24,7 @@ type DoiModalProps = {
 
 export default function DoiModal({ onOpenChange, onClose }: DoiModalProps) {
   const [doi, setDoi] = useState('');
+  const t = useTranslations();
   const params = useParams<{ collectionId: string }>();
   const updateWithId = importItem.bind(null, params.collectionId?.[0]);
   const [state, formAction] = useFormState(updateWithId, {
@@ -39,7 +41,7 @@ export default function DoiModal({ onOpenChange, onClose }: DoiModalProps) {
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>DOI import</ModalHeader>
+        <ModalHeader>{t('happy_wild_gorilla_attend')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && (
@@ -49,17 +51,17 @@ export default function DoiModal({ onOpenChange, onClose }: DoiModalProps) {
             )}
 
             <Textarea
-              label="DOI(s)"
+              label={t('least_white_flamingo_quell')}
               name="importString"
               value={doi}
               onChange={(e) => setDoi(e.target.value)}
-              description="Put multiple DOIs on separate lines"
+              description={t('cute_civil_hound_urge')}
               required
             />
           </ModalBody>
           <ModalFooter>
             <ButtonFormSubmit color="primary" type="submit">
-              Import
+              {t('active_home_mole_sing')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

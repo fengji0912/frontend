@@ -1,10 +1,13 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 import { DEFAULT_COLUMNS } from '@/app/[locale]/search/Results/hooks/defaultColumns';
 import useColumns from '@/app/[locale]/search/Toolbar/EditColumns/hooks/useColumns';
 import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
 
 export default function PopularColumns() {
+  const t = useTranslations();
   const { isPending, columns, setColumns } = useColumns();
 
   // popular columns are columns that are not in the columns state but are in default columns
@@ -20,7 +23,9 @@ export default function PopularColumns() {
 
       {popularColumns.length > 0 && (
         <>
-          <div className="fw-bold mt-3 mb-2 font-bold">Popular columns</div>
+          <div className="fw-bold mt-3 mb-2 font-bold">
+            {t('strong_fresh_vulture_hunt')}
+          </div>
           <ul className="space-y-1">
             {popularColumns.map((column) => (
               <li

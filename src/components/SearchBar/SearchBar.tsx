@@ -13,7 +13,7 @@ import ROUTES from '@/constants/routes';
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const router = useRouter();
-  const t = useTranslations('SearchBar');
+  const t = useTranslations();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ export default function SearchBar() {
       <div className="bg-white dark:bg-secondary-950 flex items-stretch rounded-3xl shadow-box">
         <input
           type="text"
-          placeholder={t('placeholder')}
+          placeholder={t('slimy_that_larva_ascend')}
           className="md:!text-2xl text-xl text-foreground grow px-4 py-3 md:py-4 rounded-3xl outline-primary-300 bg-transparent min-w-0"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
@@ -34,6 +34,7 @@ export default function SearchBar() {
           type="submit"
           variant="light"
           className="border-0 px-4 rounded-3xl h-auto !hover:bg-black !hover:text-white data-[hover=true]:bg-white data-[hover=true]:opacity-60"
+          aria-label={t('solid_active_sparrow_reap')}
         >
           <FontAwesomeIcon
             icon={faSearch}

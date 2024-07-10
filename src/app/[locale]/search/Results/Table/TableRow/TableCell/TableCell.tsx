@@ -1,6 +1,7 @@
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { KeyedMutator } from 'swr';
 
@@ -31,6 +32,7 @@ export default function TableCell({
   mutate,
 }: TableCellProps) {
   const [isReloading, setIsReloading] = useState(false);
+  const t = useTranslations();
 
   const handleReloadCell = (property: string) => {
     if (!llmData) {
@@ -81,10 +83,10 @@ export default function TableCell({
                 | undefined
             }
           />
-          <Tooltip content="Regenerate cell content">
+          <Tooltip content={t('sunny_loose_goose_spur')}>
             <Button
               onClick={() => handleReloadCell(property)}
-              aria-label="reload cell"
+              aria-label={t('fine_bland_swallow_glow')}
               isIconOnly
               color="secondary"
               variant="light"

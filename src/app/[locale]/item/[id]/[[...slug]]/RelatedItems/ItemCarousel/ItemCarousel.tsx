@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import Slider, { CustomArrowProps } from 'react-slick';
 
 import Item from '@/app/[locale]/item/[id]/[[...slug]]/RelatedItems/ItemCarousel/Item/Item';
@@ -63,6 +64,8 @@ export default function ItemCarousel({ items }: ItemCarouselProps) {
 }
 
 function NextArrow({ style, onClick }: CustomArrowProps) {
+  const t = useTranslations();
+
   return (
     <Button
       isIconOnly
@@ -72,7 +75,7 @@ function NextArrow({ style, onClick }: CustomArrowProps) {
       className="absolute top-[50%] transform -translate-y-1/2  right-[-25px]"
       style={style}
       onClick={onClick}
-      aria-label="next items"
+      aria-label={t('blue_ornate_cougar_aim')}
     >
       <FontAwesomeIcon
         className="text-secondary text-xl"
@@ -83,6 +86,8 @@ function NextArrow({ style, onClick }: CustomArrowProps) {
 }
 
 function PrevArrow({ style, onClick }: CustomArrowProps) {
+  const t = useTranslations();
+
   return (
     <Button
       isIconOnly
@@ -92,7 +97,7 @@ function PrevArrow({ style, onClick }: CustomArrowProps) {
       className="absolute top-[50%] transform -translate-y-1/2 left-[-25px]"
       style={style}
       onClick={onClick}
-      aria-label="previous items"
+      aria-label={t('cute_red_dog_emerge')}
     >
       <FontAwesomeIcon
         className="text-secondary text-xl"

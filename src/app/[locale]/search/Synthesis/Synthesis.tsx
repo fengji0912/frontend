@@ -3,6 +3,7 @@
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useContext, useMemo, useState } from 'react';
 import reactStringReplace from 'react-string-replace';
@@ -16,13 +17,15 @@ import { LinkButton } from '@/components/NextUi/LinkButton/LinkButton';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import ROUTES from '@/constants/routes';
 import formatCslJsonAuthor from '@/lib/formatCslJsonAuthor';
-import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import useCslJsonDateFormatter from '@/lib/useCslJsonDateFormatter';
 import { synthesize } from '@/services/backend';
 
 export default function Synthesis() {
+  const [isReloading, setIsReloading] = useState(false);
+  const t = useTranslations();
   const [query] = useQueryState('query', queryParser);
   const { items } = useContext(tableDataContext);
-  const [isReloading, setIsReloading] = useState(false);
+  const { formatDate } = useCslJsonDateFormatter();
 
   const synthesisItems = useMemo(() => {
     const collectionItemIds = [];
@@ -70,7 +73,7 @@ export default function Synthesis() {
     const item = getItem(match);
 
     if (!item) {
-      return <div>No citation found</div>;
+      return <div>{t('low_close_wombat_clap')}</div>;
     }
     return (
       <div className="p-2">
@@ -84,9 +87,9 @@ export default function Synthesis() {
           )}{' '}
           by {formatCslJsonAuthor(item.cslData?.author?.[0])}{' '}
           {item.cslData?.author && item.cslData?.author?.length > 1
-            ? 'et al.'
+            ? t('frail_small_hamster_imagine')
             : ''}
-          , {formatCslJsonDate(item.cslData?.issued)}
+          , {formatDate(item.cslData?.issued)}
         </p>
       </div>
     );
@@ -126,7 +129,9 @@ export default function Synthesis() {
 
   return (
     <div className="box mb-4 !py-3 max-h-[400px] overflow-y-auto group relative">
-      <h2 className="semibold text-base m-0">Answer (based on top 5 papers)</h2>
+      <h2 className="semibold text-base m-0">
+        {t('fluffy_moving_puffin_bask')}
+      </h2>
       {!isLoading ? (
         <p>
           <LoadingOverlay isVisible={isReloading} />
@@ -147,10 +152,10 @@ export default function Synthesis() {
               </Tooltip>
             )
           )}
-          <Tooltip content="Regenerate content">
+          <Tooltip content={t('calm_keen_marlin_bubble')}>
             <Button
               onClick={handleReload}
-              aria-label="regenerate content"
+              aria-label={t('novel_low_chipmunk_swim')}
               isIconOnly
               color="secondary"
               variant="light"

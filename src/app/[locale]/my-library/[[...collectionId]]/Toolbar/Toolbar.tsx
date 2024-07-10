@@ -9,6 +9,7 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 
 import BibtexModal from '@/app/[locale]/my-library/[[...collectionId]]/Items/BibtexModal/BibtexModal';
 import DoiModal from '@/app/[locale]/my-library/[[...collectionId]]/Items/DoiModal/DoiModal';
@@ -19,6 +20,8 @@ import Sort from '@/app/[locale]/my-library/[[...collectionId]]/Toolbar/Sort/Sor
 import Dropdown from '@/components/NextUi/Dropdown/Dropdown';
 
 export default function Toolbar() {
+  const t = useTranslations();
+
   const {
     isOpen: isOpenAddItemsModal,
     onOpenChange: onOpenChangeAddItemsModal,
@@ -64,15 +67,21 @@ export default function Toolbar() {
                   <FontAwesomeIcon icon={faPlus} className="me-1 text-white" />
                 }
               >
-                Add
+                {t('true_extra_buzzard_relish')}
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Add item actions">
-              <DropdownItem onPress={onOpenBibtexModal}>BibTeX</DropdownItem>
-              <DropdownItem onPress={onOpenTitleModal}>Title</DropdownItem>
-              <DropdownItem onPress={onOpenDoiModal}>DOI</DropdownItem>
+              <DropdownItem onPress={onOpenBibtexModal}>
+                {t('polite_actual_sparrow_feast')}
+              </DropdownItem>
+              <DropdownItem onPress={onOpenTitleModal}>
+                {t('minor_upper_llama_exhale')}
+              </DropdownItem>
+              <DropdownItem onPress={onOpenDoiModal}>
+                {t('icy_white_gibbon_aid')}
+              </DropdownItem>
               <DropdownItem onPress={onOpenAddItemsModal}>
-                Manual entry
+                {t('honest_active_cougar_hint')}
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

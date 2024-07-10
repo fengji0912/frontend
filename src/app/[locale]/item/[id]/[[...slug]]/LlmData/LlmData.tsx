@@ -2,15 +2,19 @@
 
 import { Accordion, AccordionItem } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
 import LlmDataLoading from '@/app/[locale]/item/[id]/[[...slug]]/LlmData/LlmDataLoading/LlmDataLoading';
 import { DEFAULT_COLUMNS } from '@/app/[locale]/search/Results/hooks/defaultColumns';
 import LlmAnswerRenderer from '@/components/LlmAnswerRenderer/LlmAnswerRenderer';
+import useColumnTranslator from '@/lib/useColumnTranslator';
 import { getLlmExtraction } from '@/services/backend';
 
 export default function LlmData() {
   const params = useParams<{ id: string }>();
+  const t = useTranslations();
+  const { translateColumn } = useColumnTranslator();
 
   const { data: llmData, isLoading } = useSWR(
     params.id ? [params.id, ...DEFAULT_COLUMNS] : null,
@@ -23,7 +27,9 @@ export default function LlmData() {
 
   return (
     <>
-      <h2 className="text-xl font-semibold mb-3">Extracted data</h2>
+      <h2 className="text-xl font-semibold mb-3">
+        {t('mellow_witty_otter_forgive')}
+      </h2>
       {!isLoading &&
         llmData?.payload?.properties &&
         llmData?.payload?.properties.length > 0 && (
@@ -40,8 +46,10 @@ export default function LlmData() {
             {llmData?.payload.properties.map((property) => (
               <AccordionItem
                 key={property}
-                aria-label="Accordion 1"
-                title={property}
+                aria-label={`${t('calm_crisp_puffin_spark')} ${translateColumn(
+                  property
+                )}`}
+                title={translateColumn(property)}
                 isDisabled={
                   Array.isArray(llmData?.payload?.values?.[property]) &&
                   (

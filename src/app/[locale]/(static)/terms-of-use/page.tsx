@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 
+import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
+
 export const metadata: Metadata = {
   title: 'Terms of use',
 };
@@ -8,6 +10,8 @@ export default function TermsOfService() {
   return (
     <div>
       <div className="container-box [&>p]:mb-3">
+        <TranslationMissingAlert />
+
         <h2>Terms of Use Open Research Knowledge Graph</h2>
         <p>
           <strong>Status: September 2020</strong>

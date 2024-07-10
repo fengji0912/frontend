@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 
+import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
+
 export const metadata: Metadata = {
   title: 'Imprint',
 };
@@ -8,6 +10,7 @@ export default function Imprint() {
   return (
     <div>
       <div className="container-box [&>p]:mb-3">
+        <TranslationMissingAlert />
         <h1>Imprint</h1>
         Imprint for this website – also serves as provider identification
         according to § 5 Telemediengesetz (TMG)

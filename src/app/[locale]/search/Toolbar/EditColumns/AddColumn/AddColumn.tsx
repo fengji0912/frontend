@@ -3,6 +3,7 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { push } from '@socialgouv/matomo-next';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import useColumns from '@/app/[locale]/search/Toolbar/EditColumns/hooks/useColumns';
@@ -10,6 +11,7 @@ import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
 
 export default function AddColumn() {
   const [label, setLabel] = useState('');
+  const t = useTranslations();
   const { isPending, setColumns } = useColumns();
 
   const handleAdd = () => {
@@ -33,7 +35,7 @@ export default function AddColumn() {
             all: 'unset',
             width: '100%',
           }}
-          placeholder="Add new column..."
+          placeholder={t('plain_keen_shad_rush')}
         />
       </form>
     </li>

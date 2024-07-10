@@ -1,8 +1,8 @@
 'use client';
 
 import { ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState, useQueryStates } from 'nuqs';
-import pluralize from 'pluralize';
 import { useEffect, useState, useTransition } from 'react';
 
 import {
@@ -27,6 +27,7 @@ type ShareModalProps = {
 
 export default function ShareModal({ onOpenChange }: ShareModalProps) {
   const [sharedLinkId, setSharedLinkId] = useState('');
+  const t = useTranslations();
   const [isLoading, startTransition] = useTransition();
 
   const [searchData] = useQueryStates({
@@ -53,18 +54,18 @@ export default function ShareModal({ onOpenChange }: ShareModalProps) {
 
   const url = !isLoading
     ? `${window.location.origin}${ROUTES.SHARE_LINK}/${sharedLinkId}`
-    : 'Loading...';
+    : t('heavy_polite_poodle_spin');
 
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>Share search</ModalHeader>
+        <ModalHeader>{t('arable_soft_anaconda_fond')}</ModalHeader>
         <ModalBody className="mb-4">
           {collectionItemIds.length > 0 && (
             <Alert color="info">
-              In total {collectionItemIds.length}{' '}
-              {pluralize('items', collectionItemIds.length)} from your private
-              library will be excluded from the shared search.
+              {t('mean_orange_duck_heal', {
+                itemNumber: collectionItemIds.length,
+              })}
             </Alert>
           )}
           {!isLoading && (

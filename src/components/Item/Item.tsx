@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip, useDisclosure } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, ReactElement } from 'react';
 import slugify from 'slugify';
@@ -27,7 +28,7 @@ import Authors from '@/components/Item/Authors/Authors';
 import { Link } from '@/components/Navigation/Navigation';
 import Checkbox from '@/components/NextUi/Checkbox/Checkbox';
 import ROUTES from '@/constants/routes';
-import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import useCslJsonDateFormatter from '@/lib/useCslJsonDateFormatter';
 import { IData } from '@/types/csl-json';
 import { CollectionsResponse } from '@/types/pocketbase-types';
 
@@ -62,11 +63,13 @@ export default function Item({
   addToCollection,
   linkedItemId,
 }: ItemProps) {
+  const t = useTranslations();
   const [, setExcludeItems] = useQueryState('excludeItems', excludeItemsParser);
   const [, setCollectionItemIds] = useQueryState(
     'collectionItemIds',
     listFilterParser
   );
+  const { formatDate } = useCslJsonDateFormatter();
 
   const {
     isOpen: isOpenCiteModal,
@@ -75,7 +78,7 @@ export default function Item({
   } = useDisclosure();
 
   const handleExcludeItem = () => {
-    if (confirm('Are you sure you want to exclude this item?')) {
+    if (confirm(t('major_muddy_monkey_lend'))) {
       push(['trackEvent', 'exclude item']);
 
       if (type === 'searchItem') {
@@ -106,7 +109,7 @@ export default function Item({
                 ? 'bg-secondary-300'
                 : 'bg-secondary-200'
             } p-0 w-[24px] min-w-[24px] h-[24px] data-[hover=true]:bg-primary data-[hover=true]:opacity-1 data-[hover=true]:text-white`}
-            aria-label="exclude item from search results"
+            aria-label={t('fresh_trite_walrus_gaze')}
           >
             <FontAwesomeIcon icon={faMinus} className="" size="1x" />
           </Button>
@@ -176,18 +179,22 @@ export default function Item({
               }`}
             >
               <Authors authors={cslData.author} />
-              {formatCslJsonDate(cslData.issued) && (
+              {formatDate(cslData.issued) && (
                 <div className="whitespace-nowrap">
                   <FontAwesomeIcon
                     icon={faCalendar}
                     className="opacity-75 me-2"
                   />
-                  {formatCslJsonDate(cslData.issued)}
+                  {formatDate(cslData.issued)}
                 </div>
               )}
               {cslData?.DOI && (
                 <div className="whitespace-nowrap flex gap-1">
-                  <Image src={doiIcon} width="17" alt="DOI icon" />
+                  <Image
+                    src={doiIcon}
+                    width="17"
+                    alt={t('sea_maroon_capybara_tear')}
+                  />
                   <a
                     href={`https://doi.org/${cslData?.DOI}`}
                     target="_blank"
@@ -198,7 +205,7 @@ export default function Item({
                 </div>
               )}
               {cslData?.custom?.['citation-count'] && (
-                <Tooltip content="Citation count (estimate)">
+                <Tooltip content={t('safe_any_oryx_zap')}>
                   <div className="whitespace-nowrap">
                     <FontAwesomeIcon
                       icon={faQuoteLeft}
@@ -225,7 +232,7 @@ export default function Item({
                     size="sm"
                     className="ms-2"
                   >
-                    PDF
+                    {t('odd_proud_shrike_value')}
                   </Button>
                 </a>
               )}

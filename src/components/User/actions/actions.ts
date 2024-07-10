@@ -3,6 +3,7 @@
 import { createHash } from 'node:crypto';
 
 import { cookies } from 'next/headers';
+import { getTranslations } from 'next-intl/server';
 import PocketBase, { ClientResponseError } from 'pocketbase';
 
 import { Collections, TypedPocketBase } from '@/types/pocketbase-types';
@@ -13,6 +14,29 @@ export type User = {
   emailHash: string;
   recordId: string;
 } | null;
+
+const translateError = async (error: ClientResponseError) => {
+  const t = await getTranslations();
+  const errorMap: { [key: string]: string } = {
+    'Something went wrong while processing your request.': t(
+      'orange_blue_leopard_surge'
+    ),
+    'Failed to authenticate.': t('frail_lime_penguin_absorb'),
+    'An error occurred while validating the form.': t(
+      'maroon_red_termite_adapt'
+    ),
+    'Failed to create record.': t('even_spare_cat_startle'),
+    validation_required: t('every_due_robin_race'),
+  };
+
+  const message = error.response.message || error.message;
+
+  if (message in errorMap) {
+    return errorMap[message];
+  } else {
+    return message;
+  }
+};
 
 export async function initPocketbase() {
   const pb = new PocketBase(process.env.POCKETBASE_URL) as TypedPocketBase;
@@ -43,7 +67,10 @@ export async function signIn(prevState: unknown, formData: FormData) {
   } catch (error) {
     console.error(error);
     if (error instanceof ClientResponseError) {
-      return { error: error.response.message ?? error.message, success: false };
+      return {
+        error: await translateError(error),
+        success: false,
+      };
     }
   }
 }
@@ -109,7 +136,7 @@ export async function requestPassword(prevState: unknown, formData: FormData) {
   } catch (error) {
     console.error(error);
     if (error instanceof ClientResponseError) {
-      return { error: error.response.message ?? error.message, success: false };
+      return { error: await translateError(error), success: false };
     }
   }
 }
@@ -128,7 +155,8 @@ export async function signUp(prevState: unknown, formData: FormData) {
     console.error(error);
     if (error instanceof ClientResponseError) {
       return {
-        error: error.response.message ?? error.message,
+        error: await translateError(error),
+        // TODO: translate individual field errors
         data: error.response.data,
         success: false,
       };
@@ -186,7 +214,7 @@ export async function updatePassword(
     console.error(error);
     if (error instanceof ClientResponseError) {
       return {
-        error: error.response.message ?? error.message,
+        error: await translateError(error),
         data: error.response.data,
         success: false,
       };

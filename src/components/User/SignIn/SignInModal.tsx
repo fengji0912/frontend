@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { useSWRConfig } from 'swr';
@@ -26,6 +27,7 @@ export default function SignInModal({
   handleForgotPasswordClick: () => void;
   handleSignUpClick: () => void;
 }) {
+  const t = useTranslations();
   const { mutate } = useSWRConfig();
   const [state, formAction] = useFormState(signIn, {
     error: '',
@@ -41,37 +43,42 @@ export default function SignInModal({
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>Sign in</ModalHeader>
+        <ModalHeader>{t('jolly_equal_jackal_promise')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && <Alert color="danger">{state.error}</Alert>}
-            <Input type="email" label="Email address" name="email" isRequired />
+            <Input
+              type="email"
+              label={t('proud_merry_alligator_jolt')}
+              name="email"
+              isRequired
+            />
             <Input
               type="password"
-              label="Password"
+              label={t('tense_livid_tadpole_assure')}
               name="password"
               isRequired
             />
             <div className="flex content-end">
               <LinkButton variant="link" onPress={handleForgotPasswordClick}>
-                Forgot password?
+                {t('mad_strong_bison_clasp')}
               </LinkButton>
             </div>
           </ModalBody>
           <ModalFooter className="flex justify-between">
             <span className="flex items-center">
-              No account?
+              {t('tough_slimy_okapi_enjoy')}
               <LinkButton
                 onPress={handleSignUpClick}
                 variant="link"
                 size="md"
                 className="p-0 border-0 ms-2"
               >
-                Sign up now!
+                {t('many_close_sawfish_delight')}
               </LinkButton>
             </span>
             <ButtonFormSubmit color="primary" type="submit">
-              Sign in
+              {t('game_quick_grebe_strive')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

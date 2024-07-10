@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useFormState } from 'react-dom';
 
 import Alert from '@/components/Alert/Alert';
@@ -22,6 +23,7 @@ export default function ForgotPasswordModal({
   onOpenChange: () => void;
   handleSignInClick: () => void;
 }) {
+  const t = useTranslations();
   const [state, formAction] = useFormState(requestPassword, {
     error: '',
     success: false,
@@ -30,19 +32,16 @@ export default function ForgotPasswordModal({
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>Forgot password</ModalHeader>
+        <ModalHeader>{t('sharp_misty_poodle_grip')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && <Alert color="danger">{state.error}</Alert>}
             {state?.success && (
-              <Alert color="success">
-                If the email address exists, you will receive an email with
-                further instructions shortly.
-              </Alert>
+              <Alert color="success">{t('civil_swift_hound_flop')}</Alert>
             )}
             <Input
               type="email"
-              label="Email address"
+              label={t('bold_still_lemming_clap')}
               name="email"
               isRequired
               disabled={state?.success}
@@ -58,10 +57,10 @@ export default function ForgotPasswordModal({
                   size="lg"
                   variant="link"
                 >
-                  Sign in
+                  {t('knotty_proof_gecko_hunt')}
                 </LinkButton>
                 <ButtonFormSubmit color="primary" type="submit">
-                  Request password
+                  {t('home_sour_chipmunk_hack')}
                 </ButtonFormSubmit>
               </>
             )}

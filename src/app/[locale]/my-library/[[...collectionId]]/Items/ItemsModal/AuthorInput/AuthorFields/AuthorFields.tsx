@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { KeyboardEvent, useState } from 'react';
 
 import Input from '@/components/NextUi/Input/Input';
@@ -12,6 +13,8 @@ export default function AuthorFields({
   defaultFirstName?: string;
   defaultLastName?: string;
 }) {
+  const t = useTranslations();
+
   const [firstName, setFirstName] = useState(defaultFirstName);
   const [lastName, setLastName] = useState(defaultLastName);
 
@@ -30,7 +33,7 @@ export default function AuthorFields({
         <Input
           type="text"
           className="me-1"
-          label="First names"
+          label={t('fair_equal_snake_fear')}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           size="sm"
@@ -41,7 +44,7 @@ export default function AuthorFields({
         <Input
           type="text"
           className="ms-1"
-          label="Last name"
+          label={t('new_short_warbler_love')}
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           size="sm"

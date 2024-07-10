@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useFormState } from 'react-dom';
 
@@ -27,6 +28,7 @@ export default function SignUpModal({
   onOpenChange: () => void;
   handleSignInClick: () => void;
 }) {
+  const t = useTranslations();
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
   const [hasAcceptedPrivacyStatement, setHasAcceptedPrivacyStatement] =
     useState(false);
@@ -39,25 +41,25 @@ export default function SignUpModal({
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>Sign up</ModalHeader>
+        <ModalHeader>{t('sad_tense_wasp_rise')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && <Alert color="danger">{state.error}</Alert>}
             {state?.success ? (
               <Alert color="success">
-                Account created successfully.{' '}
+                {t('strong_antsy_pelican_lead')}{' '}
                 <Button
                   color="primary"
                   className="ms-2"
                   onPress={handleSignInClick}
                 >
-                  Sign in
+                  {t('ago_knotty_anteater_kick')}
                 </Button>
               </Alert>
             ) : (
               <>
                 <Input
-                  label="Name"
+                  label={t('blue_helpful_blackbird_favor')}
                   type="text"
                   name="name"
                   isRequired
@@ -65,7 +67,7 @@ export default function SignUpModal({
                   errorMessage={state?.data?.name?.message}
                 />
                 <Input
-                  label="Email address"
+                  label={t('brief_bad_puffin_fear')}
                   type="email"
                   name="email"
                   isRequired
@@ -73,7 +75,7 @@ export default function SignUpModal({
                   errorMessage={state?.data?.email?.message}
                 />
                 <Input
-                  label="Password"
+                  label={t('cute_fresh_pigeon_gasp')}
                   type="password"
                   name="password"
                   isRequired
@@ -86,10 +88,13 @@ export default function SignUpModal({
                   isSelected={hasAcceptedTerms}
                   onChange={(v) => setHasAcceptedTerms(v.target.checked)}
                 >
-                  I accept the{' '}
-                  <Link href={ROUTES.TERMS_OF_USE} target="_blank">
-                    Special Conditions ORKG
-                  </Link>
+                  {t.rich('empty_weird_cheetah_greet', {
+                    link: (chunks) => (
+                      <Link href={ROUTES.TERMS_OF_USE} target="_blank">
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
                 </Checkbox>
                 <Checkbox
                   size="sm"
@@ -99,18 +104,21 @@ export default function SignUpModal({
                     setHasAcceptedPrivacyStatement(v.target.checked)
                   }
                 >
-                  I agree to the processing of my personal data provided here by
-                  Technische Informationsbibliothek (TIB). In accordance with
-                  the{' '}
-                  <Link href={ROUTES.DATA_PROTECTION} target="_blank">
-                    data protection declaration
-                  </Link>{' '}
-                  as well as the{' '}
-                  <Link href="/infosheet-data-protection.pdf" target="_blank">
-                    info sheet data protection
-                  </Link>
-                  , the data is processed exclusively by TIB in order to provide
-                  services of our platform.
+                  {t.rich('green_only_pug_hope', {
+                    linkDataProtection: (chunks) => (
+                      <Link href={ROUTES.DATA_PROTECTION} target="_blank">
+                        {chunks}
+                      </Link>
+                    ),
+                    linkInfoSheet: (chunks) => (
+                      <Link
+                        href="infosheet-data-protection.pdf"
+                        target="_blank"
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
                 </Checkbox>
               </>
             )}
@@ -118,14 +126,14 @@ export default function SignUpModal({
           {!state?.success && (
             <ModalFooter className="flex justify-between ">
               <span className="flex items-center">
-                Already an account?
+                {t('bright_alive_insect_emerge')}
                 <LinkButton
                   variant="link"
                   onPress={handleSignInClick}
                   className="ms-2"
                   size="md"
                 >
-                  Sign in
+                  {t('mad_north_mongoose_care')}
                 </LinkButton>
               </span>
               <ButtonFormSubmit
@@ -133,7 +141,7 @@ export default function SignUpModal({
                 type="submit"
                 isDisabled={!hasAcceptedTerms || !hasAcceptedPrivacyStatement}
               >
-                Sign up
+                {t('minor_simple_dolphin_sew')}
               </ButtonFormSubmit>
             </ModalFooter>
           )}

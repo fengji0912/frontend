@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
 import { initPocketbase } from '@/components/User/actions/actions';
 import { Collections } from '@/types/pocketbase-types';
 
@@ -41,6 +42,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className="container-box [&>p]:mb-3 [&_ul]:list-disc [&_ul]:pl-9 [&_ol]:list-decimal [&_ol]:pl-9">
+      <TranslationMissingAlert />
+
       <h1>{page.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: page.content }} />
     </div>

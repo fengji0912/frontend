@@ -1,6 +1,7 @@
 'use client';
 
 import { sortBy } from 'lodash';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import Checkbox from '@/components/NextUi/Checkbox/Checkbox';
@@ -22,6 +23,8 @@ export default function OptionList({
   const [searchValue, setSearchValue] = useState('');
   const [sortedOptions, setSortedOptions] = useState<[string, string][]>([]);
 
+  const t = useTranslations();
+
   const filteredOptions = searchValue
     ? Object.entries(options).filter(([, value]) =>
         value.toLowerCase().includes(searchValue.toLowerCase())
@@ -39,7 +42,7 @@ export default function OptionList({
       {isVisibleSearch && (
         <Input
           type="text"
-          placeholder="Search..."
+          placeholder={t('key_late_wolf_hush')}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           size="sm"
@@ -63,7 +66,11 @@ export default function OptionList({
                     className="p-0 m-0"
                   />
                   <span>
-                    {value || <span className="italic">No label</span>}
+                    {value || (
+                      <span className="italic">
+                        {t('good_tense_tiger_boost')}
+                      </span>
+                    )}
                   </span>
                 </label>
               </li>

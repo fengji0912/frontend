@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { ListResult } from 'pocketbase';
 import { useEffect } from 'react';
@@ -16,6 +17,7 @@ import { SavedSearchesResponse } from '@/types/pocketbase-types';
 const PAGE_SIZE = 5;
 
 export default function SavedSearches() {
+  const t = useTranslations();
   const [pages, setPages] = useQueryState('pages', pagesParser);
   const { isAuthenticated } = useAuth();
 
@@ -56,7 +58,9 @@ export default function SavedSearches() {
 
   return isAuthenticated ? (
     <div className="mt-4 box">
-      <h2 className="text-2xl font-semibold mb-5">Saved searches</h2>
+      <h2 className="text-2xl font-semibold mb-5">
+        {t('clear_east_skate_care')}
+      </h2>
       <ul>
         {data?.map((savedSearches) =>
           savedSearches.items.map((savedSearch) => (
@@ -75,7 +79,7 @@ export default function SavedSearches() {
           onPress={() => setSize(size + 1)}
           isLoading={isLoadingLoadMoreButton}
         >
-          Load more
+          {t('frail_red_cod_taste')}
         </Button>
       )}
     </div>

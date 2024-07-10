@@ -1,6 +1,7 @@
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useTransition } from 'react';
 import slugify from 'slugify';
@@ -17,6 +18,7 @@ type HiddenItemProps = {
 };
 
 export default function HiddenItem({ id }: HiddenItemProps) {
+  const t = useTranslations();
   const { data, isLoading } = useSWR(`get-item-${id}`, () => getItem(id));
   const [, setExcludeItems] = useQueryState('excludeItems', excludeItemsParser);
   const [isLoadingExcludeItems, startTransition] = useTransition();
@@ -54,7 +56,7 @@ export default function HiddenItem({ id }: HiddenItemProps) {
         onPress={handleRevert}
         isLoading={isLoadingExcludeItems}
       >
-        Revert
+        {t('last_quiet_hound_greet')}
       </Button>
     </li>
   );

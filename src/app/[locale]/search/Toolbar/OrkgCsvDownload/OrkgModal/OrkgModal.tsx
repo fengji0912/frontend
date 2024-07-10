@@ -4,10 +4,10 @@ import {
   Button,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useContext, useMemo } from 'react';
 import { CSVLink } from 'react-csv';
@@ -24,6 +24,7 @@ type OrkgModalProps = {
 };
 
 export default function OrkgModal({ onOpenChange }: OrkgModalProps) {
+  const t = useTranslations();
   const [columns] = useQueryState('columns', columnsParser);
   const { items, llmData } = useContext(tableDataContext);
 
@@ -58,15 +59,15 @@ export default function OrkgModal({ onOpenChange }: OrkgModalProps) {
   return (
     <Modal isOpen onOpenChange={onOpenChange} size="lg">
       <ModalContent>
-        <ModalHeader>ORKG export</ModalHeader>
+        <ModalHeader>{t('jumpy_ok_impala_lock')}</ModalHeader>
         <ModalBody>
-          <div>
+          <div className="mb-4">
             <Alert color="info">
-              To import the content into the ORKG, you first need to download
-              the <em>ORKG CSV</em> file which you then need to import into the{' '}
-              <em>ORKG CSV import</em> tool.
+              {t.rich('antsy_main_barbel_surge', {
+                em: (chunks) => <em>{chunks}</em>,
+              })}
             </Alert>
-            <h1 className="text-lg">1. Download file</h1>
+            <h1 className="text-lg">{t('cozy_noble_iguana_belong')}</h1>
             <Button
               color="primary"
               startContent={<Image src={logo} alt="ORKG logo" width={20} />}
@@ -75,22 +76,23 @@ export default function OrkgModal({ onOpenChange }: OrkgModalProps) {
               filename="orkg_export.csv"
               className="!rounded-3xl"
             >
-              Download ORKG CSV
+              {t('noisy_keen_pelican_clip')}
             </Button>
-            <h1 className="text-lg mt-5">2. Import in ORKG</h1>
-            Import the file into the{' '}
-            <a
-              href="https://orkg.org/csv-import"
-              target="_blank"
-              rel="noreferrer"
-              className="inline"
-            >
-              ORKG CSV Import tool
-            </a>
-            .
+            <h1 className="text-lg mt-5">{t('simple_gray_shrike_spin')}</h1>
+            {t.rich('ornate_bland_mare_fond', {
+              link: (chunks) => (
+                <a
+                  href="https://orkg.org/csv-import"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </div>
         </ModalBody>
-        <ModalFooter></ModalFooter>
       </ModalContent>
     </Modal>
   );

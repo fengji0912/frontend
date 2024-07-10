@@ -2,6 +2,7 @@
 
 import { Button } from '@nextui-org/react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 import logo from '@/assets/images/orkg-logo.svg';
 import { Link } from '@/components/Navigation/Navigation';
@@ -14,6 +15,8 @@ type ButtonLinksProps = {
 };
 
 export default function OrkgButton({ paper, doi, title }: ButtonLinksProps) {
+  const t = useTranslations();
+
   return paper ? (
     <Button
       color="secondary"
@@ -22,7 +25,7 @@ export default function OrkgButton({ paper, doi, title }: ButtonLinksProps) {
       href={`https://orkg.org/paper/${paper.id}`}
       target="_blank"
     >
-      View in ORKG
+      {t('aware_north_whale_tickle')}
     </Button>
   ) : (
     <Button
@@ -38,7 +41,8 @@ export default function OrkgButton({ paper, doi, title }: ButtonLinksProps) {
       }
       target="_blank"
     >
-      <Image src={logo} alt="ORKG logo" width={20} /> Add to ORKG
+      <Image src={logo} alt="ORKG logo" width={20} />{' '}
+      {t('strong_ideal_meerkat_lend')}
     </Button>
   );
 }

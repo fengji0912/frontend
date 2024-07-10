@@ -3,12 +3,15 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, useDisclosure } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 
 import ForgotPasswordModal from '@/components/User/ForgotPassword/ForgotPasswordModal';
 import SignInModal from '@/components/User/SignIn/SignInModal';
 import SignUpModal from '@/components/User/SignUp/SignUpModal';
 
 export default function SignIn() {
+  const t = useTranslations();
+
   const {
     isOpen: isOpenSignInModal,
     onOpen: onOpenSignInModal,
@@ -55,7 +58,7 @@ export default function SignIn() {
         onPress={onOpenSignInModal}
       >
         <FontAwesomeIcon icon={faUser} className="hidden md:inline-block" />{' '}
-        Sign in
+        {t('clean_fresh_cuckoo_arise')}
       </Button>
       {isOpenSignInModal && (
         <SignInModal

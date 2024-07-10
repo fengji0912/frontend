@@ -1,13 +1,16 @@
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 
 import { filterParser } from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import CustomFilters from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/CustomFilters';
 import FilterItem from '@/app/[locale]/search/Sidebar/Filters/FilterItem/FilterItem';
-import { LANGUAGES } from '@/app/[locale]/search/Sidebar/Filters/helpers/languages';
+import useLanguages from '@/app/[locale]/search/Sidebar/Filters/helpers/useLanguages';
 import ListFilter from '@/app/[locale]/search/Sidebar/Filters/ListFilter/ListFilter';
 import Year from '@/app/[locale]/search/Sidebar/Filters/Year/Year';
 
 export default function Filters() {
+  const t = useTranslations();
+  const { LANGUAGES } = useLanguages();
   const [filter] = useQueryState('filter', filterParser);
 
   const generateFilterLabel = ({
@@ -30,14 +33,16 @@ export default function Filters() {
   return (
     <div className="pt-[0.05px]">
       <div className="box-white !px-0 pb-0 relative mt-4">
-        <div className="font-bold mb-2 px-3">Filters</div>
+        <div className="font-bold mb-2 px-3">
+          {t('zippy_loud_sheep_foster')}
+        </div>
 
-        <FilterItem label="Year">
+        <FilterItem label={t('silly_caring_crow_peel')}>
           <Year />
         </FilterItem>
         <FilterItem
           label={generateFilterLabel({
-            label: 'Language',
+            label: t('sound_careful_camel_cuddle'),
             field: 'language',
           })}
         >

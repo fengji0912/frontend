@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 
+import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
+
 export const metadata: Metadata = {
   title: 'Contact us',
 };
@@ -8,6 +10,8 @@ export default function Contact() {
   return (
     <div>
       <div className="container-box [&>p]:mb-3">
+        <TranslationMissingAlert />
+
         <h1>Contact</h1>
 
         <p>

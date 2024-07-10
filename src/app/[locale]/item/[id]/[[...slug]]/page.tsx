@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/button';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import slugify from 'slugify';
 
@@ -38,6 +39,8 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: PageProps) {
+  const t = await getTranslations();
+
   const item: IData | null = await getItem(params.id);
   if (!item) {
     notFound();
@@ -71,7 +74,7 @@ export default async function Page({ params }: PageProps) {
                   startContent={<FontAwesomeIcon icon={faBookmark} />}
                   isDisabled={!isAuthenticated}
                 >
-                  Bookmark
+                  {t('agent_fine_sparrow_ascend')}
                 </Button>
               }
             />
@@ -84,7 +87,7 @@ export default async function Page({ params }: PageProps) {
       </div>
       <div className="flex container !mt-5 gap-x-5">
         <div className="box-white w-1/2">
-          <h2 className="text-xl font-semibold">Abstract</h2>
+          <h2 className="text-xl font-semibold">{t('warm_smug_boar_pave')}</h2>
           <ReadMore text={item.abstract} />
         </div>
         <div className="box-white w-1/2">

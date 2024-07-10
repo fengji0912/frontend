@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { LinkButton } from '@/components/NextUi/LinkButton/LinkButton';
@@ -14,6 +15,7 @@ export default function ReadMore({
   maxLength = 750,
 }: ReadMoreProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const t = useTranslations();
 
   const textSliced = isExpanded ? text : text.slice(0, maxLength);
   const isExpandable = text.length > maxLength;
@@ -30,7 +32,9 @@ export default function ReadMore({
               variant="link"
               onPress={() => setIsExpanded((v) => !v)}
             >
-              Read {isExpanded ? 'less' : 'more'}
+              {isExpanded
+                ? t('next_factual_liger_praise')
+                : t('extra_every_polecat_engage')}
             </LinkButton>
           </>
         )}

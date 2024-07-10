@@ -1,6 +1,7 @@
 'use client';
 
 import { SelectItem } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 
 import Select from '@/components/NextUi/Select/Select';
 
@@ -12,12 +13,14 @@ type PageSizeProps = {
 };
 
 export default function PageSize({ pageSize, setPageSize }: PageSizeProps) {
+  const t = useTranslations();
+
   return (
     <div>
       <Select
         selectedKeys={[pageSize.toString()]}
         onChange={(e) => setPageSize(parseInt(e.target.value))}
-        label="Page size"
+        label={t('ago_vivid_cod_grip')}
         labelPlacement="outside-left"
         disallowEmptySelection
         fullWidth={false}

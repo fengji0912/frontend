@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { shuffle } from 'lodash';
+import { useTranslations } from 'next-intl';
 import { createSerializer } from 'nuqs';
 import { useEffect, useState } from 'react';
 
@@ -9,56 +10,10 @@ import { searchParamsSchema } from '@/app/[locale]/search/searchParams/searchPar
 import { Link } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
 
-const GETTING_STARTED_QUESTIONS = [
-  'How does climate change impact biodiversity?',
-  'Why are aging Covid patients more susceptible to severe complications?',
-  'How does social media affect the college selection process?',
-  'What are the interesting theories about dark matter and dark energy?',
-  'What is the significance of higher-dimensional algebra?',
-  'How does social media usage impact mental health among adolescents?',
-  'What are the long-term effects of income inequality on community well-being?',
-  'How can we promote sustainable practices in urban transportation systems?',
-  'What role does cultural diversity play in fostering creativity and innovation?',
-  'How do educational policies influence student engagement and academic achievement?',
-  'What are the ethical implications of using artificial intelligence in decision-making processes?',
-  'How can we address food insecurity in marginalized communities?',
-  'What factors contribute to successful intergenerational knowledge transfer?',
-  'How does exposure to nature affect overall health and well-being?',
-  'What strategies can enhance civic participation and democratic engagement?',
-  'How does the availability of green spaces impact community health and well-being?',
-  'What are the social and economic implications of an aging population?',
-  'How can we enhance cybersecurity measures to protect against emerging threats?',
-  'What factors contribute to successful cross-cultural communication in global organizations?',
-  'How does exposure to art and culture influence cognitive development?',
-  'What are the effects of automation on job displacement and workforce dynamics?',
-  'What strategies can mitigate the impact of climate change on vulnerable populations?',
-  'How do different parenting styles affect child development outcomes?',
-  'What role does trust play in building resilient communities?',
-  'How do social networks influence political polarization and echo chambers?',
-  'What impact does access to quality early childhood education have on lifelong outcomes?',
-  'How can we design inclusive urban spaces that cater to people of all abilities?',
-  'What are the effects of mindfulness practices on stress reduction and mental well-being?',
-  'How does exposure to green architecture affect occupants’ health and productivity?',
-  'What factors contribute to successful cross-sector collaborations in addressing global challenges?',
-  'How can we promote financial literacy and responsible financial decision-making?',
-  'What role does cultural heritage play in shaping national identity?',
-  'How do different parenting styles influence adolescents’ risk-taking behaviors?',
-  'What strategies can enhance community resilience in the face of natural disasters?',
-  'How does exposure to natural environments impact cognitive restoration and creativity?',
-  'What are the social implications of widespread adoption of autonomous vehicles?',
-  'How can we measure and enhance digital literacy skills across different age groups?',
-  'What factors contribute to successful community-driven conservation efforts?',
-  'How does cultural diversity influence team dynamics and decision-making in organizations?',
-  'What are the effects of sleep deprivation on cognitive performance and overall health?',
-  'How can we promote mental health awareness and reduce stigma in educational settings?',
-  'What role does storytelling play in shaping collective memory and identity?',
-  'How do social norms influence sustainable consumption behaviors?',
-  'What strategies can improve disaster preparedness and response in vulnerable communities?',
-];
-
 export default function GettingStarted() {
   const serialize = createSerializer(searchParamsSchema);
   const [questions, setQuestions] = useState<string[]>([]);
+  const t = useTranslations();
 
   const TRANSITION_MOVE = {
     duration: 1,
@@ -67,8 +22,55 @@ export default function GettingStarted() {
   };
 
   useEffect(() => {
+    const GETTING_STARTED_QUESTIONS = [
+      t('game_plain_snake_care'),
+      t('tired_gray_lark_flow'),
+      t('sharp_happy_shad_borrow'),
+      t('basic_ago_crab_imagine'),
+      t('red_alert_pug_compose'),
+      t('wild_known_angelfish_zip'),
+      t('zesty_clear_duck_roar'),
+      t('awake_elegant_puffin_clap'),
+      t('plain_watery_shrimp_praise'),
+      t('tangy_wild_hound_launch'),
+      t('fine_dry_horse_revive'),
+      t('cozy_quick_albatross_bend'),
+      t('bold_last_martin_dream'),
+      t('nice_watery_jackdaw_reside'),
+      t('maroon_empty_snail_grin'),
+      t('seemly_bald_ox_enjoy'),
+      t('plane_suave_chipmunk_absorb'),
+      t('every_major_florian_flow'),
+      t('gray_misty_jan_aid'),
+      t('good_front_lark_trim'),
+      t('dull_sad_gibbon_smile'),
+      t('sad_salty_shrike_bend'),
+      t('due_swift_fox_treasure'),
+      t('misty_raw_otter_coax'),
+      t('front_bland_impala_charm'),
+      t('patchy_ok_martin_fond'),
+      t('novel_whole_herring_fold'),
+      t('quiet_spare_ant_glow'),
+      t('bland_proud_crocodile_pull'),
+      t('just_tired_mink_accept'),
+      t('next_any_finch_urge'),
+      t('soft_fit_mare_assure'),
+      t('hour_tired_mammoth_care'),
+      t('sweet_bland_impala_tickle'),
+      t('arable_agent_racoon_thrive'),
+      t('still_lofty_cobra_pat'),
+      t('careful_spare_eagle_zoom'),
+      t('smart_heroic_crab_edit'),
+      t('legal_honest_tadpole_twist'),
+      t('fluffy_due_cat_blend'),
+      t('sea_vexed_jaguar_dash'),
+      t('sunny_top_sparrow_spark'),
+      t('slimy_short_jackal_beam'),
+      t('alert_crisp_gazelle_smile'),
+    ];
+
     setQuestions(shuffle(GETTING_STARTED_QUESTIONS).slice(0, 5));
-  }, []);
+  }, [t]);
 
   return (
     <motion.div
@@ -77,7 +79,9 @@ export default function GettingStarted() {
       animate={{ x: 0, opacity: 1 }}
       transition={TRANSITION_MOVE}
     >
-      <h2 className="text-2xl font-semibold mb-5">Getting started</h2>
+      <h2 className="text-2xl font-semibold mb-5">
+        {t('civil_early_shark_cheer')}
+      </h2>
       <ul className="list-disc px-5">
         {questions.map((question) => (
           <li key={question} className="pb-1">

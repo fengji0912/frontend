@@ -15,6 +15,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import AuthorFields from '@/app/[locale]/my-library/[[...collectionId]]/Items/ItemsModal/AuthorInput/AuthorFields/AuthorFields';
@@ -35,6 +36,7 @@ export default function AuthorItem({
   const [isEditing, setIsEditing] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
+  const t = useTranslations();
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -85,7 +87,7 @@ export default function AuthorItem({
               color="secondary"
               variant="light"
               size="sm"
-              aria-label="show items menu"
+              aria-label={t('aware_just_pig_savor')}
             >
               <FontAwesomeIcon
                 className="text-secondary text-base"
@@ -93,14 +95,14 @@ export default function AuthorItem({
               />
             </Button>
           </DropdownTrigger>
-          <DropdownMenu aria-label="item actions menu">
+          <DropdownMenu aria-label={t('extra_major_seahorse_heal')}>
             <DropdownItem
               onPress={() => setIsEditing(true)}
               startContent={
                 <FontAwesomeIcon icon={faPen} className="text-secondary" />
               }
             >
-              Edit
+              {t('gaudy_tough_myna_scold')}
             </DropdownItem>
             <DropdownItem
               onPress={() => handleDelete(id)}
@@ -108,7 +110,7 @@ export default function AuthorItem({
                 <FontAwesomeIcon icon={faTrash} className="text-secondary" />
               }
             >
-              Delete
+              {t('many_honest_jan_explore')}
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

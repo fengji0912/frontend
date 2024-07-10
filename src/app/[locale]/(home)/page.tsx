@@ -10,13 +10,15 @@ import Logos from '@/app/[locale]/(home)/Logos/Logos';
 import logo from '@/assets/images/logo.svg';
 import { getCount } from '@/services/backend';
 
-export const metadata: Metadata = {
-  title: {
-    absolute: 'ORKG Ask | Find research you are actually looking for',
-  },
-  description:
-    'ORKG Ask lets you find research you are actually looking for. No more endless search results, just the answers you need. Powered by LLMs, Knowledge Graphs, Semantic Search and more.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations();
+  return {
+    title: {
+      absolute: t('just_even_mammoth_twist'),
+    },
+    description: t('knotty_dirty_mule_buzz'),
+  };
+}
 
 type HomeProps = {
   params: { locale: string };
@@ -24,7 +26,7 @@ type HomeProps = {
 
 export default async function Home({ params: { locale } }: HomeProps) {
   unstable_setRequestLocale(locale);
-  const t = await getTranslations('HomePage');
+  const t = await getTranslations();
   let count = 0;
   try {
     count = (await getCount()).payload.count;
@@ -36,7 +38,12 @@ export default async function Home({ params: { locale } }: HomeProps) {
     <main>
       <div className="container mx-auto flex flex-col items-center">
         <div className="relative hidden md:block" style={{ marginTop: 50 }}>
-          <Image src={logo} alt="ORKG Ask Logo" width={300} priority />
+          <Image
+            src={logo}
+            alt={t('fresh_same_ladybug_learn')}
+            width={300}
+            priority
+          />
           <span className="bg-secondary-200 rounded-2xl font-semibold text-secondary-900 dark:text-foreground py-[1px] px-[10px] text-[0.9rem] absolute bottom-[5px] right-0">
             Ask
           </span>
@@ -45,7 +52,7 @@ export default async function Home({ params: { locale } }: HomeProps) {
           className="text-2xl md:text-3xl font-semibold text-center"
           style={{ marginTop: 50 }}
         >
-          {t.rich('teaser', {
+          {t.rich('born_trick_deer_heal', {
             em: (chunks) => <em>{chunks}</em>,
           })}
         </h1>

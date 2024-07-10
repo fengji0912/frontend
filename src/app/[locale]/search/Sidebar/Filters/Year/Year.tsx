@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
-import moment from 'moment';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useState, useTransition } from 'react';
 
@@ -10,6 +10,7 @@ import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
 import Input from '@/components/NextUi/Input/Input';
 
 export default function Year() {
+  const t = useTranslations();
   const [isLoading, startTransition] = useTransition();
   const [filter, setFilter] = useQueryState('filter', filterParser);
 
@@ -60,20 +61,22 @@ export default function Year() {
           onBlur={handleChange}
           size="sm"
           placeholder="1950"
+          aria-label={t('green_honest_slug_slide')}
         />
-        <div className="mx-2">till</div>
+        <div className="mx-2">{t('helpful_crisp_impala_smile')}</div>
         <Input
           type="number"
           value={endYearLocal?.toString()}
           onChange={(e) => setEndYearLocal(parseInt(e.target.value))}
           onBlur={handleChange}
           size="sm"
-          placeholder={moment().year().toString()}
+          placeholder={new Date().getFullYear().toString()}
+          aria-label={t('weary_red_hedgehog_slide')}
         />
       </div>
       <div className="mt-2">
         <Button color="secondary" variant="bordered" className="me-2" size="sm">
-          Reset
+          {t('tasty_ideal_rabbit_adapt')}
         </Button>
       </div>
       <LoadingOverlay isVisible={isLoading} />

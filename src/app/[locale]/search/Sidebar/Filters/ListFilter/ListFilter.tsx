@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useTransition } from 'react';
 
@@ -14,6 +15,7 @@ type ListFilterProps = {
 };
 
 export default function ListFilter({ listItems, type }: ListFilterProps) {
+  const t = useTranslations();
   const [isLoading, startTransition] = useTransition();
   const [filter, setFilter] = useQueryState('filter', filterParser);
 
@@ -77,7 +79,7 @@ export default function ListFilter({ listItems, type }: ListFilterProps) {
           onPress={handleReset}
           size="sm"
         >
-          Reset
+          {t('maroon_helpful_gecko_bubble')}
         </Button>
       </div>
       <LoadingOverlay isVisible={isLoading} />

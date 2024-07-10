@@ -7,6 +7,7 @@ import {
   ModalHeader,
 } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useId, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { AsyncPaginate } from 'react-select-async-paginate';
@@ -32,6 +33,7 @@ type TitleModalProps = {
 export default function TitleModal({ onOpenChange, onClose }: TitleModalProps) {
   const [title, setTitle] = useState<OptionType | null>(null);
   const id = useId();
+  const t = useTranslations();
   const params = useParams<{ collectionId: string }>();
   const createWithId = createCollectionItemByTitle.bind(
     null,
@@ -56,7 +58,7 @@ export default function TitleModal({ onOpenChange, onClose }: TitleModalProps) {
       size="lg"
     >
       <ModalContent>
-        <ModalHeader>Lookup by title</ModalHeader>
+        <ModalHeader>{t('cozy_next_elk_tickle')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && (
@@ -65,7 +67,7 @@ export default function TitleModal({ onOpenChange, onClose }: TitleModalProps) {
               </Alert>
             )}
 
-            <label htmlFor={`${id}doi`}>Title</label>
+            <label htmlFor={`${id}doi`}>{t('next_inclusive_deer_dance')}</label>
             <AsyncPaginate
               name="linkedItemId"
               loadOptions={titleLookup}
@@ -76,7 +78,7 @@ export default function TitleModal({ onOpenChange, onClose }: TitleModalProps) {
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
               value={title}
               onChange={setTitle}
-              placeholder="Start typing to search by title"
+              placeholder={t('zippy_agent_rook_gaze')}
               additional={{
                 page: 1,
               }}
@@ -84,7 +86,7 @@ export default function TitleModal({ onOpenChange, onClose }: TitleModalProps) {
           </ModalBody>
           <ModalFooter>
             <ButtonFormSubmit color="primary" type="submit">
-              Import
+              {t('swift_mellow_gull_delight')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

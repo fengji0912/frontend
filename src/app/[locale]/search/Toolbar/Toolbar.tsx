@@ -4,6 +4,7 @@ import { faSave, faShare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, ButtonGroup, useDisclosure } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 
 import BulkActions from '@/app/[locale]/search/Toolbar/BulkActions/BulkActions';
 import EditColumns from '@/app/[locale]/search/Toolbar/EditColumns/EditColumns';
@@ -21,6 +22,8 @@ const CsvDownload = dynamic(
 );
 
 export default function Toolbar() {
+  const t = useTranslations();
+
   const {
     isOpen: isOpenSaveSearchModal,
     onOpen: onOpenSaveSearchModal,
@@ -53,7 +56,9 @@ export default function Toolbar() {
               onPress={onOpenSaveSearchModal}
               isDisabled={!isAuthenticated}
             >
-              <span className="hidden md:inline">Save</span>
+              <span className="hidden md:inline">
+                {t('steep_sour_pelican_vent')}
+              </span>
             </Button>
             <Button
               color="secondary"
@@ -61,7 +66,9 @@ export default function Toolbar() {
               startContent={<FontAwesomeIcon icon={faShare} />}
               onPress={onOpenShareModal}
             >
-              <span className="hidden md:inline">Share</span>
+              <span className="hidden md:inline">
+                {t('plane_sleek_skunk_grow')}
+              </span>
             </Button>
             <HiddenPopover />
             <CsvDownload />

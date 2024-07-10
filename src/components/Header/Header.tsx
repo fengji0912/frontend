@@ -13,13 +13,13 @@ import {
   NavbarMenuToggle,
 } from '@nextui-org/react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
 
 import logo from '@/assets/images/logo.svg';
 import User from '@/components/Header/User/User';
-import { Link } from '@/components/Navigation/Navigation';
-import { usePathname } from '@/components/Navigation/Navigation';
+import { Link, usePathname } from '@/components/Navigation/Navigation';
 import useAuth from '@/components/User/hooks/useAuth';
 import SignIn from '@/components/User/SignIn/SignIn';
 import ROUTES from '@/constants/routes';
@@ -29,14 +29,15 @@ export default function Header() {
   const pathname = usePathname();
   const { isAuthenticated } = useAuth();
   const { resolvedTheme, setTheme } = useTheme();
+  const t = useTranslations();
 
   const MENU_ITEMS = [
     {
-      label: 'Search',
+      label: t('sound_quiet_bobcat_support'),
       href: ROUTES.SEARCH,
     },
     {
-      label: 'My library',
+      label: t('teary_low_angelfish_kiss'),
       href: ROUTES.MY_LIBRARY,
     },
   ];
@@ -51,13 +52,17 @@ export default function Header() {
     >
       <NavbarContent className="flex md:gap-10" justify="start">
         <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-label={
+            isMenuOpen
+              ? t('awake_equal_bumblebee_drop')
+              : t('tasty_sound_bee_cry')
+          }
           className="md:hidden"
         />
         <NavbarItem className="shrink-0">
           <NavbarBrand className="me-5">
             <Link href={ROUTES.HOME} className="relative">
-              <Image src={logo} alt="ORKG Ask Logo" width={130} />
+              <Image src={logo} alt={t('gaudy_dirty_racoon_ask')} width={130} />
               <div className="bg-secondary-200 leading-3 text-secondary-900 dark:text-foreground rounded-full font-semibold text-xs py-[1px] px-2 absolute bottom-[-3px] right-0">
                 Ask
               </div>
@@ -82,13 +87,14 @@ export default function Header() {
           color="secondary"
           variant="flat"
           onPress={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
-          aria-label="toggle dark mode"
+          aria-label={t('whole_broad_marmot_surge')}
         >
           <FontAwesomeIcon
             icon={resolvedTheme === 'light' ? faMoon : faLightbulb}
             size="lg"
           />
         </Button>
+        {/* <LanguageSelector /> */}
         <NavbarItem>{isAuthenticated ? <User /> : <SignIn />}</NavbarItem>
       </NavbarContent>
       <NavbarMenu>

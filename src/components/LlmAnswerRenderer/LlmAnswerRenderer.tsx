@@ -1,10 +1,14 @@
 import { upperFirst } from 'lodash';
+import { useTranslations } from 'next-intl';
 
 function RenderItem({ text }: { text: string }) {
+  const t = useTranslations();
   return text.toLowerCase() !== 'unknown' ? (
     upperFirst(text)
   ) : (
-    <span className="text-secondary-700 italic">N/A</span>
+    <span className="text-secondary-700 italic">
+      {t('these_curly_seahorse_foster')}
+    </span>
   );
 }
 

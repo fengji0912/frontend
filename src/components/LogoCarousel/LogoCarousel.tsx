@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick.scss';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import Slider from 'react-slick';
 
 import erc from '@/components/LogoCarousel/images/erc.png';
@@ -16,52 +17,54 @@ import nfdi from '@/components/LogoCarousel/images/nfdi.png';
 import tib from '@/components/LogoCarousel/images/tib.png';
 import uniHannover from '@/components/LogoCarousel/images/uni-hannover.png';
 
-const LOGOS = [
-  {
-    name: 'TIB Leibniz Information Centre for Science and Technology',
-    src: tib,
-    width: 100,
-  },
-  {
-    name: 'L3S Research Center',
-    src: l3s,
-    width: 120,
-  },
-  {
-    name: 'Eulist',
-    src: eulist,
-    width: 100,
-  },
-  {
-    name: 'NFDI',
-    src: nfdi,
-    width: 250,
-  },
-  {
-    name: 'European Research Council',
-    src: erc,
-    width: 90,
-  },
-  {
-    name: 'University of Hannover',
-    src: uniHannover,
-    width: 170,
-  },
-  {
-    name: 'Leibniz Association',
-    src: leibnizAssociation,
-    width: 120,
-  },
-];
-
 export default function LogoCarousel({
   autoplay = false,
 }: {
   autoplay?: boolean;
 }) {
+  const t = useTranslations();
+
+  const LOGOS = [
+    {
+      name: t('awake_giant_halibut_vent'),
+      src: tib,
+      width: 100,
+    },
+    {
+      name: t('ideal_bright_jaguar_express'),
+      src: l3s,
+      width: 120,
+    },
+    {
+      name: t('smart_crisp_jellyfish_hack'),
+      src: eulist,
+      width: 100,
+    },
+    {
+      name: t('heroic_best_wallaby_fulfill'),
+      src: nfdi,
+      width: 250,
+    },
+    {
+      name: t('tough_nimble_halibut_tickle'),
+      src: erc,
+      width: 90,
+    },
+    {
+      name: t('lucky_major_oryx_grasp'),
+      src: uniHannover,
+      width: 170,
+    },
+    {
+      name: t('ornate_antsy_newt_taste'),
+      src: leibnizAssociation,
+      width: 120,
+    },
+  ];
+
   return (
     <>
-      <span className="mb-4">ORKG Ask is brought to you by</span>
+      <span className="mb-4">{t('cuddly_clean_hamster_inspire')}</span>
       <Slider
         dots
         arrows={false}
@@ -87,7 +90,7 @@ export default function LogoCarousel({
               src={logo.src}
               width={logo.width}
               height={120}
-              alt={`Logo of ${logo.name}`}
+              alt={`${t('home_sound_spider_mend')} ${logo.name}`}
               fill={false}
             />
           </div>

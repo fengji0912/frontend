@@ -7,7 +7,7 @@ import { Link } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
 
 export default function Explainer() {
-  const t = useTranslations('Explainer');
+  const t = useTranslations();
 
   const TRANSITION_MOVE = {
     duration: 1,
@@ -22,11 +22,17 @@ export default function Explainer() {
       transition={TRANSITION_MOVE}
     >
       <div>
-        {t('text')}{' '}
-        <strong className="text-semibold">{t('vectorSearch')}</strong>,{' '}
-        <strong className="text-semibold">{t('llms')}</strong> {t('and')}{' '}
-        <strong className="text-semibold">{t('kgs')}</strong>.{' '}
-        <Link href={`${ROUTES.PAGES}/about`}>{t('learnMore')}</Link>.
+        {t('cozy_flat_myna_mend')}{' '}
+        <strong className="text-semibold">
+          {t('spicy_strong_goldfish_stab')}
+        </strong>
+        , <strong className="text-semibold">{t('top_vexed_wasp_scold')}</strong>{' '}
+        {t('tasty_glad_wren_cherish')}{' '}
+        <strong className="text-semibold">{t('funny_home_pug_wave')}</strong>.{' '}
+        <Link href={`${ROUTES.PAGES}/about`}>
+          {t('free_seemly_baboon_flow')}
+        </Link>
+        .
       </div>
     </motion.div>
   );

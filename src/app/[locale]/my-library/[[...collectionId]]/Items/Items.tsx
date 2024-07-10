@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { ListResult } from 'pocketbase';
 
 import ItemsList, {
@@ -11,11 +12,13 @@ export default function Items({
 }: {
   items: ListResult<CollectionItemsResponse> | null;
 }) {
+  const t = useTranslations();
+
   return items ? (
     <>
       <div className="box-white">
         {items.totalItems === 0 ? (
-          <div className="italic p-2">No items in this collection yet</div>
+          <div className="italic p-2">{t('factual_actual_earthworm_work')}</div>
         ) : (
           <ItemsList
             items={items.items as (CollectionItemsResponse & MetaData)[]}
@@ -26,7 +29,7 @@ export default function Items({
     </>
   ) : (
     <div className="box-white !px-4 !py-6 italic">
-      No collections created yet, create your first collection on the left.
+      {t('bright_proud_cuckoo_bake')}
     </div>
   );
 }

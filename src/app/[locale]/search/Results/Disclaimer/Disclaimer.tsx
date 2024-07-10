@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCookies } from 'next-client-cookies';
+import { useTranslations } from 'next-intl';
 
 import Alert from '@/components/Alert/Alert';
 
 export default function Disclaimer() {
+  const t = useTranslations();
   const cookies = useCookies();
   const COOKIE_NAME = 'isDisclaimerWarningDismissed';
   const isDisclaimerWarningDismissed = cookies.get(COOKIE_NAME);
@@ -37,18 +39,14 @@ export default function Disclaimer() {
               color="#cecc96"
               size="lg"
             />
-            <div>
-              The answer and the extracted information was obtained with a large
-              language model and might contain errors and inaccuracies. All
-              information presented by ORKG Ask needs to be carefully checked.
-            </div>
+            <div>{t('least_arable_spider_comfort')}</div>
             <Button
               onClick={handleDismiss}
               color="primary"
               size="sm"
               className="shrink-0"
             >
-              Got it
+              {t('fuzzy_wide_mare_cheer')}
             </Button>
           </Alert>
         </motion.div>

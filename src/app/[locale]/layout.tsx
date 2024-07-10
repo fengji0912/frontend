@@ -6,7 +6,11 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { CookiesProvider } from 'next-client-cookies/server';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
+import {
+  getMessages,
+  getTranslations,
+  unstable_setRequestLocale,
+} from 'next-intl/server';
 import { PublicEnvScript } from 'next-runtime-env';
 import NextTopLoader from 'nextjs-toploader';
 import { Suspense } from 'react';
@@ -23,13 +27,16 @@ config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: {
-    default: 'ORKG Ask',
-    template: '%s | ORKG Ask',
-  },
-  description: 'Find the research you are actually looking for',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations();
+  return {
+    title: {
+      default: 'ORKG Ask',
+      template: '%s | ORKG Ask',
+    },
+    description: t('flaky_misty_quail_cherish'),
+  };
+}
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

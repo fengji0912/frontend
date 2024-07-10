@@ -9,6 +9,7 @@ import {
 } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useContext, useTransition } from 'react';
 
@@ -21,6 +22,8 @@ import Dropdown from '@/components/NextUi/Dropdown/Dropdown';
 import SelectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 
 export default function BulkActions() {
+  const t = useTranslations();
+
   const { selectedItems, setSelectedItems } = useContext(SelectedItemsContext);
 
   const [excludeItems, setExcludeItems] = useQueryState(
@@ -41,7 +44,7 @@ export default function BulkActions() {
   const [isLoading, startTransition] = useTransition();
 
   const handleDelete = () => {
-    if (confirm('Are you sure you want to exclude this item?')) {
+    if (confirm(t('raw_fair_eel_pride'))) {
       startTransition(() => {
         const newExcludeItems = [
           ...excludeItems,
@@ -84,15 +87,19 @@ export default function BulkActions() {
                     )
                   }
                 >
-                  With {selectedItems.length} selected...
+                  {t('mushy_aloof_pigeon_belong', {
+                    itemNumber: selectedItems.length,
+                  })}
                 </Button>
               </DropdownTrigger>
             </motion.div>
             <DropdownMenu aria-label="Bulk select actions">
               <DropdownItem onPress={onOpenCiteModal}>
-                Export / cite
+                {t('that_active_larva_yell')}
               </DropdownItem>
-              <DropdownItem onPress={handleDelete}>Hide</DropdownItem>
+              <DropdownItem onPress={handleDelete}>
+                {t('major_patchy_fish_race')}
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         )}

@@ -1,12 +1,14 @@
 import { faCookieBite } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { cookies } from 'next/headers';
+import { useTranslations } from 'next-intl';
 
 import CookieAcceptButton from '@/app/[locale]/(layout)/CookieNotification/CookieAcceptButton/CookieAcceptButton';
 import { Link } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
 
 export default function CookieNotification() {
+  const t = useTranslations();
   const cookieStore = cookies();
   const isCookieWarningDismissed = cookieStore.get('isCookieWarningDismissed');
 
@@ -19,11 +21,11 @@ export default function CookieNotification() {
         <FontAwesomeIcon icon={faCookieBite} size="4x" color="#865700" />
       </div>
       <span className="w-full block leading-normal text-md mb-3">
-        We use cookies to provide a better user experience.
+        {t('round_icy_grizzly_honor')}
       </span>
       <div className="flex items-center justify-between">
         <Link href={ROUTES.DATA_PROTECTION} className="text-xs  mr-1 ">
-          Data Protection
+          {t('weird_inclusive_manatee_file')}
         </Link>
         <CookieAcceptButton />
       </div>

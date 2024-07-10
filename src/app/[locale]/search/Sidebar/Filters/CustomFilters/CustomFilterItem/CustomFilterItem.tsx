@@ -1,6 +1,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 
 import {
@@ -22,6 +23,7 @@ export default function CustomFilterItem({
   type,
   filters,
 }: CustomFilterItemProps) {
+  const t = useTranslations();
   const [, setFilter] = useQueryState('filter', filterParser);
 
   const handleDelete = ({ field, operator, value }: Filter) => {
@@ -64,7 +66,7 @@ export default function CustomFilterItem({
               variant="light"
               size="sm"
               onPress={() => handleDelete(filter)}
-              aria-label="remove filter"
+              aria-label={t('tense_neat_zebra_find')}
             >
               <FontAwesomeIcon icon={faTimes} size="lg" />
             </Button>

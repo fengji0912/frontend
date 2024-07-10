@@ -12,6 +12,7 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -25,6 +26,7 @@ export default function User() {
   const router = useRouter();
   const [isLoading, startTransition] = useTransition();
   const { mutate } = useSWRConfig();
+  const t = useTranslations();
 
   const {
     isOpen: isOpenAccountSettingsModal,
@@ -71,14 +73,14 @@ export default function User() {
               <FontAwesomeIcon icon={faUser} className="text-secondary" />
             }
           >
-            Account settings
+            {t('actual_white_skunk_imagine')}
           </DropdownItem>
           <DropdownItem onPress={handleSignOutClick}>
             <FontAwesomeIcon
               icon={faArrowRightFromBracket}
               className="text-secondary me-2"
             />
-            Sign out
+            {t('trite_known_kudu_absorb')}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

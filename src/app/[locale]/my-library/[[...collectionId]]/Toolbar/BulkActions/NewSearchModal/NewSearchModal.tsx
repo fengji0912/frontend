@@ -7,6 +7,7 @@ import {
   ModalHeader,
   Textarea,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useContext, useState } from 'react';
 
 import ButtonFormSubmit from '@/components/ButtonFormSubmit/ButtonFormSubmit';
@@ -23,6 +24,8 @@ type NewSearchModalProps = {
 
 export default function NewSearchModal({ onOpenChange }: NewSearchModalProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const t = useTranslations();
+
   const router = useRouter();
   const { selectedItems } = useContext(selectedItemsContext);
 
@@ -40,12 +43,12 @@ export default function NewSearchModal({ onOpenChange }: NewSearchModalProps) {
       <ModalContent>
         <form onSubmit={handleSubmit}>
           <ModalHeader>
-            New search starting with {selectedItems.length} items
+            {t('sour_small_martin_lend', { itemNumber: selectedItems.length })}
           </ModalHeader>
           <ModalBody>
             <Textarea
-              label="Search query"
-              placeholder="Ask your question..."
+              label={t('minor_red_tiger_bubble')}
+              placeholder={t('such_topical_salmon_chop')}
               rows={3}
               value={searchQuery}
               onChange={(e) =>
@@ -56,7 +59,7 @@ export default function NewSearchModal({ onOpenChange }: NewSearchModalProps) {
           </ModalBody>
           <ModalFooter>
             <ButtonFormSubmit color="primary" type="submit">
-              Search
+              {t('smart_dizzy_grizzly_tickle')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

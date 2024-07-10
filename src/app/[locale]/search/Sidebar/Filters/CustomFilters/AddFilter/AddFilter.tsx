@@ -2,6 +2,7 @@
 
 import { Button, SelectItem } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useId, useRef, useState } from 'react';
 
@@ -20,13 +21,14 @@ import Select from '@/components/NextUi/Select/Select';
 
 export default function AddFilter() {
   const [field, setField] = useState('impact');
+  const t = useTranslations();
   const [, setFilter] = useQueryState('filter', filterParser);
   const ref = useRef<HTMLFormElement>(null);
   const labelId = useId();
   const selectedFilter = FILTER_FIELDS.find((f) => f.value === field);
 
   return (
-    <FilterItem label="Add filter...">
+    <FilterItem label={t('bright_teary_camel_slurp')}>
       <form
         ref={ref}
         action={async (formData) => {
@@ -69,13 +71,13 @@ export default function AddFilter() {
                 {field !== 'impact' && (
                   <Input
                     type="text"
-                    placeholder="Filter value"
+                    placeholder={t('super_plain_shrike_clap')}
                     isRequired
                     name="value"
                     startContent={
                       <div className="flex items-center">
                         <label className="sr-only" htmlFor={labelId}>
-                          Filter operator
+                          {t('home_gaudy_capybara_ask')}
                         </label>
                         <select
                           className="outline-none border-0 bg-transparent text-small"
@@ -99,7 +101,7 @@ export default function AddFilter() {
               </div>
               <div className="flex justify-end">
                 <Button color="primary" type="submit">
-                  Add
+                  {t('that_few_shrimp_assure')}
                 </Button>
               </div>
             </>

@@ -12,6 +12,7 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useContext, useTransition } from 'react';
 
 import { deleteCollectionItem } from '@/app/[locale]/my-library/[[...collectionId]]/Items/actions/actions';
@@ -27,6 +28,8 @@ export default function ActionDropdown({
   itemId: string;
   cslData: IData;
 }) {
+  const t = useTranslations();
+
   const {
     isOpen: isOpenAddItemsModal,
     onOpenChange: onOpenChangeAddItemsModal,
@@ -38,7 +41,7 @@ export default function ActionDropdown({
   const { selectedItems, setSelectedItems } = useContext(selectedItemsContext);
 
   const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this item?')) {
+    if (confirm(t('fit_just_alpaca_radiate'))) {
       startTransition(() => {
         deleteCollectionItem(itemId);
         // remove the item from the batch selection if it is added
@@ -60,7 +63,7 @@ export default function ActionDropdown({
             color="secondary"
             variant="light"
             size="sm"
-            aria-label="show actions menu"
+            aria-label={t('this_slow_mule_praise')}
           >
             {!isLoading ? (
               <FontAwesomeIcon
@@ -79,11 +82,11 @@ export default function ActionDropdown({
         <DropdownMenu>
           <DropdownItem onPress={onOpenAddItemsModal}>
             <FontAwesomeIcon icon={faPen} className="text-secondary me-2" />
-            Edit
+            {t('every_warm_javelina_pause')}
           </DropdownItem>
           <DropdownItem onPress={handleDelete}>
             <FontAwesomeIcon icon={faTrash} className="text-secondary me-2" />
-            Delete
+            {t('main_wise_worm_leap')}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

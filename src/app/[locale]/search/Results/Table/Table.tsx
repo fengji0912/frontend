@@ -2,6 +2,7 @@
 
 import { Button } from '@nextui-org/react';
 import { push } from '@socialgouv/matomo-next';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useContext, useEffect, useMemo } from 'react';
 import useSWRInfinite from 'swr/infinite';
@@ -16,6 +17,7 @@ import {
   queryParser,
 } from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
+import useColumnTranslator from '@/lib/useColumnTranslator';
 import useLoadingTime from '@/lib/useLoadingTime';
 import { search } from '@/services/backend';
 import { components } from '@/services/backend/types';
@@ -35,6 +37,8 @@ export default function Table({
     { collection?: CollectionsResponse }
   >[];
 }) {
+  const t = useTranslations();
+  const { translateColumn } = useColumnTranslator();
   const [query] = useQueryState('query', queryParser);
   const [columns] = useQueryState('columns', columnsParser);
   const [pages, setPages] = useQueryState('pages', pagesParser);
@@ -147,7 +151,7 @@ export default function Table({
                 className="min-w-[300px] w-full px-5 border-secondary-100 border-r-2 font-semibold mb-2 first:pl-[40px] last:border-r-0"
                 key={column}
               >
-                {column}
+                {translateColumn(column)}
               </div>
             ))}
           </div>
@@ -173,11 +177,13 @@ export default function Table({
             (size > 0 && data && typeof data[size - 1] === 'undefined')
           }
         >
-          Load more
+          {t('steep_mild_lionfish_hint')}
         </Button>{' '}
         <div className="ms-4 text-secondary text-sm">
-          Showing {items.length} of {data?.[0]?.total_hits.toLocaleString()}{' '}
-          results
+          {t('flaky_sleek_snake_flip', {
+            start: items.length,
+            end: data?.[0]?.total_hits.toLocaleString(),
+          })}
         </div>
       </div>
     </>

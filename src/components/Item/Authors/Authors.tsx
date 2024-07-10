@@ -2,6 +2,7 @@
 
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 
 import useIsOverflow from '@/components/Item/Authors/hooks/useIsOverflowing';
@@ -17,6 +18,7 @@ export default function Authors({ authors = [] }: AuthorsProps) {
   const ref = useRef<HTMLUListElement>(null);
   const isOverflow = useIsOverflow(ref);
   const [isShowMore, setIsShowMore] = useState(false);
+  const t = useTranslations();
 
   return authors.length > 0 ? (
     <div className="flex items-center min-w-0">
@@ -45,7 +47,9 @@ export default function Authors({ authors = [] }: AuthorsProps) {
             style={{ fontSize: 'inherit' }}
             onPress={() => setIsShowMore((v) => !v)}
           >
-            {isShowMore ? 'Less...' : 'More...'}
+            {isShowMore
+              ? t('mealy_drab_quail_jest')
+              : t('loose_jolly_crocodile_flow')}
           </LinkButton>
         </div>
       )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { uniqBy } from 'lodash';
+import { useTranslations } from 'next-intl';
 import { ChangeEvent, useContext } from 'react';
 
 import Item from '@/components/Item/Item';
@@ -19,6 +20,7 @@ export default function ItemsList({
   items: (CollectionItemsResponse & MetaData)[];
 }) {
   const { selectedItems, setSelectedItems } = useContext(SelectedItemsContext);
+  const t = useTranslations();
 
   const toggleSelectedItems = ({
     e,
@@ -69,9 +71,9 @@ export default function ItemsList({
             onChange={handleSelectAll}
             isSelected={isAllSelected}
           />
-          Items
+          {t('free_livid_weasel_list')}
         </div>
-        <div className="me-2">Actions</div>
+        <div className="me-2">{t('grand_flat_sawfish_fall')}</div>
       </div>
       {items.map((item) => (
         <div key={item.id} className="mb-1">

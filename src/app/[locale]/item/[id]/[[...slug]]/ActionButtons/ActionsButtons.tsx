@@ -13,11 +13,13 @@ import {
   ButtonGroup,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
   PopoverContent,
   PopoverTrigger,
   useDisclosure,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { ReactElement } from 'react';
 
 import CiteModal from '@/components/CiteModal/CiteModal';
@@ -38,6 +40,8 @@ export default function ActionButtons({
   addToCollection,
   orkgButton,
 }: ActionButtonsProps) {
+  const t = useTranslations();
+
   const {
     isOpen: isOpenCiteModal,
     onOpen: onOpenCiteModal,
@@ -57,7 +61,7 @@ export default function ActionButtons({
           href={item.URL}
           target="_blank"
         >
-          Open PDF
+          {t('many_salty_jackdaw_prosper')}
         </Button>
       )}
       {links && Array.isArray(links) && links.length > 0 ? (
@@ -70,25 +74,25 @@ export default function ActionButtons({
             href={links[0]}
             target="_blank"
           >
-            Open link
+            {t('sweet_giant_marlin_aspire')}
           </Button>
-          {links.length > 1 ? (
-            <Dropdown placement="bottom-end">
-              <DropdownTrigger>
-                <Button
-                  isIconOnly
-                  color="secondary"
-                  variant="bordered"
-                  aria-label="show more links"
-                >
-                  <FontAwesomeIcon icon={faCaretDown} />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Link locations"
-                selectionMode="single"
-                className="max-w-[300px]"
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Button
+                isIconOnly
+                color="secondary"
+                variant="bordered"
+                aria-label={t('zippy_clean_tortoise_enrich')}
               >
+                <FontAwesomeIcon icon={faCaretDown} />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label={t('mean_yummy_tuna_work')}
+              selectionMode="single"
+              className="max-w-[300px]"
+            >
+              <DropdownSection title="Sources" showDivider>
                 {links.map((link, index) => (
                   <DropdownItem
                     key={link}
@@ -99,9 +103,29 @@ export default function ActionButtons({
                     {index + 1}. {new URL(link).hostname ?? link}
                   </DropdownItem>
                 ))}
-              </DropdownMenu>
-            </Dropdown>
-          ) : null}
+              </DropdownSection>
+              <DropdownSection title={t('soft_civil_guppy_read')}>
+                <DropdownItem
+                  as={Link}
+                  href={`https://scholar.google.de/scholar?&q=${encodeURIComponent(
+                    item.title ?? ''
+                  )}`}
+                  target="_blank"
+                >
+                  Google Scholar
+                </DropdownItem>
+                <DropdownItem
+                  as={Link}
+                  href={`https://www.semanticscholar.org/search?q=${encodeURIComponent(
+                    item.title ?? ''
+                  )}&sort=relevance`}
+                  target="_blank"
+                >
+                  Semantic Scholar
+                </DropdownItem>
+              </DropdownSection>
+            </DropdownMenu>
+          </Dropdown>
         </ButtonGroup>
       ) : null}
       {addToCollection}
@@ -111,7 +135,7 @@ export default function ActionButtons({
         startContent={<FontAwesomeIcon icon={faQuoteLeft} />}
         onPress={onOpenCiteModal}
       >
-        Cite
+        {t('kind_wild_eagle_work')}
       </Button>
       <Popover placement="bottom">
         <PopoverTrigger>
@@ -121,7 +145,7 @@ export default function ActionButtons({
             startContent={<FontAwesomeIcon icon={faShare} />}
             onPress={onOpenCiteModal}
           >
-            Share
+            {t('careful_flaky_camel_renew')}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="py-2 flex gap-2 flex-row">

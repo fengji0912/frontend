@@ -3,6 +3,7 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import {
   Dispatch,
@@ -22,6 +23,7 @@ type QueryProps = {
 };
 
 export default function Query({ setIsOpenFilters }: QueryProps) {
+  const t = useTranslations();
   const [isLoading, startTransition] = useTransition();
   const [query, setQuery] = useQueryState(
     'query',
@@ -38,8 +40,8 @@ export default function Query({ setIsOpenFilters }: QueryProps) {
     <div className="box-white">
       <form>
         <Textarea
-          label="Search query"
-          placeholder="Ask your question..."
+          label={t('still_major_macaw_spur')}
+          placeholder={t('low_key_sheep_cure')}
           rows={3}
           value={localQuery}
           onChange={(e) =>
@@ -59,7 +61,7 @@ export default function Query({ setIsOpenFilters }: QueryProps) {
             color="secondary"
             onPress={() => setIsOpenFilters((v: boolean) => !v)}
           >
-            Filters
+            {t('stout_proof_thrush_earn')}
           </Button>
           <Button
             color="primary"
@@ -67,7 +69,7 @@ export default function Query({ setIsOpenFilters }: QueryProps) {
             isLoading={isLoading}
             startContent={<FontAwesomeIcon icon={faSearch} />}
           >
-            Search
+            {t('long_tame_turkey_rise')}
           </Button>
         </div>
       </form>

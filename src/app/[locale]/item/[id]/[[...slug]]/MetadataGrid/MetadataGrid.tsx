@@ -8,10 +8,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
-import { LANGUAGES } from '@/app/[locale]/search/Sidebar/Filters/helpers/languages';
+import useLanguages from '@/app/[locale]/search/Sidebar/Filters/helpers/useLanguages';
 import doiIcon from '@/assets/images/doi-icon.svg';
-import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import useCslJsonDateFormatter from '@/lib/useCslJsonDateFormatter';
 import { IData } from '@/types/csl-json';
 
 type MetadataGridProps = {
@@ -19,39 +20,43 @@ type MetadataGridProps = {
 };
 
 export default function MetadataGrid({ item }: MetadataGridProps) {
+  const t = useTranslations();
+  const { LANGUAGES } = useLanguages();
+  const { formatDate } = useCslJsonDateFormatter();
+
   const METADATA_GRID_ITEMS = [
     {
-      label: 'Publication date',
+      label: t('mad_strong_mouse_engage'),
       icon: faCalendar,
-      value: formatCslJsonDate(item.issued),
+      value: formatDate(item.issued),
     },
     {
-      label: 'DOI',
+      label: t('lofty_alert_zebra_dare'),
       icon: doiIcon,
       value: item?.DOI,
     },
     {
-      label: 'Publisher',
+      label: t('round_suave_guppy_talk'),
       icon: faBuildingColumns,
       value: item?.publisher,
     },
     {
-      label: 'ISSN',
+      label: t('spicy_salty_midge_quiz'),
       icon: faBarcode,
       value: item?.ISSN,
     },
     {
-      label: 'Journal',
+      label: t('brief_basic_spider_harbor'),
       icon: faBook,
       value: item?.journalAbbreviation,
     },
     {
-      label: 'Language',
+      label: t('crazy_weak_flamingo_lift'),
       icon: faLanguage,
       value: item?.language ? LANGUAGES[item.language] : '',
     },
     {
-      label: 'Citation count (estimate)',
+      label: t('least_fancy_mare_chop'),
       icon: faQuoteLeft,
       value: item?.custom?.['citation-count'],
     },

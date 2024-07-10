@@ -6,6 +6,7 @@ import {
   Selection,
   SelectItem,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import {
   ReactElement,
   useCallback,
@@ -32,6 +33,7 @@ export default function AddToCollection({
 }: AddToCollectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<Selection | null>(null);
+  const t = useTranslations();
 
   const { data: collections } = useSWR('collections', () => getCollections());
 
@@ -112,8 +114,8 @@ export default function AddToCollection({
         <PopoverContent className="py-2">
           {collections && collections.length > 0 ? (
             <Select
-              label="Collection"
-              placeholder="No collection selected"
+              label={t('suave_inner_quail_grip')}
+              placeholder={t('short_tough_snail_pride')}
               className="w-56"
               isLoading={isPending}
               selectedKeys={selectedKeys ?? new Set([])}
@@ -126,7 +128,7 @@ export default function AddToCollection({
               ))}
             </Select>
           ) : (
-            <div className="p-3">No collections created yet</div>
+            <div className="p-3">{t('aloof_slimy_nuthatch_mend')}</div>
           )}
         </PopoverContent>
       </Popover>

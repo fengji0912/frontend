@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 
 import { queryParser } from '@/app/[locale]/search/searchParams/searchParamsParsers';
@@ -8,32 +9,33 @@ import nfdi4dsLogo from '@/app/[locale]/search/Sidebar/SupportingOrganizations/L
 import nfdi4energyLogo from '@/app/[locale]/search/Sidebar/SupportingOrganizations/Logos/nfdi4energy.svg';
 import nfdi4ingLogo from '@/app/[locale]/search/Sidebar/SupportingOrganizations/Logos/nfdi4ing.svg';
 
-const ORGANIZATIONS = [
-  {
-    name: 'NFDI4DataScience',
-    logo: nfdi4dsLogo,
-    url: 'https://www.nfdi4datascience.de/',
-    words: ['data'],
-    domain: 'Data Science',
-  },
-  {
-    name: 'NFDI4Energy',
-    logo: nfdi4energyLogo,
-    url: 'https://www.nfdi4energy.de/',
-    words: ['energy'],
-    domain: 'Energy Systems',
-  },
-  {
-    name: 'NFDI4Ing',
-    logo: nfdi4ingLogo,
-    url: 'https://www.nfdi4ing.de/',
-    words: ['engineering', 'construction'],
-    domain: 'Engineering',
-  },
-];
-
 export default function SupportingOrganizations() {
+  const t = useTranslations();
   const [query] = useQueryState('query', queryParser);
+
+  const ORGANIZATIONS = [
+    {
+      name: 'NFDI4DataScience',
+      logo: nfdi4dsLogo,
+      url: 'https://www.nfdi4datascience.de/',
+      words: [t('sharp_lime_shell_grace')],
+      domain: t('flat_awful_tapir_adore'),
+    },
+    {
+      name: 'NFDI4Energy',
+      logo: nfdi4energyLogo,
+      url: 'https://www.nfdi4energy.de/',
+      words: [t('arable_jumpy_jay_drip')],
+      domain: t('direct_zesty_puffin_grin'),
+    },
+    {
+      name: 'NFDI4Ing',
+      logo: nfdi4ingLogo,
+      url: 'https://www.nfdi4ing.de/',
+      words: [t('patchy_this_rat_chop'), t('solid_loose_toucan_breathe')],
+      domain: t('brave_odd_nils_boost'),
+    },
+  ];
 
   const supportingOrganization = ORGANIZATIONS.find((organization) =>
     organization.words.some((word) =>
@@ -53,8 +55,9 @@ export default function SupportingOrganizations() {
         />
       </div>
       <div className="text-sm">
-        The generation of this answer in the area of{' '}
-        {supportingOrganization.domain} is supported by{' '}
+        {t('calm_grassy_maggot_quell', {
+          domain: supportingOrganization.domain,
+        })}{' '}
         <a href={supportingOrganization.url} target="_blank">
           {supportingOrganization.name}
         </a>

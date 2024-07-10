@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { SearchResponse } from '@/services/backend';
 import { IData } from '@/types/csl-json';
 
@@ -11,6 +9,10 @@ import { IData } from '@/types/csl-json';
  * @returns The item object transformed into CSL-JSON format.
  */
 export default function transformBackendToJsonCsl(item: SearchResponse): IData {
+  const publicationDate = item.date_published
+    ? new Date(item.date_published)
+    : null;
+
   return {
     id: item.id.toString(),
     type: 'article',
@@ -24,8 +26,8 @@ export default function transformBackendToJsonCsl(item: SearchResponse): IData {
       ? {
           'date-parts': [
             [
-              moment(item.date_published).year() ?? undefined,
-              moment(item.date_published).month() + 1, // moment JS months range form 0 to 11
+              publicationDate ? publicationDate.getFullYear() : 0,
+              publicationDate ? publicationDate.getMonth() + 1 : undefined, // Date months range form 0 to 11, while CSL JSON months range from 1 to 12
             ],
           ],
         }

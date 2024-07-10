@@ -5,6 +5,9 @@ import { CSS } from '@dnd-kit/utilities';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
+
+import useColumnTranslator from '@/lib/useColumnTranslator';
 
 export default function ColumnItem({
   column,
@@ -13,6 +16,9 @@ export default function ColumnItem({
   column: string;
   handleDelete: (column: string) => void;
 }) {
+  const t = useTranslations();
+  const { translateColumn } = useColumnTranslator();
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: column });
 
@@ -38,7 +44,7 @@ export default function ColumnItem({
           className="ms-1 me-2 text-secondary"
           style={{ cursor: 'move' }}
         />
-        {column}
+        {translateColumn(column)}
       </div>
       <Button
         isIconOnly
@@ -48,7 +54,7 @@ export default function ColumnItem({
         className="py-0 px-1 lh-1"
         onPress={() => handleDelete(column)}
         isDisabled={column === 'Answer'}
-        aria-label="remove column"
+        aria-label={t('suave_flaky_jackdaw_succeed')}
       >
         <FontAwesomeIcon icon={faTimes} className="text-secondary" size="lg" />
       </Button>

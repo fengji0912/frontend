@@ -1,6 +1,7 @@
 import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, useContext, useEffect } from 'react';
 import useSWR from 'swr';
@@ -45,6 +46,7 @@ type TableRowProps = {
 };
 
 export default function TableRow({ item }: TableRowProps) {
+  const t = useTranslations();
   const [columns] = useQueryState('columns', columnsParser);
   const [query] = useQueryState('query', queryParser);
   const { isAuthenticated } = useAuth();
@@ -133,7 +135,7 @@ export default function TableRow({ item }: TableRowProps) {
                   variant="light"
                   size="sm"
                   isDisabled={!isAuthenticated}
-                  aria-label="add to collection"
+                  aria-label={t('alive_less_swan_approve')}
                 >
                   <FontAwesomeIcon icon={faBookmark} size="lg" />
                 </Button>

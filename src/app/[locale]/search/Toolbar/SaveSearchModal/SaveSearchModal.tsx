@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import { useQueryStates } from 'nuqs';
 import { useEffect } from 'react';
 import { useFormState } from 'react-dom';
@@ -33,6 +34,7 @@ export default function SaveSearchModal({
   onOpenChange,
   onClose,
 }: SaveSearchModalProps) {
+  const t = useTranslations();
   const [searchData] = useQueryStates({
     query: queryParser,
     columns: columnsParser,
@@ -56,7 +58,7 @@ export default function SaveSearchModal({
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <ModalContent>
-        <ModalHeader>Save search</ModalHeader>
+        <ModalHeader>{t('full_gaudy_bear_jest')}</ModalHeader>
         <form action={formAction}>
           <ModalBody>
             {state?.error && (
@@ -66,14 +68,14 @@ export default function SaveSearchModal({
             )}
             <Input
               type="text"
-              label="Title"
+              label={t('simple_inclusive_penguin_hack')}
               name="title"
               defaultValue={searchData.query}
             />
           </ModalBody>
           <ModalFooter>
             <ButtonFormSubmit color="primary" type="submit">
-              Save
+              {t('deft_that_starfish_aid')}
             </ButtonFormSubmit>
           </ModalFooter>
         </form>

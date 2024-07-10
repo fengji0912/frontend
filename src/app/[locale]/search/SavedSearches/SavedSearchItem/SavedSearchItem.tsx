@@ -14,7 +14,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
-import moment from 'moment';
+import { useFormatter, useTranslations } from 'next-intl';
 import { createSerializer } from 'nuqs';
 import {
   ChangeEvent,
@@ -45,7 +45,8 @@ export default function SavedSearchItem({
   mutate,
 }: SavedSearchItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-
+  const format = useFormatter();
+  const t = useTranslations();
   const [isLoading, startTransition] = useTransition();
 
   const [optimisticTitle, changeOptimisticTitle] = useOptimistic(
@@ -69,7 +70,7 @@ export default function SavedSearchItem({
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this saved search?')) {
+    if (confirm(t('salty_calm_wolf_emerge'))) {
       startTransition(() => {
         deleteSavedSearch(id);
         mutate();
@@ -92,14 +93,7 @@ export default function SavedSearchItem({
             </Link>
             <div className="text-secondary text-sm me-2 ml-auto shrink-0">
               <FontAwesomeIcon icon={faCalendar} />{' '}
-              {moment(item.created).calendar(null, {
-                lastDay: '[Yesterday at] HH:mm',
-                sameDay: '[Today at] HH:mm',
-                nextDay: '[Tomorrow at] HH:mm',
-                lastWeek: '[last] dddd [at] HH:mm',
-                nextWeek: 'dddd [at] HH:mm',
-                sameElse: 'L',
-              })}
+              {format.relativeTime(new Date(item.created))}
             </div>
           </div>
           <Dropdown>
@@ -109,7 +103,7 @@ export default function SavedSearchItem({
                 color="secondary"
                 variant="light"
                 size="sm"
-                aria-label="show actions menu"
+                aria-label={t('blue_solid_alpaca_sing')}
               >
                 {!isLoading ? (
                   <FontAwesomeIcon
@@ -125,14 +119,14 @@ export default function SavedSearchItem({
                 )}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu aria-label="Saved search item actions">
+            <DropdownMenu aria-label={t('many_pretty_walrus_bend')}>
               <DropdownItem
                 onPress={() => setIsEditing(true)}
                 startContent={
                   <FontAwesomeIcon icon={faPen} className="text-secondary" />
                 }
               >
-                Edit
+                {t('dark_royal_fly_praise')}
               </DropdownItem>
               <DropdownItem
                 onPress={() => handleDelete(item.id)}
@@ -140,7 +134,7 @@ export default function SavedSearchItem({
                   <FontAwesomeIcon icon={faTrash} className="text-secondary" />
                 }
               >
-                Delete
+                {t('dizzy_hour_robin_relish')}
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -153,7 +147,7 @@ export default function SavedSearchItem({
           onKeyDown={(e) => {
             if (e.key === 'Enter') handleSaveEdit(e);
           }}
-          placeholder="Title"
+          placeholder={t('happy_tense_gibbon_breathe')}
           autoFocus
           className="!py-1 !border-2 !border-primary-500"
           style={{

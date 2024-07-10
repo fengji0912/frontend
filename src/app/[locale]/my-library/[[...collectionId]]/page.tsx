@@ -1,5 +1,6 @@
 import { times } from 'lodash';
 import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 
 import Collections from '@/app/[locale]/my-library/[[...collectionId]]/Collections/Collections';
@@ -18,6 +19,8 @@ export async function generateMetadata({
 }: {
   params: { collectionId?: string[] };
 }): Promise<Metadata> {
+  const t = await getTranslations();
+
   const isAuthenticated = await checkIfAuthenticated();
   if (!isAuthenticated) {
     return {};
@@ -27,8 +30,8 @@ export async function generateMetadata({
   const collection = await getCollection(collectionId);
 
   return {
-    title: collection?.title ?? 'My library',
-    description: 'Manage your collections and items in your library',
+    title: collection?.title ?? t('close_wacky_alpaca_adapt'),
+    description: t('watery_aware_ox_zip'),
   };
 }
 

@@ -13,6 +13,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -38,11 +39,12 @@ export default function CollectionItem({
   isActive: boolean;
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const t = useTranslations();
   const [isLoading, startTransition] = useTransition();
 
   const handleDelete = async () => {
     // if items is 0, ignore confirmation
-    if (confirm('Are you sure you want to delete this collection?')) {
+    if (confirm(t('drab_cute_pelican_approve'))) {
       startTransition(() => {
         deleteCollection(item.id);
       });
@@ -93,7 +95,7 @@ export default function CollectionItem({
                   color="secondary"
                   variant="light"
                   size="sm"
-                  aria-label="show action menu"
+                  aria-label={t('each_odd_baboon_adapt')}
                 >
                   {!isLoading ? (
                     <FontAwesomeIcon
@@ -115,14 +117,14 @@ export default function CollectionItem({
                     icon={faPen}
                     className="text-secondary me-2"
                   />
-                  Edit
+                  {t('sharp_every_guppy_explore')}
                 </DropdownItem>
                 <DropdownItem onPress={handleDelete}>
                   <FontAwesomeIcon
                     icon={faTrash}
                     className="text-secondary me-2"
                   />
-                  Delete
+                  {t('vivid_awful_bat_tend')}
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -135,7 +137,7 @@ export default function CollectionItem({
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleSaveEdit(e);
             }}
-            placeholder="Title"
+            placeholder={t('witty_jumpy_alligator_startle')}
             autoFocus
             className="!py-1"
             style={{

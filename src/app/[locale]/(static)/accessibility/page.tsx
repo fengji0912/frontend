@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 
+import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
+
 export const metadata: Metadata = {
   title: 'Accessibility statement',
 };
@@ -8,6 +10,7 @@ export default function Accessibility() {
   return (
     <div>
       <div className="container-box [&>p]:mb-3">
+        <TranslationMissingAlert />
         <h1>Accessibility</h1>
         <p>
           <em>(Date of this declaration 18 August 2020)</em>

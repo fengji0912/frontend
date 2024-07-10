@@ -6,7 +6,7 @@ import ReadMore from '@/app/[locale]/item/[id]/[[...slug]]/ReadMore/ReadMore';
 import Authors from '@/components/Item/Authors/Authors';
 import { Link } from '@/components/Navigation/Navigation';
 import ROUTES from '@/constants/routes';
-import formatCslJsonDate from '@/lib/formatCslJsonDate';
+import useCslJsonDateFormatter from '@/lib/useCslJsonDateFormatter';
 import { IData } from '@/types/csl-json';
 
 type ItemProps = {
@@ -14,6 +14,8 @@ type ItemProps = {
 };
 
 export default function Item({ item }: ItemProps) {
+  const { formatDate } = useCslJsonDateFormatter();
+
   return (
     <div className="bg-secondary-50 rounded-2xl p-4 mx-3 h-full">
       <Link
@@ -25,10 +27,10 @@ export default function Item({ item }: ItemProps) {
       <div className="text-secondary-800">
         <Authors authors={item.author} />
         <div className="mb-3">
-          {formatCslJsonDate(item.issued) && (
+          {formatDate(item.issued) && (
             <div className="whitespace-nowrap">
               <FontAwesomeIcon icon={faCalendar} className="opacity-75 me-2" />
-              {formatCslJsonDate(item.issued)}
+              {formatDate(item.issued)}
             </div>
           )}
         </div>

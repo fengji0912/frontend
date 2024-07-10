@@ -1,6 +1,7 @@
 'use client';
 
 import { Pagination } from '@nextui-org/react';
+import { useTranslations } from 'next-intl';
 
 import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
 import PageSize from '@/components/PaginationBox/PageSize/PageSize';
@@ -22,6 +23,8 @@ export default function PaginationBox({
   setPageSize,
   isLoading,
 }: PaginationBoxProps) {
+  const t = useTranslations();
+
   const totalPages = Math.ceil(totalItems / pageSize);
 
   return (
@@ -39,9 +42,11 @@ export default function PaginationBox({
             onChange={setPage}
           />
           <div className="ms-3 hidden lg:block">
-            Showing {(page - 1) * pageSize + 1}-
-            {(page - 1) * pageSize + pageSize} of {totalItems.toLocaleString()}{' '}
-            results
+            {t('any_steep_oryx_jump', {
+              start: (page - 1) * pageSize + 1,
+              end: (page - 1) * pageSize + pageSize,
+              total: totalItems.toLocaleString(),
+            })}
           </div>
         </div>
         <PageSize pageSize={pageSize} setPageSize={setPageSize} />

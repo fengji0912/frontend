@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useContext, useTransition } from 'react';
 
 import { deleteCollectionItems } from '@/app/[locale]/my-library/[[...collectionId]]/Items/actions/actions';
@@ -17,6 +18,8 @@ import Dropdown from '@/components/NextUi/Dropdown/Dropdown';
 import SelectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 
 export default function BulkActions() {
+  const t = useTranslations();
+
   const { selectedItems, setSelectedItems } = useContext(SelectedItemsContext);
 
   const {
@@ -34,7 +37,7 @@ export default function BulkActions() {
   const [isLoading, startTransition] = useTransition();
 
   const handleDelete = () => {
-    if (confirm('Are you sure you want to delete these items?')) {
+    if (confirm(t('plane_salty_thrush_feast'))) {
       startTransition(() => {
         deleteCollectionItems(selectedItems.map((item) => item.id));
         setSelectedItems([]);
@@ -66,18 +69,22 @@ export default function BulkActions() {
                     )
                   }
                 >
-                  With {selectedItems.length} selected...
+                  {t('fluffy_suave_hare_nourish', {
+                    itemNumber: selectedItems.length,
+                  })}
                 </Button>
               </DropdownTrigger>
             </motion.div>
-            <DropdownMenu aria-label="Bulk select actions">
+            <DropdownMenu aria-label={t('frail_wide_meerkat_tear')}>
               <DropdownItem onPress={onOpenNewSearchModal}>
-                New search...
+                {t('only_east_goose_dream')}
               </DropdownItem>
               <DropdownItem onPress={onOpenCiteModal}>
-                Export / cite
+                {t('ideal_slow_tiger_drum')}
               </DropdownItem>
-              <DropdownItem onPress={handleDelete}>Delete</DropdownItem>
+              <DropdownItem onPress={handleDelete}>
+                {t('funny_fresh_porpoise_kiss')}
+              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         )}
