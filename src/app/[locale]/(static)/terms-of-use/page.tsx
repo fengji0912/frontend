@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 import TranslationMissingAlert from '@/components/TranslationMissingAlert/TranslationMissingAlert';
 
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
   title: 'Terms of use',
 };
 
-export default function TermsOfService() {
+export default function TermsOfService({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
   return (
     <div>
       <div className="container-box [&>p]:mb-3">
