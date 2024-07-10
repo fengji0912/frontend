@@ -1,3 +1,15 @@
+# [1.17.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.16.0...v1.17.0) (2024-07-10)
+
+
+### Bug Fixes
+
+* support building for static pages ([c79ddfd](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/c79ddfda7f4ec06be8bbfd825f8a0b85dfe30a4c))
+
+
+### Features
+
+* support internationalization ([f65cc82](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/f65cc82f1d7de0a48c360bead8f871882a342315))
+
 # [1.16.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.15.1...v1.16.0) (2024-06-25)
 
 
