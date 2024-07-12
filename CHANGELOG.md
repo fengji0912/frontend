@@ -1,3 +1,16 @@
+# [1.18.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.17.0...v1.18.0) (2024-07-12)
+
+
+### Bug Fixes
+
+* missing locale function for stats page ([7442627](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/7442627cd96bbfd7d0ac3daac5343ec460addcea))
+
+
+### Features
+
+* add statistics page ([37a4d6b](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/37a4d6bc9ae039e9bd88d23aca4d6033ef1f2058))
+* remove example question about higher-dimensional algebra ([4d7e0e7](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/4d7e0e7aec90c24b720fbd7ff38c330b2c48ec28))
+
 # [1.17.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.16.0...v1.17.0) (2024-07-10)
 
 
