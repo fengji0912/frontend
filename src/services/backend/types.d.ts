@@ -270,19 +270,81 @@ export interface components {
        */
       documents: components['schemas']['IndexRequest'][];
     };
-    /** DatasetStatsResponse */
-    DatasetStatsResponse: {
+    /**
+     * DatasetStats
+     * @description The dataset statistics of the system.
+     */
+    DatasetStats: {
       /**
-       * Uuid
-       * Format: uuid
+       * Num Items With Authors
+       * @description The number of items with authors
        */
-      uuid: string;
+      num_items_with_authors?: number | null;
       /**
-       * Timestamp
-       * Format: date-time
+       * Num Items With Abstracts
+       * @description The number of items with abstracts
        */
-      timestamp: string;
-      payload: components['schemas']['app__models__backend__DatasetStatsResponse__Payload'];
+      num_items_with_abstracts?: number | null;
+      /**
+       * Num Items With Languages
+       * @description The number of items with language tags
+       */
+      num_items_with_languages?: number | null;
+      /**
+       * Num Items With Topics
+       * @description The number of items with topics
+       */
+      num_items_with_topics?: number | null;
+      /**
+       * Num Items With Subjects
+       * @description The number of items with subjects
+       */
+      num_items_with_subjects?: number | null;
+      /**
+       * Num Items With Year
+       * @description The number of items with year values
+       */
+      num_items_with_year?: number | null;
+      /**
+       * Num Items With Identifiers
+       * @description The number of items with identifiers
+       */
+      num_items_with_identifiers?: number | null;
+      /**
+       * Num Items With Type
+       * @description The number of items with a specific document type
+       */
+      num_items_with_type?: number | null;
+      /**
+       * Num Items With Issn
+       * @description The number of items with an ISSN
+       */
+      num_items_with_issn?: number | null;
+      /**
+       * Num Items With Doi
+       * @description The number of items with a DOI
+       */
+      num_items_with_doi?: number | null;
+      /**
+       * Num Items With Citations
+       * @description The number of items with citation counts
+       */
+      num_items_with_citations?: number | null;
+      /**
+       * Num Items With Publication Date
+       * @description The number of items with publication dates
+       */
+      num_items_with_publication_date?: number | null;
+      /**
+       * Num Items With Publisher
+       * @description The number of items with publishers
+       */
+      num_items_with_publisher?: number | null;
+      /**
+       * Num Items With Journal
+       * @description The number of items with journal names
+       */
+      num_items_with_journal?: number | null;
     };
     /** ExtractItemValuesFromPropertiesResponse */
     ExtractItemValuesFromPropertiesResponse: {
@@ -339,7 +401,7 @@ export interface components {
        * Year
        * @description The year of the document
        */
-      year?: string | number | null;
+      year?: number | string | null;
       /**
        * Issn
        * @description The ISSN of the document
@@ -430,6 +492,26 @@ export interface components {
        * @description The inferred document type
        */
       document_type?: string | null;
+      /**
+       * Extractions
+       * @description The automatic extractions from the item
+       */
+      extractions?: {
+        [key: string]: Record<string, never> | undefined;
+      } | null;
+    };
+    /**
+     * IndexingStats
+     * @description The indexing statistics of the system.
+     */
+    IndexingStats: {
+      /**
+       * Num Indexed Vectors
+       * @description The number of indexed vectors in the vector store
+       */
+      num_indexed_vectors: number;
+      /** @description The configuration of the vectors in the vector store */
+      vector_config: components['schemas']['VectorConfig'];
     };
     /** QdrantDictResponse */
     QdrantDictResponse: {
@@ -485,7 +567,7 @@ export interface components {
        * Year
        * @description The year of the document
        */
-      year?: string | number | null;
+      year?: number | string | null;
       /**
        * Issn
        * @description The ISSN of the document
@@ -576,6 +658,13 @@ export interface components {
        * @description The inferred document type
        */
       document_type?: string | null;
+      /**
+       * Extractions
+       * @description The automatic extractions from the item
+       */
+      extractions?: {
+        [key: string]: Record<string, never> | undefined;
+      } | null;
     };
     /** QdrantListDocumentsResponse */
     QdrantListDocumentsResponse: {
@@ -648,6 +737,20 @@ export interface components {
       /** @description The item that matches the selection criteria */
       payload: components['schemas']['QdrantDocument'];
     };
+    /** StatisticsResponse */
+    StatisticsResponse: {
+      /**
+       * Uuid
+       * Format: uuid
+       */
+      uuid: string;
+      /**
+       * Timestamp
+       * Format: date-time
+       */
+      timestamp: string;
+      payload: components['schemas']['app__models__backend__StatisticsResponse__Payload'];
+    };
     /** SynthesisAnswerOfQuestionFromAbstractsResponse */
     SynthesisAnswerOfQuestionFromAbstractsResponse: {
       /**
@@ -662,6 +765,47 @@ export interface components {
       timestamp: string;
       payload: components['schemas']['app__models__llm__SynthesisAnswerOfQuestionFromAbstractsResponse__Payload'];
     };
+    /**
+     * UsageStats
+     * @description The usage statistics of the system.
+     */
+    UsageStats: {
+      /**
+       * Num Registered Users
+       * @description The number of registered users in the system
+       */
+      num_registered_users: number;
+      /**
+       * Num Cache Hits
+       * @description The number of cache hits in the system
+       */
+      num_cache_hits: number;
+      /**
+       * Num Collections
+       * @description The number of user-created collections in the system
+       */
+      num_collections: number;
+      /**
+       * Num Collection Items
+       * @description The number of items in bibtex imported items to the system
+       */
+      num_collection_items: number;
+      /**
+       * Num Saved Searches
+       * @description The number of saved searches in the system
+       */
+      num_saved_searches: number;
+      /**
+       * Num Shared Links
+       * @description The number of shared links in the system
+       */
+      num_shared_links: number;
+      /**
+       * Num Questions Asked
+       * @description Approximate number of non-unique questions asked to the system
+       */
+      num_questions_asked: number;
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -671,7 +815,10 @@ export interface components {
       /** Error Type */
       type: string;
     };
-    /** VectorConfig */
+    /**
+     * VectorConfig
+     * @description The configuration of the vectors in the vector store.
+     */
     VectorConfig: {
       /**
        * Vector Size
@@ -693,84 +840,10 @@ export interface components {
       version: string;
     };
     /** Payload */
-    app__models__backend__DatasetStatsResponse__Payload: {
-      /**
-       * Num Indexed Vectors
-       * @description The number of indexed vectors in the vector store
-       */
-      num_indexed_vectors: number;
-      /** @description The configuration of the vectors in the vector store */
-      vector_config: components['schemas']['VectorConfig'];
-      /**
-       * Num Items With Authors
-       * @description The number of items with authors
-       */
-      num_items_with_authors?: number | null;
-      /**
-       * Num Items With Abstracts
-       * @description The number of items with abstracts
-       */
-      num_items_with_abstracts?: number | null;
-      /**
-       * Num Items With Languages
-       * @description The number of items with language tags
-       */
-      num_items_with_languages?: number | null;
-      /**
-       * Num Items With Topics
-       * @description The number of items with topics
-       */
-      num_items_with_topics?: number | null;
-      /**
-       * Num Items With Subjects
-       * @description The number of items with subjects
-       */
-      num_items_with_subjects?: number | null;
-      /**
-       * Num Items With Year
-       * @description The number of items with year values
-       */
-      num_items_with_year?: number | null;
-      /**
-       * Num Items With Identifiers
-       * @description The number of items with identifiers
-       */
-      num_items_with_identifiers?: number | null;
-      /**
-       * Num Items With Type
-       * @description The number of items with a specific document type
-       */
-      num_items_with_type?: number | null;
-      /**
-       * Num Items With Issn
-       * @description The number of items with an ISSN
-       */
-      num_items_with_issn?: number | null;
-      /**
-       * Num Items With Doi
-       * @description The number of items with a DOI
-       */
-      num_items_with_doi?: number | null;
-      /**
-       * Num Items With Citations
-       * @description The number of items with citation counts
-       */
-      num_items_with_citations?: number | null;
-      /**
-       * Num Items With Publication Date
-       * @description The number of items with publication dates
-       */
-      num_items_with_publication_date?: number | null;
-      /**
-       * Num Items With Publisher
-       * @description The number of items with publishers
-       */
-      num_items_with_publisher?: number | null;
-      /**
-       * Num Items With Journal
-       * @description The number of items with journal names
-       */
-      num_items_with_journal?: number | null;
+    app__models__backend__StatisticsResponse__Payload: {
+      indexing: components['schemas']['IndexingStats'];
+      dataset: components['schemas']['DatasetStats'];
+      usage: components['schemas']['UsageStats'];
     };
     /** Payload */
     app__models__llm__ExtractItemValuesFromPropertiesResponse__Payload: {
@@ -1191,7 +1264,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['DatasetStatsResponse'];
+          'application/json': components['schemas']['StatisticsResponse'];
         };
       };
     };

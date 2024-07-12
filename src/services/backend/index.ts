@@ -185,3 +185,9 @@ export function getBackendVersion(): Promise<
 > {
   return backendApi.get('backend/version').json();
 }
+
+export function getStats(): Promise<
+  components['schemas']['StatisticsResponse']
+> {
+  return backendApi.get('backend/stats').json();
+}

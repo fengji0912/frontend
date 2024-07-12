@@ -11,6 +11,7 @@ const ROUTES = {
   CHANGELOG: '/changelog',
   PAGES: '/pages',
   TERMS_OF_USE: '/terms-of-use',
+  STATS: '/stats',
 };
 
 export default ROUTES;

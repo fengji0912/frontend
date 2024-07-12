@@ -23,6 +23,9 @@ export default async function Footer() {
           </Link>
         </ListItem>
         <ListItem>
+          <Link href={ROUTES.STATS}>{t('noisy_white_gazelle_type')}</Link>
+        </ListItem>
+        <ListItem>
           <Link href={ROUTES.CONTACT}>{t('suave_early_sparrow_lend')}</Link>
         </ListItem>
         <ListItem>
