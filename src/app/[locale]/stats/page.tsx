@@ -1,4 +1,8 @@
-import { getFormatter, getTranslations } from 'next-intl/server';
+import {
+  getFormatter,
+  getTranslations,
+  unstable_setRequestLocale,
+} from 'next-intl/server';
 
 import { getStats } from '@/services/backend';
 import { components } from '@/services/backend/types';
@@ -20,7 +24,12 @@ async function StatsBox({
   );
 }
 
-export default async function Stats() {
+export default async function Stats({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations();
 
   let stats;
