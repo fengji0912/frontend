@@ -27,7 +27,6 @@ export default function GettingStarted() {
       t('tired_gray_lark_flow'),
       t('sharp_happy_shad_borrow'),
       t('basic_ago_crab_imagine'),
-      t('red_alert_pug_compose'),
       t('wild_known_angelfish_zip'),
       t('zesty_clear_duck_roar'),
       t('awake_elegant_puffin_clap'),
