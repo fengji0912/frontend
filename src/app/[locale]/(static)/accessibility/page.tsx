@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 import { Metadata } from 'next';
 import { unstable_setRequestLocale } from 'next-intl/server';
 

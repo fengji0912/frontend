@@ -85,10 +85,14 @@ export default function Synthesis() {
           ) : (
             item.cslData?.title
           )}{' '}
-          by {formatCslJsonAuthor(item.cslData?.author?.[0])}{' '}
+          {t('happy_brave_polecat_cut')}{' '}
+          {formatCslJsonAuthor(item.cslData?.author?.[0])}{' '}
           {item.cslData?.author && item.cslData?.author?.length > 1
             ? t('frail_small_hamster_imagine')
             : ''}
+          {
+            // eslint-disable-next-line react/jsx-no-literals
+          }
           , {formatDate(item.cslData?.issued)}
         </p>
       </div>
@@ -147,7 +151,7 @@ export default function Synthesis() {
                   onClick={() => handleCitationClick(match)}
                   className="text-base"
                 >
-                  [{match}]
+                  {`[${match}]`}
                 </LinkButton>
               </Tooltip>
             )

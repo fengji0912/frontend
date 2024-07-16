@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 'use client';
 
 import { Slider } from '@nextui-org/react';

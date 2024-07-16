@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 'use client';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';

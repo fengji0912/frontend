@@ -43,9 +43,11 @@ export default async function Footer() {
           <Link href={ROUTES.CHANGELOG}>{t('early_helpful_gazelle_urge')}</Link>
         </ListItem>
         <ListItem>
+          {/* eslint-disable-next-line react/jsx-no-literals */}
           {t('active_noble_haddock_attend')}: v{process.env.version}
         </ListItem>
         <ListItem>
+          {/* eslint-disable-next-line react/jsx-no-literals */}
           {t('alive_quick_kangaroo_rush')}: v{backendVersion}
         </ListItem>
       </ul>

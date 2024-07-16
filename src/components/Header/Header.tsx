@@ -64,6 +64,9 @@ export default function Header() {
             <Link href={ROUTES.HOME} className="relative">
               <Image src={logo} alt={t('gaudy_dirty_racoon_ask')} width={130} />
               <div className="bg-secondary-200 leading-3 text-secondary-900 dark:text-foreground rounded-full font-semibold text-xs py-[1px] px-2 absolute bottom-[-3px] right-0">
+                {
+                  // eslint-disable-next-line react/jsx-no-literals
+                }
                 Ask
               </div>
             </Link>

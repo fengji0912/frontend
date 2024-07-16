@@ -19,7 +19,12 @@ export default function OrkgCsvDownload() {
         onClick={onOpenOrkgModal}
         className="dark:!bg-secondary-200 min-w-12"
       >
-        <span className="hidden md:inline">ORKG</span>
+        <span className="hidden md:inline">
+          {
+            // eslint-disable-next-line react/jsx-no-literals
+          }
+          ORKG
+        </span>
       </Button>
       {isOpenOrkgModal && <OrkgModal onOpenChange={onOpenChangeOrkgModal} />}
     </>

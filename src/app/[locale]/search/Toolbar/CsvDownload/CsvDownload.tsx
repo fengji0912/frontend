@@ -48,7 +48,12 @@ export default function CsvDownload() {
       data={csvData}
       filename="results.csv"
     >
-      <span className="hidden md:inline">CSV</span>
+      <span className="hidden md:inline">
+        {
+          // eslint-disable-next-line react/jsx-no-literals
+        }
+        CSV
+      </span>
     </Button>
   );
 }

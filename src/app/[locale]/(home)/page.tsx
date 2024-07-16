@@ -45,6 +45,9 @@ export default async function Home({ params: { locale } }: HomeProps) {
             priority
           />
           <span className="bg-secondary-200 rounded-2xl font-semibold text-secondary-900 dark:text-foreground py-[1px] px-[10px] text-[0.9rem] absolute bottom-[5px] right-0">
+            {
+              // eslint-disable-next-line react/jsx-no-literals
+            }
             Ask
           </span>
         </div>

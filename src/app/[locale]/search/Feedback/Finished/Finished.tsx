@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 'use client';
 
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';

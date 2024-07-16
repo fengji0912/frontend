@@ -112,6 +112,9 @@ export default function ActionButtons({
                   )}`}
                   target="_blank"
                 >
+                  {
+                    // eslint-disable-next-line react/jsx-no-literals
+                  }
                   Google Scholar
                 </DropdownItem>
                 <DropdownItem
@@ -121,6 +124,9 @@ export default function ActionButtons({
                   )}&sort=relevance`}
                   target="_blank"
                 >
+                  {
+                    // eslint-disable-next-line react/jsx-no-literals
+                  }
                   Semantic Scholar
                 </DropdownItem>
               </DropdownSection>

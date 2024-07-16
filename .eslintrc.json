@@ -12,6 +12,12 @@
     "simple-import-sort"
   ],
   "rules": {
+    "react/jsx-no-literals": [
+      "error",
+      {
+        "allowedStrings": [".", ",", ":"]
+      }
+    ],
     "no-relative-import-paths/no-relative-import-paths": [
       "error",
       {
