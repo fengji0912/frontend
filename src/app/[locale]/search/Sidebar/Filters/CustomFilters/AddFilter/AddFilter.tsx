@@ -11,10 +11,7 @@ import {
   filterParser,
 } from '@/app/[locale]/search/searchParams/searchParamsParsers';
 import ImpactFilter from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/AddFilter/ImpactFilter/ImpactFilter';
-import {
-  FILTER_FIELDS,
-  FILTER_OPERATORS,
-} from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/CustomFilters';
+import useFilters from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/hooks/useFilters';
 import FilterItem from '@/app/[locale]/search/Sidebar/Filters/FilterItem/FilterItem';
 import Input from '@/components/NextUi/Input/Input';
 import Select from '@/components/NextUi/Select/Select';
@@ -23,6 +20,7 @@ export default function AddFilter() {
   const [field, setField] = useState('impact');
   const t = useTranslations();
   const [, setFilter] = useQueryState('filter', filterParser);
+  const { FILTER_FIELDS, FILTER_OPERATORS } = useFilters();
   const ref = useRef<HTMLFormElement>(null);
   const labelId = useId();
   const selectedFilter = FILTER_FIELDS.find((f) => f.value === field);

@@ -7,7 +7,6 @@ import { useQueryState } from 'nuqs';
 import { useContext, useEffect, useMemo } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
-import createFilter from '@/app/[locale]/search/Results/Table/helpers/createFilter';
 import TableRow from '@/app/[locale]/search/Results/Table/TableRow/TableRow';
 import {
   columnsParser,
@@ -16,6 +15,7 @@ import {
   pagesParser,
   queryParser,
 } from '@/app/[locale]/search/searchParams/searchParamsParsers';
+import useFilters from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/hooks/useFilters';
 import tableDataContext from '@/components/TableDataProvider/tableDataContext';
 import useColumnTranslator from '@/lib/useColumnTranslator';
 import useLoadingTime from '@/lib/useLoadingTime';
@@ -44,6 +44,7 @@ export default function Table({
   const [pages, setPages] = useQueryState('pages', pagesParser);
   const [excludeItems] = useQueryState('excludeItems', excludeItemsParser);
   const [filter] = useQueryState('filter', filterParser);
+  const { createFilter } = useFilters();
 
   const filterString = createFilter({
     filter,

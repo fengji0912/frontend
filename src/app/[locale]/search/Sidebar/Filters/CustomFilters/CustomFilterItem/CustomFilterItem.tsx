@@ -8,10 +8,7 @@ import {
   Filter,
   filterParser,
 } from '@/app/[locale]/search/searchParams/searchParamsParsers';
-import {
-  FILTER_FIELDS,
-  FILTER_OPERATORS,
-} from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/CustomFilters';
+import useFilters from '@/app/[locale]/search/Sidebar/Filters/CustomFilters/hooks/useFilters';
 import FilterItem from '@/app/[locale]/search/Sidebar/Filters/FilterItem/FilterItem';
 
 type CustomFilterItemProps = {
@@ -25,6 +22,7 @@ export default function CustomFilterItem({
 }: CustomFilterItemProps) {
   const t = useTranslations();
   const [, setFilter] = useQueryState('filter', filterParser);
+  const { FILTER_FIELDS, FILTER_OPERATORS } = useFilters();
 
   const handleDelete = ({ field, operator, value }: Filter) => {
     setFilter((prevFilter) =>
