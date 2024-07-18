@@ -1,3 +1,16 @@
+# [1.19.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.18.0...v1.19.0) (2024-07-18)
+
+
+### Bug Fixes
+
+* make filters translatable ([51a0242](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/51a024203288e75e49b7aa5abe5484cf4132bd7b))
+
+
+### Features
+
+* add Dutch translation file ([f218625](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/f218625772926c77297134df973d434b22dc14e5))
+* add lint rule for disallowing literals ([a0ab415](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/a0ab415c0e30eb630ff20dc5b7cba86ec930c8d0))
+
 # [1.18.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.17.0...v1.18.0) (2024-07-12)
 
 
