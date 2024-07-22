@@ -1,3 +1,10 @@
+## [1.20.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.20.0...v1.20.1) (2024-07-22)
+
+
+### Bug Fixes
+
+* issue with items with a dot in the title ([4b7d0dd](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/4b7d0dd806249aa1b606163a6de8095866c2936d))
+
 # [1.20.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.19.0...v1.20.0) (2024-07-22)
 
 
