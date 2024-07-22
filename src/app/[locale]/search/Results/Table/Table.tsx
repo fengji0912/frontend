@@ -5,6 +5,7 @@ import { push } from '@socialgouv/matomo-next';
 import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { useContext, useEffect, useMemo } from 'react';
+import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
 import useSWRInfinite from 'swr/infinite';
 
 import TableRow from '@/app/[locale]/search/Results/Table/TableRow/TableRow';
@@ -142,32 +143,46 @@ export default function Table({
     push(['trackEvent', 'load more results', size + 1]);
   };
 
+  const rowStyle =
+    columns && columns?.length
+      ? {
+          minWidth: `calc(${columns.length * 300}px + 1.5rem + 4px)`,
+        } // column width + padding + border
+      : {};
+
   return (
     <>
-      <div className="box-white !px-0">
-        <div className="overflow-x-scroll">
-          <div className="flex ms-[0.8rem]">
-            {columns.map((column) => (
-              <div
-                className="min-w-[300px] w-full px-5 border-secondary-100 border-r-2 font-semibold mb-2 first:pl-[40px] last:border-r-0"
-                key={column}
-              >
-                {translateColumn(column)}
+      <div className="box-white !px-0 !pt-0">
+        <ScrollSync>
+          <div>
+            <ScrollSyncPane>
+              <div className="sticky top-16 z-50 bg-white/75 backdrop-blur overflow-hidden rounded-t-3xl">
+                <div style={rowStyle}>
+                  <div className="mx-3 flex border-2 border-transparent">
+                    {columns.map((column) => (
+                      <div
+                        className="min-w-[300px] w-full px-5 border-secondary-100 border-r-2 font-semibold my-2 first:pl-[40px] last:border-r-0 line-clamp-3"
+                        key={column}
+                        title={translateColumn(column)}
+                      >
+                        {translateColumn(column)}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
+            </ScrollSyncPane>
+            <ScrollSyncPane>
+              <div className="overflow-x-scroll pt-1">
+                <div style={rowStyle}>
+                  {items.map((item) => (
+                    <TableRow item={item} key={item.id} />
+                  ))}
+                </div>
+              </div>
+            </ScrollSyncPane>
           </div>
-          <div
-            style={
-              columns && columns?.length
-                ? { minWidth: `calc(${columns.length * 300}px + 1.5rem + 4px)` } // column width + padding + border
-                : {}
-            }
-          >
-            {items.map((item) => (
-              <TableRow item={item} key={item.id} />
-            ))}
-          </div>
-        </div>
+        </ScrollSync>
       </div>
       <div className="flex items-center mt-3">
         <Button
