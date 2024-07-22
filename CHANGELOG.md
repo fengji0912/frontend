@@ -1,3 +1,10 @@
+# [1.20.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.19.0...v1.20.0) (2024-07-22)
+
+
+### Features
+
+* make column titles sticky ([8f92fcd](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/8f92fcd5e05cdb25a76f253d2711d3432a99ee1f))
+
 # [1.19.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.18.0...v1.19.0) (2024-07-18)
 
 
