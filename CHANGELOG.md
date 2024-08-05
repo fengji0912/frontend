@@ -1,3 +1,10 @@
+## [1.20.2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.20.1...v1.20.2) (2024-08-05)
+
+
+### Bug Fixes
+
+* dark mode for sticky header ([02a1e94](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/02a1e9411c5c8ad2d018245946727645e2f212f3))
+
 ## [1.20.1](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.20.0...v1.20.1) (2024-07-22)
 
 
