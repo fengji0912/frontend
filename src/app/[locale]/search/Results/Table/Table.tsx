@@ -156,7 +156,7 @@ export default function Table({
         <ScrollSync>
           <div>
             <ScrollSyncPane>
-              <div className="sticky top-16 z-50 bg-white/75 backdrop-blur overflow-hidden rounded-t-3xl">
+              <div className="sticky top-16 z-50 bg-white/75 dark:bg-secondary-950/75 backdrop-blur overflow-hidden rounded-t-3xl">
                 <div style={rowStyle}>
                   <div className="mx-3 flex border-2 border-transparent">
                     {columns.map((column) => (
