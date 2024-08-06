@@ -1,3 +1,10 @@
+# [1.21.0](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.20.2...v1.21.0) (2024-08-06)
+
+
+### Features
+
+* add additional statistics, revalidate cache of statistics ([a3b42bf](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/commit/a3b42bf8c1c234011d17b8e55ebeb192bd6e1bc6))
+
 ## [1.20.2](https://gitlab.com/TIBHannover/orkg/orkg-ask/frontend/compare/v1.20.1...v1.20.2) (2024-08-05)
 
 
