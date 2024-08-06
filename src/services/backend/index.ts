@@ -183,11 +183,11 @@ export async function synthesize({
 export function getBackendVersion(): Promise<
   components['schemas']['BackendVersionResponse']
 > {
-  return backendApi.get('backend/version').json();
+  return backendApi.get('backend/version', { next: { revalidate: 60 } }).json();
 }
 
 export function getStats(): Promise<
   components['schemas']['StatisticsResponse']
 > {
-  return backendApi.get('backend/stats').json();
+  return backendApi.get('backend/stats', { next: { revalidate: 3600 } }).json();
 }

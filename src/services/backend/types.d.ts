@@ -270,6 +270,19 @@ export interface components {
        */
       documents: components['schemas']['IndexRequest'][];
     };
+    /** DBpediaEntity */
+    DBpediaEntity: {
+      /**
+       * Uri
+       * @description The URI of the DBpedia entity
+       */
+      uri: string;
+      /**
+       * Surface Form
+       * @description The surface form of the DBpedia entity
+       */
+      surface_form: string;
+    };
     /**
      * DatasetStats
      * @description The dataset statistics of the system.
@@ -345,6 +358,19 @@ export interface components {
        * @description The number of items with journal names
        */
       num_items_with_journal?: number | null;
+      /**
+       * Num Items With Dbpedia Entities
+       * @description The number of items with DBpedia entities
+       */
+      num_items_with_dbpedia_entities?: number | null;
+    };
+    /** EntityExtractions */
+    EntityExtractions: {
+      /**
+       * Dbpedia
+       * @description The DBpedia entities extracted from the item
+       */
+      dbpedia?: components['schemas']['DBpediaEntity'][] | null;
     };
     /** ExtractItemValuesFromPropertiesResponse */
     ExtractItemValuesFromPropertiesResponse: {
@@ -359,6 +385,16 @@ export interface components {
        */
       timestamp: string;
       payload: components['schemas']['app__models__llm__ExtractItemValuesFromPropertiesResponse__Payload'];
+    };
+    /** Extractions */
+    'Extractions-Input': {
+      /** @description The list of entities */
+      entities: components['schemas']['EntityExtractions'];
+    };
+    /** Extractions */
+    'Extractions-Output': {
+      /** @description The list of entities */
+      entities: components['schemas']['EntityExtractions'];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -492,13 +528,13 @@ export interface components {
        * @description The inferred document type
        */
       document_type?: string | null;
+      /** @description The automatic extractions from the item */
+      extractions?: components['schemas']['Extractions-Input'] | null;
       /**
-       * Extractions
-       * @description The automatic extractions from the item
+       * Source
+       * @description The source of the document
        */
-      extractions?: {
-        [key: string]: Record<string, never> | undefined;
-      } | null;
+      source?: string | null;
     };
     /**
      * IndexingStats
@@ -658,13 +694,13 @@ export interface components {
        * @description The inferred document type
        */
       document_type?: string | null;
+      /** @description The automatic extractions from the item */
+      extractions?: components['schemas']['Extractions-Output'] | null;
       /**
-       * Extractions
-       * @description The automatic extractions from the item
+       * Source
+       * @description The source of the document
        */
-      extractions?: {
-        [key: string]: Record<string, never> | undefined;
-      } | null;
+      source?: string | null;
     };
     /** QdrantListDocumentsResponse */
     QdrantListDocumentsResponse: {
@@ -919,6 +955,8 @@ export interface operations {
         collection_item_id?: string | null;
         /** @description Whether to invalidate the cache for the item */
         invalidate_cache?: boolean;
+        /** @description The language of the response. Should be one of the following: en, de, es, fr, it, pt, nl, ru, ja, ar, fa, tr, ko, zh, hi, vi, id */
+        response_language?: string | null;
       };
       header?: never;
       path?: never;
@@ -957,6 +995,8 @@ export interface operations {
         collection_item_ids?: (string | number)[];
         /** @description Whether to invalidate the cache for the item */
         invalidate_cache?: boolean;
+        /** @description The language of the response. Should be one of the following: en, de, es, fr, it, pt, nl, ru, ja, ar, fa, tr, ko, zh, hi, vi, id */
+        response_language?: string | null;
       };
       header?: never;
       path?: never;

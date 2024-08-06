@@ -9,16 +9,18 @@ import { components } from '@/services/backend/types';
 
 async function StatsBox({
   title,
-  count,
+  value,
 }: {
   title: string;
-  count?: number | null;
+  value?: number | string | null;
 }) {
   const format = await getFormatter();
 
   return (
     <div className="rounded-3xl shadow-box px-5 py-4 bg-white/50">
-      <h2 className="mb-0">{format.number(count ?? 0)}</h2>
+      <h2 className="mb-0">
+        {typeof value === 'number' ? format.number(value ?? 0) : value}
+      </h2>
       {title}
     </div>
   );
@@ -42,6 +44,7 @@ export default async function Stats({
   type Keys =
     | keyof components['schemas']['DatasetStats']
     | keyof components['schemas']['IndexingStats']
+    | keyof components['schemas']['IndexingStats']['vector_config']
     | keyof components['schemas']['UsageStats'];
 
   const getLabel = (key: Keys) => {
@@ -64,6 +67,15 @@ export default async function Stats({
       num_items_with_year: t('trite_lucky_owl_pat'),
       num_cache_hits: t('fit_ornate_impala_value'),
       num_questions_asked: t('alive_mealy_lamb_heart'),
+      num_collections: t('least_tired_kestrel_roam'),
+      num_collection_items: t('merry_careful_marlin_dine'),
+      num_registered_users: t('clear_pretty_rooster_clasp'),
+      num_saved_searches: t('elegant_front_cod_blend'),
+      num_shared_links: t('knotty_icy_haddock_amaze'),
+      num_items_with_dbpedia_entities: t('level_quick_cowfish_care'),
+      num_indexed_vectors: t('smug_sour_snail_peek'),
+      distance_method: t('warm_empty_moose_spur'),
+      vector_size: t('sharp_royal_spider_stop'),
     };
     return labelMap[key] ?? '';
   };
@@ -79,70 +91,109 @@ export default async function Stats({
         <div className="mt-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-5 grid gap-4">
           <StatsBox
             title={getLabel('num_questions_asked')}
-            count={stats.usage.num_questions_asked}
+            value={stats.usage.num_questions_asked}
           />
           <StatsBox
             title={getLabel('num_cache_hits')}
-            count={stats.usage.num_cache_hits}
+            value={stats.usage.num_cache_hits}
+          />
+          <StatsBox
+            title={getLabel('num_collections')}
+            value={stats.usage.num_collections}
+          />
+          <StatsBox
+            title={getLabel('num_collection_items')}
+            value={stats.usage.num_collection_items}
+          />
+          <StatsBox
+            title={getLabel('num_registered_users')}
+            value={stats.usage.num_registered_users}
+          />
+          <StatsBox
+            title={getLabel('num_saved_searches')}
+            value={stats.usage.num_saved_searches}
+          />
+          <StatsBox
+            title={getLabel('num_shared_links')}
+            value={stats.usage.num_shared_links}
           />
         </div>
         <h1 className="mt-10">{t('gaudy_direct_lynx_mix')}</h1>
         <div className="mt-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-5 grid gap-4">
           <StatsBox
             title={getLabel('num_items_with_abstracts')}
-            count={stats.dataset.num_items_with_abstracts}
+            value={stats.dataset.num_items_with_abstracts}
           />
           <StatsBox
             title={getLabel('num_items_with_authors')}
-            count={stats.dataset.num_items_with_authors}
+            value={stats.dataset.num_items_with_authors}
           />
           <StatsBox
             title={getLabel('num_items_with_citations')}
-            count={stats.dataset.num_items_with_citations}
+            value={stats.dataset.num_items_with_citations}
           />
           <StatsBox
             title={getLabel('num_items_with_doi')}
-            count={stats.dataset.num_items_with_doi}
+            value={stats.dataset.num_items_with_doi}
           />
           <StatsBox
             title={getLabel('num_items_with_identifiers')}
-            count={stats.dataset.num_items_with_identifiers}
+            value={stats.dataset.num_items_with_identifiers}
           />
           <StatsBox
             title={getLabel('num_items_with_issn')}
-            count={stats.dataset.num_items_with_issn}
+            value={stats.dataset.num_items_with_issn}
           />
           <StatsBox
             title={getLabel('num_items_with_journal')}
-            count={stats.dataset.num_items_with_journal}
+            value={stats.dataset.num_items_with_journal}
           />
           <StatsBox
             title={getLabel('num_items_with_languages')}
-            count={stats.dataset.num_items_with_languages}
+            value={stats.dataset.num_items_with_languages}
           />
           <StatsBox
             title={getLabel('num_items_with_publication_date')}
-            count={stats.dataset.num_items_with_publication_date}
+            value={stats.dataset.num_items_with_publication_date}
           />
           <StatsBox
             title={getLabel('num_items_with_publisher')}
-            count={stats.dataset.num_items_with_publisher}
+            value={stats.dataset.num_items_with_publisher}
           />
           <StatsBox
             title={getLabel('num_items_with_subjects')}
-            count={stats.dataset.num_items_with_subjects}
+            value={stats.dataset.num_items_with_subjects}
           />
           <StatsBox
             title={getLabel('num_items_with_topics')}
-            count={stats.dataset.num_items_with_topics}
+            value={stats.dataset.num_items_with_topics}
           />
           <StatsBox
             title={getLabel('num_items_with_type')}
-            count={stats.dataset.num_items_with_type}
+            value={stats.dataset.num_items_with_type}
           />
           <StatsBox
             title={getLabel('num_items_with_year')}
-            count={stats.dataset.num_items_with_year}
+            value={stats.dataset.num_items_with_year}
+          />
+          <StatsBox
+            title={getLabel('num_items_with_dbpedia_entities')}
+            value={stats.dataset.num_items_with_dbpedia_entities}
+          />
+        </div>
+        <h1 className="mt-10">{t('these_ago_fly_sprout')}</h1>
+        <div className="mt-5 grid-cols-1 md:grid-cols-3 lg:grid-cols-5 grid gap-4">
+          <StatsBox
+            title={getLabel('num_indexed_vectors')}
+            value={stats.indexing.num_indexed_vectors}
+          />
+          <StatsBox
+            title={getLabel('distance_method')}
+            value={stats.indexing.vector_config.distance_method}
+          />
+          <StatsBox
+            title={getLabel('vector_size')}
+            value={stats.indexing.vector_config.vector_size}
           />
         </div>
       </div>
