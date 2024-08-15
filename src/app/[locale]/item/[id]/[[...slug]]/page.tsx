@@ -9,6 +9,7 @@ import slugify from 'slugify';
 
 import ActionButtons from '@/app/[locale]/item/[id]/[[...slug]]/ActionButtons/ActionsButtons';
 import OrkgButton from '@/app/[locale]/item/[id]/[[...slug]]/ActionButtons/OrkgButton/OrkgButton';
+import ChatButton from '@/app/[locale]/item/[id]/[[...slug]]/ChatButton';
 import LlmData from '@/app/[locale]/item/[id]/[[...slug]]/LlmData/LlmData';
 import MetadataGrid from '@/app/[locale]/item/[id]/[[...slug]]/MetadataGrid/MetadataGrid';
 import ReadMore from '@/app/[locale]/item/[id]/[[...slug]]/ReadMore/ReadMore';
@@ -97,6 +98,7 @@ export default async function Page({ params }: PageProps) {
       <Suspense fallback={<LoadingRelatedItems />}>
         <RelatedItems itemId={params.id} />
       </Suspense>
+      <ChatButton itemAbstract={item.abstract || 'No abstract available'} />
     </div>
   );
 }
