@@ -40,19 +40,23 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   const fetchBotResponse = async (prompt: string) => {
+    const apiPath = '/api/generateResponse/';
+    console.log(`Requesting API path: ${apiPath}`);
+    console.log(`Request body: ${JSON.stringify({ prompt })}`);
+  
     try {
-      const response = await fetch('/api/generateResponse', {
+      const response = await fetch(apiPath, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ prompt }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log('Bot response:', data);
       return data.text || 'No response generated.';
