@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
 
 type ChatMessage = {
   sender: 'user' | 'bot';
@@ -18,11 +18,6 @@ const priorityStyles: Record<string, string> = {
   high: 'bg-red-200 border-red-500',
 };
 
-const extractFirstFiveWords = (text: string): string[] => {
-  const words = text.split(/\s+/);
-  return words.slice(0, 5);
-};
-
 const ChatWindow: React.FC<ChatWindowProps> = ({
   isOpen,
   onClose,
@@ -30,27 +25,45 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
-  const [selectedPriority, setSelectedPriority] = useState<
-    'low' | 'mid' | 'high'
-  >('mid');
+  const [selectedPriority, setSelectedPriority] = useState<'low' | 'mid' | 'high'>('mid');
   const [viewMode, setViewMode] = useState<'chat' | 'text'>('chat');
+  const [exampleQuestions, setExampleQuestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (itemAbstract) {
+      fetchExampleQuestions(itemAbstract).then(setExampleQuestions);
+    }
+  }, [itemAbstract]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
-  const fetchBotResponse = async (prompt: string) => {
-    const apiPath = '/api/generateResponse/';
-    console.log(`Requesting API path: ${apiPath}`);
-    console.log(`Request body: ${JSON.stringify({ prompt })}`);
+  const fetchBotResponse = async (
+    prompt: string, 
+    history: ChatMessage[]
+  ) => {
+    const context = itemAbstract;  // 上下文 `text`
   
+    // 格式化历史消息
+    const formattedHistory = history
+      .map(msg => `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.content}`)
+      .join('\n');
+  
+    // 构建完整的提示
+    const fullPrompt = `Context: ${context}\n${formattedHistory}\nUser: ${prompt}`;
+    
+    console.log('Sending the following prompt to the backend:');
+    console.log(fullPrompt);  // 打印传递给后端的完整提示信息
+  
+    const apiPath = '/api/generateResponse/';
     try {
       const response = await fetch(apiPath, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: fullPrompt }),
       });
   
       if (!response.ok) {
@@ -64,26 +77,62 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       console.error('Error fetching bot response:', error);
       return 'Failed to fetch response.';
     }
+  };    
+
+  const fetchExampleQuestions = async (text: string) => {
+    const apiPath = '/api/generateQuestions/';
+    console.log(`Requesting API path: ${apiPath}`);
+    console.log(`Request body: ${JSON.stringify({ text })}`);
+
+    try {
+      const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Generated questions:', data.questions);
+      return data.questions || [];
+    } catch (error) {
+      console.error('Error generating questions:', error);
+      return [];
+    }
   };
 
   const handleSendMessage = async () => {
     if (input.trim()) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'user', content: input, priority: selectedPriority },
-      ]);
+      const userMessage: ChatMessage = { 
+        sender: 'user', 
+        content: input, 
+        priority: selectedPriority 
+      };
+      const updatedMessages: ChatMessage[] = [...messages, userMessage];
+      
+      setMessages(updatedMessages);
       setInput('');
-
+  
       const botReply = await fetchBotResponse(
-        `${input}\nPriority: ${selectedPriority}`
+        input,
+        updatedMessages
       );
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'bot', content: botReply, priority: 'low' },
-      ]);
+  
+      const botMessage: ChatMessage = {
+        sender: 'bot',
+        content: botReply,
+        priority: 'low', 
+      };
+  
+      setMessages(prevMessages => [...prevMessages, botMessage]);
     }
-  };
-
+  };    
+      
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSendMessage();
@@ -103,23 +152,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   const handleButtonClick = async (word: string) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: 'user', content: word, priority: selectedPriority },
-    ]);
-
+    const userMessage: ChatMessage = { 
+      sender: 'user', 
+      content: word, 
+      priority: selectedPriority 
+    };
+    const updatedMessages: ChatMessage[] = [...messages, userMessage];
+  
+    setMessages(updatedMessages);
+  
     const botReply = await fetchBotResponse(
-      `${word}\nPriority: ${selectedPriority}`
+      word,
+      updatedMessages  // 传递历史消息
     );
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: 'bot', content: botReply, priority: 'low' },
-    ]);
-  };
+  
+    const botMessage: ChatMessage = {
+      sender: 'bot',
+      content: botReply,
+      priority: 'low',  // 假设机器人的回复优先级为 'low'
+    };
+  
+    setMessages(prevMessages => [...prevMessages, botMessage]);
+  };      
 
   if (!isOpen) return null;
-
-  const firstFiveWords = extractFirstFiveWords(itemAbstract);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
@@ -167,52 +223,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         {viewMode === 'chat' && (
           <>
             <div className="mb-4 flex justify-center space-x-4">
-              <button
-                className={`p-2 rounded-lg border-2 transition ${
-                  selectedPriority === 'low'
-                    ? 'border-gray-500 bg-gray-300 text-gray-700'
-                    : 'border-gray-300 bg-white text-gray-500'
-                }`}
-                onClick={() => handlePriorityChange('low')}
-              >
-                {'Low'}
-              </button>
-              <button
-                className={`p-2 rounded-lg border-2 transition ${
-                  selectedPriority === 'mid'
-                    ? 'border-yellow-500 bg-yellow-200 text-yellow-800'
-                    : 'border-gray-300 bg-white text-gray-500'
-                }`}
-                onClick={() => handlePriorityChange('mid')}
-              >
-                {'Mid'}
-              </button>
-              <button
-                className={`p-2 rounded-lg border-2 transition ${
-                  selectedPriority === 'high'
-                    ? 'border-red-500 bg-red-200 text-red-800'
-                    : 'border-gray-300 bg-white text-gray-500'
-                }`}
-                onClick={() => handlePriorityChange('high')}
-              >
-                {'High'}
-              </button>
+              {exampleQuestions.map((question, index) => (
+                <button
+                  key={index}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                  onClick={() => handleButtonClick(question)}
+                >
+                  {question}
+                </button>
+              ))}
             </div>
             <h2 className="text-2xl font-semibold mb-4 text-white">
               {'Chat Window'}
             </h2>
             <div className="h-80 overflow-y-auto bg-white p-4 rounded-lg shadow-inner">
-              <div className="mb-4 flex flex-wrap gap-2">
-                {firstFiveWords.map((word, index) => (
-                  <button
-                    key={index}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-                    onClick={() => handleButtonClick(word)}
-                  >
-                    {word}
-                  </button>
-                ))}
-              </div>
               {messages.length === 0 ? (
                 <p className="text-gray-500 text-center">
                   {'No messages yet.'}
