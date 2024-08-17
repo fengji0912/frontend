@@ -1,7 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
 
 type ChatMessage = {
-  sender: 'user' | 'bot';
+  sender: 'user' | 'chatbot';
   content: string;
   priority: 'low' | 'mid' | 'high';
 };
@@ -28,12 +28,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const [selectedPriority, setSelectedPriority] = useState<'low' | 'mid' | 'high'>('mid');
   const [viewMode, setViewMode] = useState<'chat' | 'text'>('chat');
   const [exampleQuestions, setExampleQuestions] = useState<string[]>([]);
+  const [showExamples, setShowExamples] = useState(false); // For showing/hiding example questions
 
   useEffect(() => {
-    if (itemAbstract) {
+    if (viewMode === 'chat' && itemAbstract) {
       fetchExampleQuestions(itemAbstract).then(setExampleQuestions);
     }
-  }, [itemAbstract]);
+  }, [viewMode, itemAbstract]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -43,19 +44,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     prompt: string, 
     history: ChatMessage[]
   ) => {
-    const context = itemAbstract;  // 上下文 `text`
-  
-    // 格式化历史消息
+    const context = itemAbstract;
+
     const formattedHistory = history
       .map(msg => `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.content}`)
       .join('\n');
-  
-    // 构建完整的提示
+
     const fullPrompt = `Context: ${context}\n${formattedHistory}\nUser: ${prompt}`;
     
-    console.log('Sending the following prompt to the backend:');
-    console.log(fullPrompt);  // 打印传递给后端的完整提示信息
-  
     const apiPath = '/api/generateResponse/';
     try {
       const response = await fetch(apiPath, {
@@ -71,7 +67,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       }
   
       const data = await response.json();
-      console.log('Bot response:', data);
       return data.text || 'No response generated.';
     } catch (error) {
       console.error('Error fetching bot response:', error);
@@ -81,8 +76,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const fetchExampleQuestions = async (text: string) => {
     const apiPath = '/api/generateQuestions/';
-    console.log(`Requesting API path: ${apiPath}`);
-    console.log(`Request body: ${JSON.stringify({ text })}`);
 
     try {
       const response = await fetch(apiPath, {
@@ -98,7 +91,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       }
 
       const data = await response.json();
-      console.log('Generated questions:', data.questions);
       return data.questions || [];
     } catch (error) {
       console.error('Error generating questions:', error);
@@ -124,9 +116,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       );
   
       const botMessage: ChatMessage = {
-        sender: 'bot',
+        sender: 'chatbot',
         content: botReply,
-        priority: 'low', 
+        priority: 'low',
       };
   
       setMessages(prevMessages => [...prevMessages, botMessage]);
@@ -149,6 +141,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handleViewModeChange = (mode: 'chat' | 'text') => {
     setViewMode(mode);
+    if (mode === 'chat') {
+      setShowExamples(true); // Show examples when switching to chat mode
+    }
   };
 
   const handleButtonClick = async (word: string) => {
@@ -163,13 +158,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   
     const botReply = await fetchBotResponse(
       word,
-      updatedMessages  // 传递历史消息
+      updatedMessages
     );
   
     const botMessage: ChatMessage = {
-      sender: 'bot',
+      sender: 'chatbot',
       content: botReply,
-      priority: 'low',  // 假设机器人的回复优先级为 'low'
+      priority: 'low',
     };
   
     setMessages(prevMessages => [...prevMessages, botMessage]);
@@ -178,30 +173,33 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-      <div className="relative bg-gradient-to-r from-blue-200 to-blue-400 p-6 rounded-lg shadow-lg w-192 h-120 max-w-full max-h-full">
-        <div className="absolute top-4 right-4 flex space-x-3">
-          <button
-            className="text-white bg-red-500 hover:bg-red-600 p-2 rounded-full transition"
-            onClick={handleClearMessages}
-            aria-label="Clear messages"
-          >
-            {'Clear'}
-          </button>
-          <button
-            className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-full transition"
-            onClick={onClose}
-            aria-label="Close chat window"
-          >
-            {'×'}
-          </button>
+    <div className="fixed bottom-0 right-0 p-4 z-50 w-full max-w-[600px] h-[80vh] max-h-[80vh] transform transition-transform">
+      <div className="bg-white p-4 rounded-lg shadow-lg h-full overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Chatbot</h2>
+          <div className="flex space-x-2">
+            <button
+              className="text-white bg-[#e86161] hover:bg-[#d64949] p-2 rounded-lg transition"
+              onClick={handleClearMessages}
+              aria-label="Clear messages"
+            >
+              {'Clear'}
+            </button>
+            <button
+              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition"
+              onClick={onClose}
+              aria-label="Close chat window"
+            >
+              {'×'}
+            </button>
+          </div>
         </div>
         <div className="mb-4 flex justify-between">
-          <div className="flex space-x-4">
+          <div className="flex space-x-2">
             <button
               className={`p-2 rounded-lg border-2 transition ${
                 viewMode === 'chat'
-                  ? 'border-blue-500 bg-blue-200 text-blue-800'
+                  ? 'border-[#e86161] bg-[#fddcdc] text-[#e86161]'
                   : 'border-gray-300 bg-white text-gray-500'
               }`}
               onClick={() => handleViewModeChange('chat')}
@@ -211,7 +209,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             <button
               className={`p-2 rounded-lg border-2 transition ${
                 viewMode === 'text'
-                  ? 'border-green-500 bg-green-200 text-green-800'
+                  ? 'border-[#e86161] bg-[#fddcdc] text-[#e86161]'
                   : 'border-gray-300 bg-white text-gray-500'
               }`}
               onClick={() => handleViewModeChange('text')}
@@ -219,24 +217,42 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               {'Text'}
             </button>
           </div>
+          <div className="flex space-x-2">
+            <button
+              className={`p-2 rounded-lg transition ${
+                selectedPriority === 'low'
+                  ? 'bg-gray-300 border-gray-500'
+                  : 'bg-gray-200 border-gray-300'
+              }`}
+              onClick={() => handlePriorityChange('low')}
+            >
+              {'Low'}
+            </button>
+            <button
+              className={`p-2 rounded-lg transition ${
+                selectedPriority === 'mid'
+                  ? 'bg-yellow-200 border-yellow-500'
+                  : 'bg-yellow-100 border-yellow-300'
+              }`}
+              onClick={() => handlePriorityChange('mid')}
+            >
+              {'Mid'}
+            </button>
+            <button
+              className={`p-2 rounded-lg transition ${
+                selectedPriority === 'high'
+                  ? 'bg-red-200 border-red-500'
+                  : 'bg-red-100 border-red-300'
+              }`}
+              onClick={() => handlePriorityChange('high')}
+            >
+              {'High'}
+            </button>
+          </div>
         </div>
         {viewMode === 'chat' && (
           <>
-            <div className="mb-4 flex justify-center space-x-4">
-              {exampleQuestions.map((question, index) => (
-                <button
-                  key={index}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-                  onClick={() => handleButtonClick(question)}
-                >
-                  {question}
-                </button>
-              ))}
-            </div>
-            <h2 className="text-2xl font-semibold mb-4 text-white">
-              {'Chat Window'}
-            </h2>
-            <div className="h-80 overflow-y-auto bg-white p-4 rounded-lg shadow-inner">
+            <div className="h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100">
               {messages.length === 0 ? (
                 <p className="text-gray-500 text-center">
                   {'No messages yet.'}
@@ -245,10 +261,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 messages.map((msg, index) => (
                   <div
                     key={index}
-                    className={`p-3 mb-2 rounded-lg max-w-xs border-2 ${
+                    className={`p-2 mb-2 rounded-lg max-w-xs ${
                       msg.sender === 'user'
-                        ? `text-right ml-auto ${priorityStyles[msg.priority]}`
-                        : `text-left mr-auto ${priorityStyles[msg.priority]}`
+                        ? 'bg-blue-100 ml-auto'
+                        : 'bg-gray-100 mr-auto'
                     }`}
                   >
                     {msg.content}
@@ -256,26 +272,54 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 ))
               )}
             </div>
-            <div className="flex mt-4">
+            <div className="relative flex flex-col space-y-2">
               <input
                 type="text"
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
-                className="flex-1 border border-gray-300 p-3 rounded-l-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border p-2 rounded-lg focus:outline-none w-full"
                 placeholder={'Type your message...'}
               />
               <button
                 onClick={handleSendMessage}
-                className="bg-blue-500 text-white p-3 rounded-r-lg shadow-lg hover:bg-blue-600 transition"
+                className="bg-[#e86161] text-white p-2 rounded-lg hover:bg-[#d64949] w-full"
               >
                 {'Send'}
               </button>
+              <button
+                onClick={() => setShowExamples(!showExamples)}
+                className="bg-gray-200 text-gray-800 p-2 rounded-lg hover:bg-gray-300 w-full relative"
+              >
+                {showExamples ? 'Hide Examples' : 'Show Examples'}
+                <div
+                  className={`absolute right-2 top-2 transform transition-transform ${
+                    showExamples ? 'rotate-180' : 'rotate-0'
+                  }`}
+                >
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 15.3l4.95-4.95-1.41-1.41-3.54 3.54-3.54-3.54-1.41 1.41z" />
+                  </svg>
+                </div>
+              </button>
+              {showExamples && (
+                <div className="bg-gray-50 p-2 rounded-lg border border-gray-200 mt-2">
+                  {exampleQuestions.map((question, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleButtonClick(question)}
+                      className="bg-gray-100 text-gray-800 p-2 rounded-lg mb-1 hover:bg-gray-200 w-full text-left"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}
         {viewMode === 'text' && (
-          <div className="h-80 overflow-y-auto bg-white p-6 rounded-lg shadow-inner">
+          <div className="h-3/5 overflow-y-auto bg-gray-50 p-4 rounded-lg border border-gray-200">
             <pre className="text-gray-800 whitespace-pre-wrap">
               {itemAbstract}
             </pre>
@@ -283,7 +327,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         )}
       </div>
     </div>
-  );
+  );  
 };
 
 export default ChatWindow;
