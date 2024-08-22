@@ -173,7 +173,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-0 right-0 p-4 z-50 w-full max-w-[600px] h-[80vh] max-h-[80vh] transform transition-transform">
+    <div className="fixed bottom-0 right-0 p-4 z-50 w-full max-w-[750px] h-[90vh] max-h-[100vh] transform transition-transform">
       <div className="bg-white p-4 rounded-lg shadow-lg h-full overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Chatbot</h2>
@@ -273,61 +273,53 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               )}
             </div>
             <div className="relative flex flex-col space-y-2">
-              <input
-                type="text"
-                value={input}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyPress}
-                className="border p-2 rounded-lg focus:outline-none w-full"
-                placeholder={'Type your message...'}
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Type a message..."
+                  className="w-full p-2 border rounded-lg"
+                />
+                <button
+                  onClick={() => setShowExamples(!showExamples)}
+                  className="absolute right-2 top-2 bg-gray-200 hover:bg-gray-300 rounded p-1"
+                  aria-label="Toggle example questions"
+                >
+                  {'Example Questions ⬆'}
+                </button>
+                {showExamples && (
+                  <div className="absolute bottom-full right-0 mb-2 bg-white border rounded-lg shadow-lg p-2 max-h-32 overflow-y-auto w-full">
+                    {exampleQuestions.slice(0, 5).map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleButtonClick(question)}
+                        className="w-full text-left p-2 bg-gray-100 hover:bg-gray-200 rounded-lg mb-1"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button
                 onClick={handleSendMessage}
-                className="bg-[#e86161] text-white p-2 rounded-lg hover:bg-[#d64949] w-full"
+                className="text-white bg-[#e86161] hover:bg-[#d64949] p-2 rounded-lg transition"
               >
                 {'Send'}
               </button>
-              <button
-                onClick={() => setShowExamples(!showExamples)}
-                className="bg-gray-200 text-gray-800 p-2 rounded-lg hover:bg-gray-300 w-full relative"
-              >
-                {showExamples ? 'Hide Examples' : 'Show Examples'}
-                <div
-                  className={`absolute right-2 top-2 transform transition-transform ${
-                    showExamples ? 'rotate-180' : 'rotate-0'
-                  }`}
-                >
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 15.3l4.95-4.95-1.41-1.41-3.54 3.54-3.54-3.54-1.41 1.41z" />
-                  </svg>
-                </div>
-              </button>
-              {showExamples && (
-                <div className="bg-gray-50 p-2 rounded-lg border border-gray-200 mt-2">
-                  {exampleQuestions.map((question, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleButtonClick(question)}
-                      className="bg-gray-100 text-gray-800 p-2 rounded-lg mb-1 hover:bg-gray-200 w-full text-left"
-                    >
-                      {question}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           </>
         )}
         {viewMode === 'text' && (
-          <div className="h-3/5 overflow-y-auto bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <pre className="text-gray-800 whitespace-pre-wrap">
-              {itemAbstract}
-            </pre>
+          <div className="p-2 border rounded-lg h-4/5 overflow-y-auto">
+            <p>{itemAbstract}</p>
           </div>
         )}
       </div>
     </div>
-  );  
+  );
 };
 
 export default ChatWindow;

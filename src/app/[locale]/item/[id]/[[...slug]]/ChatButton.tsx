@@ -23,7 +23,7 @@ const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
             border: 'none',
             boxShadow: isChatOpen ? '0 4px 8px rgba(0, 0, 0, 0.2)' : '0 6px 12px rgba(0, 0, 0, 0.3)',
             minWidth: '300px', // Ensures sufficient width for content
-            minHeight: '45px', // Ensures sufficient height for content
+            minHeight: '50px', // Ensures sufficient height for content
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between', // Space out icon, text, and arrow
@@ -34,19 +34,20 @@ const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
           {/* WeChat-like Icon and Chatbot Text Together */}
           <div className="flex items-center">
             <svg
-              className="w-6 h-6 mr-2"
+              className="w-10 h-10"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24"
+              viewBox="0 0 30 30"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 14l2 2 4-4m0 0L21 12V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v7l4 4m0-4h10" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8c-1.704 0-3.297-.48-4.637-1.312L3 20l1.689-3.542A7.962 7.962 0 0 1 4 12z" />
             </svg>
-            <span className="text-base font-medium">Chatbot</span>
+            <span 
+              className="w-6 h-8 text-base font-medium">Chatbot</span>
           </div>
           {/* Up Arrow Icon */}
           <svg
-            className={`w-6 h-6 transition-transform ${isChatOpen ? 'rotate-180' : 'rotate-0'}`}
+            className={`w-10 h-10 transition-transform ${isChatOpen ? 'rotate-180' : 'rotate-0'}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
