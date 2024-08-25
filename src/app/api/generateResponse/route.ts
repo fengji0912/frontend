@@ -10,9 +10,7 @@ export async function POST(request: Request) {
     const { prompt } = await request.json();
     console.log(`Received prompt: ${prompt}`);
 
-    // 创建聊天消息列表
-    const messages = prompt.split('\n').map((line: string, index: any) => {
-      // 解析消息类型
+    const messages = prompt.split('\n').map((line: string) => {
       if (line.startsWith('Context:')) {
         return { role: 'system', content: line.replace('Context:', '').trim() };
       } else if (line.startsWith('User:')) {
@@ -25,15 +23,35 @@ export async function POST(request: Request) {
 
     console.log('Parsed messages:', messages);
 
-    // 使用 OpenAI API 生成响应
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
-      messages: messages,
-      max_tokens: 150,
+      messages: [
+        ...messages,
+        {
+          role: 'system',
+          content: `When generating the response, please provide the generated answer along with the specific text excerpts you used from the context. Format your response as: "Answer: <generated answer>. Used Text: <text excerpts>".`,
+        },
+      ],
+      max_tokens: 300,
     });
 
-    console.log('Bot response:', response);
-    return NextResponse.json({ text: response.choices[0].message.content });
+    if (!response || !response.choices || response.choices.length === 0) {
+      console.error('Invalid response structure:', response);
+      return NextResponse.json({ error: 'Invalid response from OpenAI API.' }, { status: 500 });
+    }
+
+    const fullResponse = response.choices[0].message?.content;
+
+    if (!fullResponse) {
+      console.error('No content in response:', response);
+      return NextResponse.json({ error: 'No content in response from OpenAI API.' }, { status: 500 });
+    }
+
+    // 解析模型返回的回答和使用的文本
+    const [answer, usedText] = fullResponse.split('Used Text:').map(part => part.trim());
+    const usedTextArray = usedText ? usedText.split('\n').map(text => text.trim()).filter(text => text) : [];
+
+    return NextResponse.json({ text: answer.replace('Answer:', '').trim(), usedText: usedTextArray });
   } catch (error) {
     console.error('Error generating response:', error);
     return NextResponse.json({ error: 'Failed to generate response.' }, { status: 500 });

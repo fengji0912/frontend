@@ -4,6 +4,7 @@ type ChatMessage = {
   sender: 'user' | 'chatbot';
   content: string;
   priority: 'low' | 'mid' | 'high';
+  usedText?: string;
 };
 
 type ChatWindowProps = {
@@ -29,6 +30,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const [viewMode, setViewMode] = useState<'chat' | 'text'>('chat');
   const [exampleQuestions, setExampleQuestions] = useState<string[]>([]);
   const [showExamples, setShowExamples] = useState(false); // For showing/hiding example questions
+  const [showTextBox, setShowTextBox] = useState<string | null>(null); // For showing/hiding the used text
 
   useEffect(() => {
     if (viewMode === 'chat' && itemAbstract) {
@@ -45,13 +47,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     history: ChatMessage[]
   ) => {
     const context = itemAbstract;
-
+  
     const formattedHistory = history
       .map(msg => `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.content}`)
       .join('\n');
-
+  
     const fullPrompt = `Context: ${context}\n${formattedHistory}\nUser: ${prompt}`;
-    
+  
     const apiPath = '/api/generateResponse/';
     try {
       const response = await fetch(apiPath, {
@@ -67,12 +69,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       }
   
       const data = await response.json();
-      return data.text || 'No response generated.';
+      // Ensure data contains the expected properties
+      return {
+        text: data.text || 'Failed to fetch response.',
+        usedText: data.usedText || []
+      };
     } catch (error) {
       console.error('Error fetching bot response:', error);
-      return 'Failed to fetch response.';
+      return {
+        text: 'Failed to fetch response.',
+        usedText: []
+      };
     }
-  };    
+  };      
 
   const fetchExampleQuestions = async (text: string) => {
     const apiPath = '/api/generateQuestions/';
@@ -117,8 +126,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   
       const botMessage: ChatMessage = {
         sender: 'chatbot',
-        content: botReply,
+        content: botReply.text,
         priority: 'low',
+        usedText: botReply.usedText,
       };
   
       setMessages(prevMessages => [...prevMessages, botMessage]);
@@ -163,18 +173,26 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   
     const botMessage: ChatMessage = {
       sender: 'chatbot',
-      content: botReply,
+      content: botReply.text,
       priority: 'low',
+      usedText: botReply.usedText,
     };
   
     setMessages(prevMessages => [...prevMessages, botMessage]);
-  };      
+  };
+
+  const handleUsedTextButton = (text: string | undefined) => {
+    if(text)
+    {
+      setShowTextBox(text); // Display the used text in the popup
+    }
+  };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed bottom-0 right-0 p-4 z-50 w-full max-w-[750px] h-[90vh] max-h-[100vh] transform transition-transform">
-      <div className="bg-white p-4 rounded-lg shadow-lg h-full overflow-y-auto">
+      <div className="bg-white p-4 rounded-lg shadow-lg h-full overflow-y-auto relative">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Chatbot</h2>
           <div className="flex space-x-2">
@@ -252,7 +270,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         </div>
         {viewMode === 'chat' && (
           <>
-            <div className="h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100">
+            <div className="h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100 relative">
               {messages.length === 0 ? (
                 <p className="text-gray-500 text-center">
                   {'No messages yet.'}
@@ -268,6 +286,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     }`}
                   >
                     {msg.content}
+                    {msg.usedText && msg.sender === 'chatbot' && (
+                      <button
+                        className="text-xs text-blue-500 hover:text-blue-700"
+                        onClick={() => handleUsedTextButton(msg.usedText)}
+                      >
+                        [Popup]
+                      </button>
+                    )}
                   </div>
                 ))
               )}
@@ -287,7 +313,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   className="absolute right-2 top-2 bg-gray-200 hover:bg-gray-300 rounded p-1"
                   aria-label="Toggle example questions"
                 >
-                  {'Example Questions ⬆'}
+                  {'Example Questions ⬆⬇'}
                 </button>
                 {showExamples && (
                   <div className="absolute bottom-full right-0 mb-2 bg-white border rounded-lg shadow-lg p-2 max-h-32 overflow-y-auto w-full">
@@ -318,6 +344,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
         )}
       </div>
+      {/* Render the popup text box if `showTextBox` is not null */}
+      {showTextBox && (
+        <div className="fixed bottom-16 left-0 bg-white border rounded-lg shadow-lg p-4 max-w-xs max-h-[60vh] overflow-y-auto z-60">
+          <button
+            onClick={() => setShowTextBox(null)}
+            className="absolute top-2 right-2 text-red-500"
+            aria-label="Close popup"
+          >
+            {'×'}
+          </button>
+          <p>{showTextBox}</p>
+        </div>
+      )}
     </div>
   );
 };
