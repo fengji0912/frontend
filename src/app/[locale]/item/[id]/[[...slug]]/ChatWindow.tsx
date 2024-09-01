@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState, useEffect, useRef } from 'react';
 
 type ChatMessage = {
   sender: 'user' | 'chatbot';
@@ -13,12 +13,6 @@ type ChatWindowProps = {
   itemAbstract: string;
 };
 
-const priorityStyles: Record<string, string> = {
-  low: 'bg-gray-300 border-gray-500',
-  mid: 'bg-yellow-200 border-yellow-500',
-  high: 'bg-red-200 border-red-500',
-};
-
 const ChatWindow: React.FC<ChatWindowProps> = ({
   isOpen,
   onClose,
@@ -31,6 +25,31 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const [exampleQuestions, setExampleQuestions] = useState<string[]>([]);
   const [showExamples, setShowExamples] = useState(false); // For showing/hiding example questions
   const [showTextBox, setShowTextBox] = useState<string | null>(null); // For showing/hiding the used text
+  const [showSettings, setShowSettings] = useState(false);
+  const settingsRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        settingsRef.current &&
+        !settingsRef.current.contains(event.target as Node)
+      ) {
+        setShowSettings(false); // 点击设置按钮之外的任何地方，关闭下拉列表
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [settingsRef]);
+  
+  useEffect(() => {
+    // Scroll to the bottom whenever messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   useEffect(() => {
     if (viewMode === 'chat' && itemAbstract) {
@@ -118,6 +137,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       
       setMessages(updatedMessages);
       setInput('');
+      setIsLoading(true); // Show loading indicator
   
       const botReply = await fetchBotResponse(
         input,
@@ -132,6 +152,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       };
   
       setMessages(prevMessages => [...prevMessages, botMessage]);
+      setIsLoading(false); // Hide loading indicator
     }
   };    
       
@@ -179,6 +200,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     };
   
     setMessages(prevMessages => [...prevMessages, botMessage]);
+    setShowExamples(false);
   };
 
   const handleUsedTextButton = (text: string | undefined) => {
@@ -193,16 +215,38 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   return (
     <div className="fixed bottom-0 right-0 p-4 z-50 w-full max-w-[750px] h-[90vh] max-h-[100vh] transform transition-transform">
       <div className="bg-white p-4 rounded-lg shadow-lg h-full overflow-y-auto relative">
+        {/* Loading indicator */}
+        {isLoading && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-2 border rounded-lg shadow-lg z-20">
+            <div className="loader"></div> {/* Custom loader */}
+          </div>
+        )}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Chatbot</h2>
-          <div className="flex space-x-2">
+          <div ref={settingsRef} className="flex space-x-2">
             <button
-              className="text-white bg-[#e86161] hover:bg-[#d64949] p-2 rounded-lg transition"
-              onClick={handleClearMessages}
-              aria-label="Clear messages"
+              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition"
+              onClick={() => setShowSettings(!showSettings)}
+              aria-label="Settings"
             >
-              {'Clear'}
+              ⚙️
             </button>
+            {showSettings && (
+              <div className="absolute right-0 mt-8 bg-white border rounded-lg shadow-lg p-2 w-40 z-50">
+                <button
+                  className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1"
+                  onClick={() => handleViewModeChange('text')}
+                >
+                  {'context'}
+                </button>
+                <button
+                  className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1"
+                  onClick={handleClearMessages}
+                >
+                  {'Clear history'}
+                </button>
+              </div>
+            )}
             <button
               className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition"
               onClick={onClose}
@@ -223,16 +267,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               onClick={() => handleViewModeChange('chat')}
             >
               {'Chat'}
-            </button>
-            <button
-              className={`p-2 rounded-lg border-2 transition ${
-                viewMode === 'text'
-                  ? 'border-[#e86161] bg-[#fddcdc] text-[#e86161]'
-                  : 'border-gray-300 bg-white text-gray-500'
-              }`}
-              onClick={() => handleViewModeChange('text')}
-            >
-              {'Text'}
             </button>
           </div>
           <div className="flex space-x-2">
@@ -270,34 +304,105 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         </div>
         {viewMode === 'chat' && (
           <>
-            <div className="h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100 relative">
-              {messages.length === 0 ? (
-                <p className="text-gray-500 text-center">
-                  {'No messages yet.'}
-                </p>
-              ) : (
-                messages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className={`p-2 mb-2 rounded-lg max-w-xs ${
-                      msg.sender === 'user'
-                        ? 'bg-blue-100 ml-auto'
-                        : 'bg-gray-100 mr-auto'
-                    }`}
-                  >
-                    {msg.content}
-                    {msg.usedText && msg.sender === 'chatbot' && (
-                      <button
-                        className="text-xs text-blue-500 hover:text-blue-700"
-                        onClick={() => handleUsedTextButton(msg.usedText)}
-                      >
-                        [Popup]
-                      </button>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
+<div className="absolute top-50 left-4 right-4 z-40 bg-gray-100">
+    {showExamples ? (
+      <div className="border-b bg-white">
+        <button
+          onClick={() => setShowExamples(false)}
+          className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-none text-sm"
+          aria-label="Hide example questions"
+        >
+          <span className="mx-auto text-xs">{'Example Questions'}</span>
+          <svg
+            className="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 15l7-7 7 7"
+            />
+          </svg>
+        </button>
+        <div className="border-t">
+          {exampleQuestions.slice(0, 5).map((question, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                handleButtonClick(question);
+                setShowExamples(false); // 点击后收起下拉列表
+              }}
+              className="w-full flex items-center justify-center p-2 bg-gray-100 hover:bg-gray-200 text-sm"
+            >
+              {question}
+            </button>
+          ))}
+        </div>
+      </div>
+    ) : (
+      <button
+        onClick={() => setShowExamples(true)}
+        className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-b text-sm"
+        aria-label="Show example questions"
+      >
+        <span className="mx-auto text-xs">{'Example Questions'}</span>
+        <svg
+          className="w-4 h-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7" 
+          />
+        </svg>
+      </button>
+    )}
+  </div>
+<div className="relative flex flex-col h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100">
+
+  {/* 消息列表部分，增加顶部填充避免与示例问题重叠 */}
+  <div className="pt-12 pb-2"> {/* 确保消息区域避开示例问题的高度 */}
+    {messages.length === 0 ? (
+      <p className="text-gray-500 text-center">
+        {''}
+      </p>
+    ) : (
+      messages.map((msg, index) => (
+        <div
+          key={index}
+          className={`p-2 mb-2 rounded-lg max-w-xs border-2 ${
+            msg.sender === 'user'
+              ? 'bg-blue-100 border-blue-300 ml-auto'
+              : 'bg-gray-100 border-gray-300 mr-auto'
+          }`}
+        >
+          <div className="p-2 border rounded-lg bg-white shadow-md">
+            {msg.content}
+          </div>
+          {msg.usedText && msg.sender === 'chatbot' && (
+            <button
+              className="text-xs text-blue-500 hover:text-blue-700 mt-2 block"
+              onClick={() => handleUsedTextButton(msg.usedText)}
+            >
+              [Source]
+            </button>
+          )}
+        </div>
+      ))
+    )}
+    <div ref={messagesEndRef} />
+  </div>
+</div>
+
             <div className="relative flex flex-col space-y-2">
               <div className="relative">
                 <input
@@ -308,26 +413,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   placeholder="Type a message..."
                   className="w-full p-2 border rounded-lg"
                 />
-                <button
-                  onClick={() => setShowExamples(!showExamples)}
-                  className="absolute right-2 top-2 bg-gray-200 hover:bg-gray-300 rounded p-1"
-                  aria-label="Toggle example questions"
-                >
-                  {'Example Questions ⬆⬇'}
-                </button>
-                {showExamples && (
-                  <div className="absolute bottom-full right-0 mb-2 bg-white border rounded-lg shadow-lg p-2 max-h-32 overflow-y-auto w-full">
-                    {exampleQuestions.slice(0, 5).map((question, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleButtonClick(question)}
-                        className="w-full text-left p-2 bg-gray-100 hover:bg-gray-200 rounded-lg mb-1"
-                      >
-                        {question}
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
               <button
                 onClick={handleSendMessage}
