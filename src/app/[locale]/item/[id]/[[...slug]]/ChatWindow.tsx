@@ -4,7 +4,7 @@ type ChatMessage = {
   sender: 'user' | 'chatbot';
   content: string;
   priority: 'low' | 'mid' | 'high';
-  usedText?: string;
+  usedText?: string[];
 };
 
 type ChatWindowProps = {
@@ -61,47 +61,74 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     setInput(e.target.value);
   };
 
-  const fetchBotResponse = async (
-    prompt: string, 
-    history: ChatMessage[]
-  ) => {
+  const fetchBotResponse = async (prompt: string, history: ChatMessage[], priority: 'low' | 'mid' | 'high') => {
     const context = itemAbstract;
   
+    // 格式化历史消息
     const formattedHistory = history
       .map(msg => `${msg.sender === 'user' ? 'User' : 'Bot'}: ${msg.content}`)
       .join('\n');
   
+    // 创建完整的提示
     const fullPrompt = `Context: ${context}\n${formattedHistory}\nUser: ${prompt}`;
   
+    // 根据优先级设置不同的系统消息
+    let systemMessage: string;
+    switch (priority) {
+      case 'low':
+        systemMessage = `Provide a simple and easy-to-understand response suitable for a non-expert. Avoid technical jargon and keep explanations brief. Format your response as: "Answer: <generated answer>. Used Text: <text excerpts>".`;
+        break;
+      case 'mid':
+        systemMessage = `Provide a moderately detailed response suitable for someone with basic knowledge in the field. Include explanations where necessary, but avoid overly technical details. Format your response as: "Answer: <generated answer>. Used Text: <text excerpts>".`;
+        break;
+      case 'high':
+        systemMessage = `Provide a detailed and comprehensive response suitable for an expert. Include technical details and thorough explanations as needed. Format your response as: "Answer: <generated answer>. Used Text: <text excerpts>".`;
+        break;
+      default:
+        systemMessage = `Provide a response with appropriate detail based on the given context. Format your response as: "Answer: <generated answer>. Used Text: <text excerpts>".`;
+    }
+  
     const apiPath = '/api/generateResponse/';
+  
     try {
       const response = await fetch(apiPath, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: fullPrompt }),
+        body: JSON.stringify({ prompt: `${fullPrompt}\nSystem: ${systemMessage}` }),
       });
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.body) {
+        throw new Error('No response body');
       }
   
-      const data = await response.json();
-      // Ensure data contains the expected properties
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let done = false;
+      let accumulatedText = '';
+  
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          const chunk = decoder.decode(value, { stream: true });
+          accumulatedText += chunk;
+        }
+      }
+  
+      // 解析响应中的 answer 和 usedText
+      const parsedResponse = JSON.parse(accumulatedText);
       return {
-        text: data.text || 'Failed to fetch response.',
-        usedText: data.usedText || []
+        text: parsedResponse.text,
+        usedText: parsedResponse.usedText,
       };
     } catch (error) {
       console.error('Error fetching bot response:', error);
-      return {
-        text: 'Failed to fetch response.',
-        usedText: []
-      };
+      return { text: 'Failed to fetch response.', usedText: [] };
     }
-  };      
-
+  };
+  
   const fetchExampleQuestions = async (text: string) => {
     const apiPath = '/api/generateQuestions/';
 
@@ -141,7 +168,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   
       const botReply = await fetchBotResponse(
         input,
-        updatedMessages
+        updatedMessages,
+        selectedPriority // Pass the selected priority here
       );
   
       const botMessage: ChatMessage = {
@@ -154,7 +182,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       setMessages(prevMessages => [...prevMessages, botMessage]);
       setIsLoading(false); // Hide loading indicator
     }
-  };    
+  };
+   
       
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -187,9 +216,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   
     setMessages(updatedMessages);
   
+    setIsLoading(true); // Show loading indicator
+  
     const botReply = await fetchBotResponse(
       word,
-      updatedMessages
+      updatedMessages,
+      selectedPriority // Pass the selected priority here
     );
   
     const botMessage: ChatMessage = {
@@ -200,8 +232,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     };
   
     setMessages(prevMessages => [...prevMessages, botMessage]);
-    setShowExamples(false);
+    setShowExamples(false); // Hide example questions after a button click
+    setIsLoading(false); // Hide loading indicator
   };
+  
 
   const handleUsedTextButton = (text: string | undefined) => {
     if(text)
@@ -367,8 +401,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       </button>
     )}
   </div>
-<div className="relative flex flex-col h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100">
-
+  <div className="relative flex flex-col h-3/5 overflow-y-auto mb-4 border p-2 rounded-lg bg-gray-100">
   {/* 消息列表部分，增加顶部填充避免与示例问题重叠 */}
   <div className="pt-12 pb-2"> {/* 确保消息区域避开示例问题的高度 */}
     {messages.length === 0 ? (
@@ -376,32 +409,61 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         {''}
       </p>
     ) : (
-      messages.map((msg, index) => (
-        <div
-          key={index}
-          className={`p-2 mb-2 rounded-lg max-w-xs border-2 ${
-            msg.sender === 'user'
-              ? 'bg-blue-100 border-blue-300 ml-auto'
-              : 'bg-gray-100 border-gray-300 mr-auto'
-          }`}
-        >
-          <div className="p-2 border rounded-lg bg-white shadow-md">
-            {msg.content}
+      messages.map((msg, index) => {
+        // 根据优先级设置消息背景颜色
+        let messageBgColor;
+        switch (msg.priority) {
+          case 'low':
+            messageBgColor = '#f5f5f5'; // Low priority color
+            break;
+          case 'mid':
+            messageBgColor = '#fefcbf'; // Mid priority color
+            break;
+          case 'high':
+            messageBgColor = '#fddfdf'; // High priority color
+            break;
+          default:
+            messageBgColor = '#f5f5f5'; // Default color
+        }
+
+        return (
+          <div
+            key={index}
+            className={`p-2 mb-2 rounded-lg max-w-xs border-2 ${
+              msg.sender === 'user'
+                ? `border-blue-300 ml-auto`
+                : `border-gray-300 mr-auto`
+            }`}
+            style={{ backgroundColor: messageBgColor }}
+          >
+            <div className="p-2 border rounded-lg bg-white shadow-md">
+              {msg.content}
+            </div>
+            {msg.usedText && msg.sender === 'chatbot' && (
+              <div>
+                {msg.usedText.length > 0 ? (
+                  msg.usedText.map((text: string, idx: number) => (
+                    <button
+                      key={idx}
+                      className="text-xs text-blue-500 hover:text-blue-700 mt-2 block"
+                      onClick={() => handleUsedTextButton(text)}
+                    >
+                      [Source]
+                    </button>
+                  ))
+                ) : (
+                  <p>No sources available</p> // 或者任何其他的占位符内容
+                )}
+              </div>
+            )}
           </div>
-          {msg.usedText && msg.sender === 'chatbot' && (
-            <button
-              className="text-xs text-blue-500 hover:text-blue-700 mt-2 block"
-              onClick={() => handleUsedTextButton(msg.usedText)}
-            >
-              [Source]
-            </button>
-          )}
-        </div>
-      ))
+        );
+      })
     )}
     <div ref={messagesEndRef} />
   </div>
 </div>
+
 
             <div className="relative flex flex-col space-y-2">
               <div className="relative">
