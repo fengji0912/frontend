@@ -1,6 +1,8 @@
 import React, { ChangeEvent, KeyboardEvent, useState, useEffect, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid'; // 用于生成唯一ID
 
 type ChatMessage = {
+  id: string; // 新增唯一ID
   sender: 'user' | 'chatbot';
   content: string;
   priority: 'low' | 'mid' | 'high';
@@ -156,6 +158,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const handleSendMessage = async () => {
     if (input.trim()) {
       const userMessage: ChatMessage = { 
+        id: uuidv4(), // 新增
         sender: 'user', 
         content: input, 
         priority: selectedPriority 
@@ -173,6 +176,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       );
   
       const botMessage: ChatMessage = {
+        id: uuidv4(), // 新增
         sender: 'chatbot',
         content: botReply.text,
         priority: 'low',
@@ -197,6 +201,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handlePriorityChange = (priority: 'low' | 'mid' | 'high') => {
     setSelectedPriority(priority);
+    handleClearMessages();
   };
 
   const handleViewModeChange = (mode: 'chat' | 'text') => {
@@ -208,6 +213,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handleButtonClick = async (word: string) => {
     const userMessage: ChatMessage = { 
+      id: uuidv4(), // 新增
       sender: 'user', 
       content: word, 
       priority: selectedPriority 
@@ -225,6 +231,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     );
   
     const botMessage: ChatMessage = {
+      id: uuidv4(), // 新增
       sender: 'chatbot',
       content: botReply.text,
       priority: 'low',
@@ -246,6 +253,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   if (!isOpen) return null;
 
+  
   return (
     <div className="fixed bottom-0 right-0 p-4 z-50 w-full max-w-[750px] h-[90vh] max-h-[100vh] transform transition-transform">
       <div className="bg-white p-4 rounded-lg shadow-lg h-full overflow-y-auto relative">
@@ -256,7 +264,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
         )}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Chatbot</h2>
+            <svg
+              className="w-10 h-10"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8c-1.704 0-3.297-.48-4.637-1.312L3 20l1.689-3.542A7.962 7.962 0 0 1 4 12z" />
+            </svg>
+            <span 
+              className="w-6 h-8 text-base font-medium">Chatbot</span>
           <div ref={settingsRef} className="flex space-x-2">
             <button
               className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition"
@@ -290,20 +308,29 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             </button>
           </div>
         </div>
+        {/* 当处于 context 模式时，显示 "Back to Chat" 按钮 */}
+{viewMode === 'text' && (
+  <div className="mb-4 flex justify-between">
+    <button
+      className="p-2 rounded-lg border-2 transition border-blue-500 bg-blue-100 text-blue-500"
+      onClick={() => handleViewModeChange('chat')}
+    >
+      {'Back to Chat'}
+    </button>
+  </div>
+)}
+
+{/* 渲染文本内容 */}
+{viewMode === 'text' && (
+  <div className="p-2 border rounded-lg h-4/5 overflow-y-auto">
+    <p>{itemAbstract}</p>
+  </div>
+)}
         <div className="mb-4 flex justify-between">
-          <div className="flex space-x-2">
-            <button
-              className={`p-2 rounded-lg border-2 transition ${
-                viewMode === 'chat'
-                  ? 'border-[#e86161] bg-[#fddcdc] text-[#e86161]'
-                  : 'border-gray-300 bg-white text-gray-500'
-              }`}
-              onClick={() => handleViewModeChange('chat')}
-            >
-              {'Chat'}
-            </button>
-          </div>
-          <div className="flex space-x-2">
+          <div className="flex justify-center items-center mb-4">
+            <span className="text-sm font-medium text-gray-700">
+              Level of Expertise:
+            </span>
             <button
               className={`p-2 rounded-lg transition ${
                 selectedPriority === 'low'

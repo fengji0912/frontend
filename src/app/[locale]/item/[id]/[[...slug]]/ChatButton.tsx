@@ -1,10 +1,10 @@
-'use client'; // Marking as a client-side component
+'use client';
 
 import React, { useState } from 'react';
 import ChatWindow from '@/app/[locale]/item/[id]/[[...slug]]/ChatWindow';
 
 type ChatButtonProps = {
-  itemAbstract?: string; // Allow undefined
+  itemAbstract?: string;
 };
 
 const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
@@ -16,22 +16,19 @@ const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
     <>
       <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
         <button
-          className={`flex items-center p-4 px-6 bg-[#e86161] text-white shadow-lg transition-transform transform ${isChatOpen ? 'translate-y-0' : 'translate-y-12'} rounded-lg`}
-          aria-label="Toggle chat"
+          className={`bg-[#e86161] text-white transition-transform transform ${isChatOpen ? 'translate-y-0' : 'translate-y-12'} rounded-lg`}
           onClick={toggleChatWindow}
           style={{
             border: 'none',
-            boxShadow: isChatOpen ? '0 4px 8px rgba(0, 0, 0, 0.2)' : '0 6px 12px rgba(0, 0, 0, 0.3)',
-            minWidth: '300px', // Ensures sufficient width for content
-            minHeight: '50px', // Ensures sufficient height for content
+            minWidth: '300px',
+            minHeight: '50px', 
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between', // Space out icon, text, and arrow
+            justifyContent: 'space-between',
             padding: '0 16px',
-            margin: '0 0 1rem 1rem', // Ensures button is not too close to the edges
+            margin: '0 0 1rem 1rem', 
           }}
         >
-          {/* WeChat-like Icon and Chatbot Text Together */}
           <div className="flex items-center">
             <svg
               className="w-10 h-10"
@@ -45,7 +42,6 @@ const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
             <span 
               className="w-6 h-8 text-base font-medium">Chatbot</span>
           </div>
-          {/* Up Arrow Icon */}
           <svg
             className={`w-10 h-10 transition-transform ${isChatOpen ? 'rotate-180' : 'rotate-0'}`}
             fill="none"
