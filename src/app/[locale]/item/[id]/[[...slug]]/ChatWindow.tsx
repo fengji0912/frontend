@@ -5,7 +5,7 @@ type ChatMessage = {
   id: string; 
   sender: 'user' | 'chatbot';
   content: string;
-  priority: 'low' | 'mid' | 'high';
+  priority: 'low' | 'high';
   source?: string[];
 };
 
@@ -22,7 +22,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
-  const [selectedPriority, setSelectedPriority] = useState<'low' | 'mid' | 'high'>('mid');
+  const [selectedPriority, setSelectedPriority] = useState<'low' | 'high'>('low');
   const [viewMode, setViewMode] = useState<'chat' | 'context'>('chat');
   const [exampleQuestions, setExampleQuestions] = useState<string[]>([]);
   const [showExamples, setShowExamples] = useState(false); 
@@ -62,13 +62,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     setInput(e.target.value);
   };
 
-  const fetchBotResponse = async (prompt: string, history: ChatMessage[], priority: 'low' | 'mid' | 'high') => {
+  const fetchBotResponse = async (question: string, history: ChatMessage[], priority: 'low' | 'high') => {
     setShowExamples(false);
     const context = itemAbstract;
     const formattedHistory = history
       .map(msg => `${msg.sender === 'user' ? 'user' : 'chatbot'}: ${msg.content}`)
       .join('\n');
-    const fullPrompt = `context: ${context}\n${formattedHistory}\nuser: ${prompt}\npriority: ${priority}`;
+    const fullPrompt = `context: ${context}\n${formattedHistory}\nquestion: ${question}\npriority: ${priority}`;
     const apiPath = '/api/generateResponse/';
     try {
       const response = await fetch(apiPath, {
@@ -105,7 +105,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   };
   
-  const fetchExampleQuestions = async (text: string) => {
+  const fetchExampleQuestions = async (context: string) => {
     const apiPath = '/api/generateQuestions/';
     try {
       const response = await fetch(apiPath, {
@@ -113,7 +113,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ context }),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -125,16 +125,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       return [];
     }
   };
-
-  const removePrefix = (text: string) => {
-    return text.replace(/^\d+\.\s*/, ''); 
-  };
   
   const handleClearMessages = () => {
     setMessages([]);
   };
 
-  const handlePriorityChange = (priority: 'low' | 'mid' | 'high') => {
+  const handlePriorityChange = (priority: 'low' | 'high') => {
     setSelectedPriority(priority);
     handleClearMessages();
   };
@@ -165,7 +161,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   
       const botReply = await fetchBotResponse(
         input,
-        updatedMessages,
+        messages,
         selectedPriority
       );
   
@@ -181,12 +177,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       setIsLoading(false); 
     }
   };
-  
-  const handleExampleClick = async (input: string) => {
+
+  const removePrefix = (text: string) => {
+    return text.replace(/^\d+\.\s*/, ''); 
+  };
+
+  const handleExampleClick = async (question: string) => {
     const userMessage: ChatMessage = { 
       id: uuidv4(), 
       sender: 'user', 
-      content: input, 
+      content: removePrefix(question), 
       priority: selectedPriority 
     };
     const updatedMessages: ChatMessage[] = [...messages, userMessage];
@@ -195,8 +195,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     setIsLoading(true);
   
     const botReply = await fetchBotResponse(
-      input,
-      updatedMessages,
+      removePrefix(question),
+      messages,
       selectedPriority
     );
   
@@ -248,16 +248,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               onClick={() => handlePriorityChange('low')}
             >
               {'Low'}
-            </button>
-            <button
-              className={`p-2 rounded-lg transition ${
-                selectedPriority === 'mid'
-                  ? 'bg-yellow-200 border-yellow-500'
-                  : 'bg-yellow-100 border-yellow-300'
-              }`}
-              onClick={() => handlePriorityChange('mid')}
-            >
-              {'Mid'}
             </button>
             <button
               className={`p-2 rounded-lg transition ${
@@ -403,9 +393,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     switch (msg.priority) {
                       case 'low':
                         borderColor = 'border-gray-300';
-                        break;
-                      case 'mid':
-                        borderColor = 'border-yellow-300'; 
                         break;
                       case 'high':
                         borderColor = 'border-red-300'; 

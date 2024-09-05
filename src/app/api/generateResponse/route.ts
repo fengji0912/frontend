@@ -6,33 +6,36 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const { prompt, priority } = await request.json(); 
+    const {prompt} = await request.json(); 
+    const priority = (prompt.match(/priority:\s*(\w+)/))[1];
     const messages = prompt.split('\n').map((line: string) => {
       if (line.startsWith('context:')) {
         return { role: 'system', content: line.replace('context:', '').trim() };
       } else if (line.startsWith('user:')) {
         return { role: 'user', content: line.replace('user:', '').trim() };
-      } else if (line.startsWith('bot:')) {
-        return { role: 'chatbot', content: line.replace('chatbot:', '').trim() };
+      } else if (line.startsWith('chatbot:')) {
+        return { role: 'assistant', content: line.replace('chatbot:', '').trim() };
+      }else if (line.startsWith('question:')) {
+        return { role: 'user', content: line.replace('question:', '').trim() };
       }
       return null;
     }).filter((msg: null) => msg !== null);
 
-    console.log('Parsed messages:', messages);
+    console.log('Parsed messages:', messages,);
 
     let systemMessage: string;
     switch (priority) {
       case 'low':
-        systemMessage = `Provide a simple and easy-to-understand response suitable for a non-expert. Avoid technical jargon and keep explanations brief. Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
-        break;
-      case 'mid':
-        systemMessage = `Provide a moderately detailed response suitable for someone with basic knowledge in the field. Include explanations where necessary, but avoid overly technical details. Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
+        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
+        Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
         break;
       case 'high':
-        systemMessage = `Provide a detailed and comprehensive response suitable for an expert. Include technical details and thorough explanations as needed. Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
+        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be detailed, comprehensive and suitable for an expert, Include technical details and thorough explanations as needed. 
+        Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
         break;
       default:
-        systemMessage = `Provide a response with appropriate detail based on the given context. Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
+        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
+        Format your response as: "answer: <generated answer>. source: <text excerpts>".`;
     }
 
     const response = await openai.chat.completions.create({
@@ -44,7 +47,7 @@ export async function POST(request: Request) {
           content: systemMessage,
         },
       ],
-      max_tokens: 300,
+      max_tokens: 1000,
       stream: true, 
     });
 

@@ -8,8 +8,7 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const { text } = await request.json();
-    console.log(`Received text: ${text}`);
+    const { context } = await request.json();
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -19,10 +18,10 @@ export async function POST(request: Request) {
         },
         {
           role: 'user',
-          content: text
+          content: context
         }
       ],
-      max_tokens: 150, 
+      max_tokens: 1000, 
     });
     if (!response || !response.choices || response.choices.length === 0) {
       console.error('Invalid response structure:', response);
