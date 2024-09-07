@@ -78,32 +78,61 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         },
         body: JSON.stringify({ prompt: `${fullPrompt}` }),
       });
+    
       if (!response.body) {
         throw new Error('No response body');
       }
+    
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
-      let done = false;
       let accumulatedText = '';
-  
-      while (!done) {
-        const { value, done: readerDone } = await reader.read();
-        done = readerDone;
-        if (value) {
-          const chunk = decoder.decode(value, { stream: true });
+      let isAnswerComplete = false;
+    
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+    
+        if (!isAnswerComplete) {
           accumulatedText += chunk;
-        }
+          if (accumulatedText.indexOf('source') == -1) {
+            setMessages(prevMessages => {
+              const lastMessage = prevMessages[prevMessages.length - 1];
+              if (lastMessage && lastMessage.sender === 'chatbot') {
+                return [...prevMessages.slice(0, -1), {
+                  ...lastMessage,
+                  content: lastMessage.content + chunk,
+                }];
+              }
+              return [...prevMessages, {
+                id: uuidv4(),
+                sender: 'chatbot',
+                content: chunk,
+                priority: selectedPriority,
+                source: [],
+              }];
+            });
+          }else {
+            isAnswerComplete = true;
+            accumulatedText = '';
+          }
+        } 
       }
-      const parsedResponse = JSON.parse(accumulatedText);
-      return {
-        answer: parsedResponse.answer,
-        source: parsedResponse.source,
-      };
+      const source = accumulatedText.replace(/^:\s*/, '') ? accumulatedText.replace(/^:\s*/, '').split('.').map(text => text.trim()).filter(text => text) : [];
+      setMessages(prevMessages => {
+        const lastMessage = prevMessages[prevMessages.length - 1];
+        if (lastMessage && lastMessage.sender === 'chatbot') {
+          return [...prevMessages.slice(0, -1), {
+            ...lastMessage,
+            source: source,
+          }];
+        }
+        return [...prevMessages];
+      });
     } catch (error) {
       console.error('Error fetching bot response:', error);
-      return { answer: 'Failed to fetch response.', source: [] };
     }
-  };
+  }    
   
   const fetchExampleQuestions = async (context: string) => {
     const apiPath = '/api/generateQuestions/';
@@ -159,21 +188,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       setInput('');
       setIsLoading(true);
   
-      const botReply = await fetchBotResponse(
+      await fetchBotResponse(
         input,
         messages,
         selectedPriority
       );
   
-      const botMessage: ChatMessage = {
-        id: uuidv4(),
-        sender: 'chatbot',
-        content: botReply.answer,
-        priority: selectedPriority,
-        source: botReply.source,
-      };
-  
-      setMessages(prevMessages => [...prevMessages, botMessage]);
       setIsLoading(false); 
     }
   };
@@ -194,21 +214,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     setMessages(updatedMessages);
     setIsLoading(true);
   
-    const botReply = await fetchBotResponse(
+    await fetchBotResponse(
       removePrefix(question),
       messages,
       selectedPriority
     );
-  
-    const botMessage: ChatMessage = {
-      id: uuidv4(), 
-      sender: 'chatbot',
-      content: botReply.answer,
-      priority: 'low',
-      source: botReply.source,
-    };
-  
-    setMessages(prevMessages => [...prevMessages, botMessage]);
     setIsLoading(false); 
   };
   
