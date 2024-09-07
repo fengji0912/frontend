@@ -92,10 +92,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         const { value, done } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-    
+        accumulatedText += chunk;
         if (!isAnswerComplete) {
-          accumulatedText += chunk;
-          if (accumulatedText.indexOf('source') == -1) {
+          if (accumulatedText.indexOf('source:') == -1) {
             setMessages(prevMessages => {
               const lastMessage = prevMessages[prevMessages.length - 1];
               if (lastMessage && lastMessage.sender === 'chatbot') {
@@ -114,11 +113,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             });
           }else {
             isAnswerComplete = true;
-            accumulatedText = '';
           }
         } 
       }
-      const source = accumulatedText.replace(/^:\s*/, '') ? accumulatedText.replace(/^:\s*/, '').split('.').map(text => text.trim()).filter(text => text) : [];
+      const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
+      if (!sourceMatch || sourceMatch.length < 2) {
+        return ;
+      }
+      const sourceText = sourceMatch[1];
+      const source = sourceText.split(/(?<=\.)\s+/).map(sentence => sentence.trim()).filter(sentence => sentence !== '');
       setMessages(prevMessages => {
         const lastMessage = prevMessages[prevMessages.length - 1];
         if (lastMessage && lastMessage.sender === 'chatbot') {
@@ -232,8 +235,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-0 right-0 z-50 w-full max-w-[750px] h-[90vh] max-h-[100vh] transform transition-transform">
-      <div className="bg-white p-4 rounded-lg h-full relative">
+    <div className="fixed bottom-0 right-0 z-50 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[90vh] max-h-[100vh] transform transition-transform dark:bg-secondary-200">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg h-full relative">
         {isLoading && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
             <div className="loader">
@@ -243,17 +246,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             </div>
           </div>
         )}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2">
-          <span className="text-xl font-medium p-2">Chatbot</span>
-          <div className="flex items-center space-x-2">
-            <span className="text-base font-medium text-gray-700">
+        <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-between p-2 dark:bg-gray-700">
+          <span className="text-xl font-medium p-2 dark:text-white">Chatbot</span>
+          <div className="flex flex-wrap items-center space-x-2">
+            <span className="text-base font-medium text-gray-700 dark:text-gray-300">
               Level of Expertise:
             </span>
             <button
               className={`p-2 rounded-lg transition ${
                 selectedPriority === 'low'
-                  ? 'bg-gray-300 border-gray-500'
-                  : 'bg-gray-200 border-gray-300'
+                  ? 'bg-blue-800 border-blue-900 text-white dark:bg-blue-800 dark:border-blue-900 dark:text-white'
+                  : 'bg-blue-300 border-blue-400 text-gray-800 dark:bg-blue-300 dark:border-blue-400 dark:text-gray-800'
               }`}
               onClick={() => handlePriorityChange('low')}
             >
@@ -262,8 +265,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             <button
               className={`p-2 rounded-lg transition ${
                 selectedPriority === 'high'
-                  ? 'bg-red-200 border-red-500'
-                  : 'bg-red-100 border-red-300'
+                  ? 'bg-red-800 border-red-900 text-white dark:bg-red-800 dark:border-red-900 dark:text-white'
+                  : 'bg-red-300 border-red-400 text-gray-800 dark:bg-red-300 dark:border-red-400 dark:text-gray-800'
               }`}
               onClick={() => handlePriorityChange('high')}
             >
@@ -272,21 +275,21 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
           <div ref={settingsRef} className="flex space-x-2 items-center">
             <button
-              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition"
+              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition dark:bg-gray-600 dark:hover:bg-gray-500"
               onClick={() => setShowSettings(!showSettings)}
             >
               ⚙️
             </button>
             {showSettings && (
-              <div className="absolute right-0 mt-12 bg-white border rounded-lg p-2 w-40 z-50">
+              <div className="absolute right-0 mt-12 bg-white border rounded-lg p-2 w-40 z-50 dark:bg-gray-800 dark:border-gray-700">
                 <button
-                  className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1"
+                  className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1 dark:hover:bg-gray-700 dark:text-gray-300"
                   onClick={() => handleViewModeChange('context')}
                 >
                   {'context'}
                 </button>
                 <button
-                  className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1"
+                  className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1 dark:hover:bg-gray-700 dark:text-gray-300"
                   onClick={handleClearMessages}
                 >
                   {'Clear history'}
@@ -294,7 +297,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </div>
             )}
             <button
-              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition"
+              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition dark:bg-gray-600 dark:hover:bg-gray-500"
               onClick={onClose}
               aria-label="Close chat window"
             >
@@ -303,65 +306,43 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
         </div>
         {viewMode === 'context' && (
-          <div className="absolute top-16 left-4 right-4 z-40 bg-gray-100 mb-4">
-               <button
-                className="flex items-center text-[#e86161] border-none bg-transparent hover:bg-gray-100 text-base font-medium p-2 rounded-lg"
-                onClick={() => handleViewModeChange('chat')}
-                >
-              <svg
-                className="w-6 h-6 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 12H5m7-7l-7 7 7 7"
-              />
+          <div className="absolute top-16 left-4 right-4 z-40 bg-gray-100 dark:bg-gray-900 mb-4">
+            <button
+              className="flex items-center text-[#e86161] border-none bg-transparent hover:bg-gray-100 text-base font-medium p-2 rounded-lg dark:hover:bg-gray-700"
+              onClick={() => handleViewModeChange('chat')}
+            >
+              <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 12H5m7-7l-7 7 7 7" />
               </svg>
               {'Back to Chat'}
-              </button>
-            <div className="p-2 border rounded-lg h-[calc(100%-3rem)] overflow-y-auto">
-              <p>{itemAbstract}</p>
+            </button>
+            <div className="p-2 border rounded-lg h-[calc(100%-3rem)] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+              <p className="dark:text-gray-300">{itemAbstract}</p>
             </div>
           </div>
-        )}  
+        )}
         {viewMode === 'chat' && (
           <>
-            <div className="absolute top-16 left-4 right-4 z-40 bg-gray-100">
+            <div className="absolute top-16 left-4 right-4 z-40 bg-gray-100 dark:bg-gray-900">
               {showExamples ? (
-                <div className="border-b bg-white">
+                <div className="border-b bg-white dark:bg-gray-800">
                   <button
                     onClick={() => setShowExamples(false)}
-                    className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-none text-sm"
+                    className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-none text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
                   >
-                    <span className="mx-auto text-xs">{'Example Questions'}</span>
-                    <svg
-                      className="w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 15l7-7 7 7"
-                      />
+                    <span className="mx-auto text-xs dark:text-gray-300">{'Example Questions'}</span>
+                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                     </svg>
                   </button>
-                  <div className="border-t">
+                  <div className="border-t dark:border-gray-600">
                     {exampleQuestions.slice(0, 5).map((question, index) => (
                       <button
                         key={index}
                         onClick={() => {
                           handleExampleClick(question);
                         }}
-                        className="w-full flex items-center justify-center p-2 bg-gray-100 hover:bg-gray-200 text-sm"
+                        className="w-full flex items-center justify-center p-2 bg-gray-100 hover:bg-gray-200 text-sm dark:bg-gray-800 dark:hover:bg-gray-700"
                       >
                         {question}
                       </button>
@@ -371,55 +352,42 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               ) : (
                 <button
                   onClick={() => setShowExamples(true)}
-                  className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-b text-sm"
+                  className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-b text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
                 >
-                  <span className="mx-auto text-xs">{'Example Questions'}</span>
-                  <svg
-                    className="w-4 h-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
+                  <span className="mx-auto text-xs dark:text-gray-300">{'Example Questions'}</span>
+                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
               )}
             </div>
-            <div className="flex flex-col h-[calc(100%-8rem)] overflow-y-auto mt-16 border p-2 rounded-lg bg-gray-100">
+            <div className="flex flex-col h-[calc(100%-8rem)] overflow-y-auto mt-16 border p-2 rounded-lg bg-gray-100 dark:bg-gray-900">
               <div className="pt-8 pb-2">
                 {messages.length === 0 ? (
-                  <p className="text-center">
-                    {''}
-                  </p>
+                  <p className="text-center dark:text-gray-300">{''}</p>
                 ) : (
                   messages.map((msg, index) => {
                     let borderColor;
                     switch (msg.priority) {
                       case 'low':
-                        borderColor = 'border-gray-300';
+                        borderColor = 'border-gray-300 dark:border-gray-600';
                         break;
                       case 'high':
-                        borderColor = 'border-red-300'; 
+                        borderColor = 'border-red-300 dark:border-red-600';
                         break;
                       default:
-                        borderColor = 'border-yellow-300'; 
+                        borderColor = 'border-yellow-300 dark:border-yellow-600';
                     }
                     return (
                       <div
                         key={index}
                         className={`p-2 mb-2 rounded-lg max-w-xs border-1 ${borderColor} ${
                           msg.sender === 'user'
-                            ? `bg-gray-100 ml-auto`
-                            : `bg-gray-100 mr-auto`
-                        }`} 
+                            ? `bg-gray-100 ml-auto dark:bg-gray-700`
+                            : `bg-gray-100 mr-auto dark:bg-gray-700`
+                        }`}
                       >
-                        <div className="p-2 rounded-lg bg-white shadow-md">
+                        <div className="p-2 rounded-lg bg-white shadow-md dark:bg-gray-800">
                           {msg.content}
                         </div>
                         {msg.source && msg.sender === 'chatbot' && (
@@ -428,14 +396,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                               msg.source.map((text, idx) => (
                                 <button
                                   key={idx}
-                                  className="text-xs text-blue-500 hover:text-blue-700 mt-2 block"
+                                  className="text-xs text-blue-500 hover:text-blue-700 mt-2 block dark:text-blue-300"
                                   onClick={() => handleSourceButton(text)}
                                 >
-                                  [Source]
+                                  {`[Source ${idx + 1}]`}
                                 </button>
                               ))
                             ) : (
-                              <p>No sources available</p>
+                              <p className="dark:text-gray-300">No sources available</p>
                             )}
                           </div>
                         )}
@@ -446,14 +414,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 <div ref={messagesEndRef} />
               </div>
             </div>
-            <div className="absolute bottom-4 left-4 right-4 flex space-x-2">
+            <div className="absolute bottom-4 left-4 right-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
               <input
                 type="text"
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
                 placeholder="Type a message..."
-                className="w-full p-2 border rounded-lg"
+                className="w-full sm:w-4/5 p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white"
               />
               <button
                 onClick={handleSendButton}
@@ -465,14 +433,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </>
         )}
         {showTextBox && (
-          <div className="fixed bottom-16 left-0 bg-white border rounded-lg shadow-lg p-4 max-w-xs max-h-[60vh] overflow-y-auto z-60">
+          <div className="fixed bottom-16 left-0 bg-white border rounded-lg shadow-lg p-4 max-w-xs max-h-[60vh] overflow-y-auto z-60 dark:bg-gray-800 dark:border-gray-700">
             <button
               onClick={() => setShowTextBox(null)}
-              className="absolute top-2 right-2 text-red-500"
+              className="absolute top-2 right-2 text-red-500 dark:text-red-300"
             >
               {'×'}
             </button>
-            <p>{showTextBox}</p>
+            <p className="dark:text-gray-300">{showTextBox}</p>
           </div>
         )}
       </div>

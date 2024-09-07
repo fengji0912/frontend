@@ -27,15 +27,15 @@ export async function POST(request: Request) {
     switch (priority) {
       case 'low':
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
-        Format your response as: "<generated answer>. source: <text excerpts 1><text excerpts 2>...`;
+        Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
         break;
       case 'high':
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be detailed, comprehensive and suitable for an expert, Include technical details and thorough explanations as needed. 
-        Format your response as: "<generated answer>. source: <text excerpts 1><text excerpts 2>...`;
+        Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
         break;
       default:
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
-        Format your response as: "<generated answer>. source: <text excerpts 1><text excerpts 2>...`;
+        Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
     }
 
     const response = await openai.chat.completions.create({
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
           }
         }
         sourceText = accumulatedText.replace(/^:\s*/, '');
-        controller.enqueue(new TextEncoder().encode(JSON.stringify({source: sourceText })));
+        controller.enqueue(new TextEncoder().encode(" source: " + sourceText));
         controller.close();
       },
     });    
