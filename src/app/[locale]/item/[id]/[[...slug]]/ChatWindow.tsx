@@ -235,7 +235,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-0 right-0 z-50 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[90vh] max-h-[100vh] transform transition-transform dark:bg-secondary-200">
+    <div className="fixed bottom-0 right-0 z-50 w-full max-w-[calc(100vw-16px)] sm:max-w-lg md:max-w-xl lg:max-w-2xl h-[90vh] max-h-[100vh] transform transition-transform dark:bg-secondary-200">
       <div className="bg-white dark:bg-gray-800 p-4 rounded-lg h-full relative">
         {isLoading && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
@@ -246,9 +246,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             </div>
           </div>
         )}
-        <div className="absolute top-0 left-0 right-0 flex flex-col sm:flex-row items-center justify-between p-2 dark:bg-gray-700">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 dark:bg-gray-700">
           <span className="text-xl font-medium p-2 dark:text-white">Chatbot</span>
-          <div className="flex flex-wrap items-center space-x-2">
+          <div className="flex items-center">
             <span className="text-base font-medium text-gray-700 dark:text-gray-300">
               Level of Expertise:
             </span>
@@ -273,7 +273,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               {'High'}
             </button>
           </div>
-          <div ref={settingsRef} className="flex space-x-2 items-center">
+          <div ref={settingsRef} className="p-1 flex items-center space-x-1">
             <button
               className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition dark:bg-gray-600 dark:hover:bg-gray-500"
               onClick={() => setShowSettings(!showSettings)}
@@ -281,7 +281,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               ⚙️
             </button>
             {showSettings && (
-              <div className="absolute right-0 mt-12 bg-white border rounded-lg p-2 w-40 z-50 dark:bg-gray-800 dark:border-gray-700">
+              <div className="absolute right-0 mt-12 bg-white border rounded-lg p-1 w-40 z-50 dark:bg-gray-800 dark:border-gray-700">
                 <button
                   className="w-full text-left p-2 hover:bg-gray-100 rounded-lg mb-1 dark:hover:bg-gray-700 dark:text-gray-300"
                   onClick={() => handleViewModeChange('context')}
@@ -297,7 +297,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </div>
             )}
             <button
-              className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition dark:bg-gray-600 dark:hover:bg-gray-500"
+              className="text-white bg-gray-700 hover:bg-gray-800 p-1 rounded-lg transition dark:bg-gray-600 dark:hover:bg-gray-500"
               onClick={onClose}
               aria-label="Close chat window"
             >
@@ -316,7 +316,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               </svg>
               {'Back to Chat'}
             </button>
-            <div className="p-2 border rounded-lg h-[calc(100%-3rem)] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-2 border rounded-lg max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
               <p className="dark:text-gray-300">{itemAbstract}</p>
             </div>
           </div>
@@ -335,7 +335,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                     </svg>
                   </button>
-                  <div className="border-t dark:border-gray-600">
+                  <div className="border-t dark:border-gray-600 max-h-[200px] overflow-y-auto">
                     {exampleQuestions.slice(0, 5).map((question, index) => (
                       <button
                         key={index}
@@ -421,7 +421,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
                 placeholder="Type a message..."
-                className="w-full sm:w-4/5 p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white"
               />
               <button
                 onClick={handleSendButton}
