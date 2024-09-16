@@ -26,11 +26,11 @@ export async function POST(request: Request) {
     let systemMessage: string;
     switch (priority) {
       case 'low':
-        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
+        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge(use simple words), 
         Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
         break;
       case 'high':
-        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be detailed, comprehensive and suitable for an expert, Include technical details and thorough explanations as needed. 
+        systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be detailed, comprehensive and suitable for an expert, Include technical details and thorough explanations as needed(use technical words). 
         Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
         break;
       default:
