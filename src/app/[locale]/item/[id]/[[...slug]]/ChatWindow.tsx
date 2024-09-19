@@ -87,6 +87,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       const decoder = new TextDecoder('utf-8');
       let accumulatedText = '';
       let isAnswerComplete = false;
+      let sourceText = ''
     
       while (true) {
         const { value, done } = await reader.read();
@@ -94,7 +95,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
         if (!isAnswerComplete) {
-          if (accumulatedText.indexOf('source:') == -1) {
+          if (accumulatedText.indexOf(' source') == -1) {
             setMessages(prevMessages => {
               const lastMessage = prevMessages[prevMessages.length - 1];
               if (lastMessage && lastMessage.sender === 'chatbot') {
@@ -116,11 +117,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           }
         } 
       }
+      console.error(accumulatedText)
       const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
-      if (!sourceMatch || sourceMatch.length < 2) {
-        return ;
-      }
-      const sourceText = sourceMatch[1];
+      sourceText = sourceMatch ? sourceMatch[1] : '';
+
       const source = sourceText.split(/(?<=\.)\s+/).map(sentence => sentence.trim()).filter(sentence => sentence !== '');
       setMessages(prevMessages => {
         const lastMessage = prevMessages[prevMessages.length - 1];
@@ -440,7 +440,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             >
               {'×'}
             </button>
-            <p className="dark:text-gray-300">{showTextBox}</p>
+            <p className="z-50 dark:text-gray-300">{showTextBox}</p>
           </div>
         )}
       </div>

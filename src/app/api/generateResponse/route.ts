@@ -27,15 +27,15 @@ export async function POST(request: Request) {
     switch (priority) {
       case 'low':
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
-        Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
+        Format your response as: "<generated answer>. source:<all the text excerpt>"`;
         break;
       case 'high':
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be detailed, comprehensive and suitable for an expert, Include technical details and thorough explanations as needed,
-        Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
+        Format your response as: "<generated answer>. source:<all the text excerpt>"`;
         break;
       default:
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
-        Format your response as: "<generated answer>. source: <text excerpt 1>. <text excerpt 2>. and so on`;
+        Format your response as: "<generated answer>. source:<all the text excerpt>"`;
     }
 
     const response = await openai.chat.completions.create({
@@ -63,18 +63,20 @@ export async function POST(request: Request) {
             const text = choices[0].delta.content;
             accumulatedText += text;
             if (!isAnswerComplete) {
-              if (accumulatedText.indexOf('source') == -1) {
+              if (accumulatedText.indexOf(' source') == -1) {
                 controller.enqueue(new TextEncoder().encode(text));
               }
               else{
                 isAnswerComplete = true;
-                accumulatedText = '';
               }
             }
           }
         }
-        sourceText = accumulatedText.replace(/^:\s*/, '');
-        controller.enqueue(new TextEncoder().encode(" source: " + sourceText));
+        const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
+        sourceText = sourceMatch ? sourceMatch[0] : '';
+        console.log(accumulatedText)
+        console.log(sourceText)
+        controller.enqueue(new TextEncoder().encode(" " + sourceText));
         controller.close();
       },
     });    
