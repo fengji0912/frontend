@@ -246,7 +246,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             </div>
           </div>
         )}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 dark:bg-gray-700">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 dark:bg-gray-800">
           <span className="text-xl font-medium p-2 dark:text-white">Chatbot</span>
           <div className="flex items-center">
             <span className="text-base font-medium text-gray-700 dark:text-gray-300">
