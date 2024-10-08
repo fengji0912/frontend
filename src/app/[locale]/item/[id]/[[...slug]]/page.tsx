@@ -34,7 +34,7 @@ export async function generateMetadata({
   return item
     ? {
         title: item?.title,
-        description: item?.abstract,
+        description: item?.full_text || item?.abstract,
       }
     : {};
 }
@@ -55,6 +55,8 @@ export default async function Page({ params }: PageProps) {
   ) {
     redirect(`${ROUTES.ITEM}/${item.id}/${slugify(item.title)}`);
   }
+
+  const itemText = item.full_text || item.abstract;
 
   return (
     <div>
@@ -98,7 +100,7 @@ export default async function Page({ params }: PageProps) {
       <Suspense fallback={<LoadingRelatedItems />}>
         <RelatedItems itemId={params.id} />
       </Suspense>
-      <ChatButton itemAbstract={item.abstract || 'No abstract available'} />
+      <ChatButton itemText={itemText || 'No abstract available'} />
     </div>
   );
 }

@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import ChatWindow from '@/app/[locale]/item/[id]/[[...slug]]/ChatWindow';
 
 type ChatButtonProps = {
-  itemAbstract?: string;
+  itemText?: string;
 };
 
-const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
+const ChatButton: React.FC<ChatButtonProps> = ({ itemText }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const toggleChatWindow = () => setIsChatOpen(!isChatOpen);
@@ -55,7 +55,7 @@ const ChatButton: React.FC<ChatButtonProps> = ({ itemAbstract }) => {
         <ChatWindow
           isOpen={isChatOpen}
           onClose={toggleChatWindow}
-          itemAbstract={itemAbstract || 'No abstract available'}
+          itemText={itemText  || 'No abstract available'}
         />
       </div>
     </>

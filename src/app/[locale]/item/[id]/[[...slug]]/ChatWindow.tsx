@@ -12,13 +12,13 @@ type ChatMessage = {
 type ChatWindowProps = {
   isOpen: boolean;
   onClose: () => void;
-  itemAbstract: string;
+  itemText: string;
 };
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   isOpen,
   onClose,
-  itemAbstract,
+  itemText,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
@@ -53,10 +53,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   }, [messages]);
 
   useEffect(() => {
-    if (viewMode === 'chat' && itemAbstract) {
-      fetchExampleQuestions(itemAbstract).then(setExampleQuestions);
+    if (viewMode === 'chat' && itemText) {
+      fetchExampleQuestions(itemText).then(setExampleQuestions);
     }
-  }, [viewMode, itemAbstract]);
+  }, [viewMode, itemText]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -64,7 +64,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const fetchBotResponse = async (question: string, history: ChatMessage[], priority: 'low' | 'high') => {
     setShowExamples(false);
-    const context = itemAbstract;
+    const context = itemText;
     const formattedHistory = history
       .map(msg => `${msg.sender === 'user' ? 'user' : 'chatbot'}: ${msg.content}`)
       .join('\n');
@@ -317,7 +317,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               {'Back to Chat'}
             </button>
             <div className="p-2 border rounded-lg max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-              <p className="dark:text-gray-300">{itemAbstract}</p>
+              <p className="dark:text-gray-300">{itemText}</p>
             </div>
           </div>
         )}
