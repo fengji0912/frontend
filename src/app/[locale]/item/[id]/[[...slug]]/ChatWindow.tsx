@@ -1,8 +1,14 @@
-import React, { ChangeEvent, KeyboardEvent, useState, useEffect, useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid'; 
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 type ChatMessage = {
-  id: string; 
+  id: string;
   sender: 'user' | 'chatbot';
   content: string;
   priority: 'low' | 'high';
@@ -22,10 +28,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
-  const [selectedPriority, setSelectedPriority] = useState<'low' | 'high'>('low');
+  const [selectedPriority, setSelectedPriority] = useState<'low' | 'high'>(
+    'low'
+  );
   const [viewMode, setViewMode] = useState<'chat' | 'context'>('chat');
   const [exampleQuestions, setExampleQuestions] = useState<string[]>([]);
-  const [showExamples, setShowExamples] = useState(false); 
+  const [showExamples, setShowExamples] = useState(false);
   const [showTextBox, setShowTextBox] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const settingsRef = useRef<HTMLDivElement | null>(null);
@@ -41,13 +49,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         setShowSettings(false);
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [settingsRef]);
-  
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -62,11 +70,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     setInput(e.target.value);
   };
 
-  const fetchBotResponse = async (question: string, history: ChatMessage[], priority: 'low' | 'high') => {
+  const fetchBotResponse = async (
+    question: string,
+    history: ChatMessage[],
+    priority: 'low' | 'high'
+  ) => {
     setShowExamples(false);
     const context = itemText;
     const formattedHistory = history
-      .map(msg => `${msg.sender === 'user' ? 'user' : 'chatbot'}: ${msg.content}`)
+      .map(
+        (msg) => `${msg.sender === 'user' ? 'user' : 'chatbot'}: ${msg.content}`
+      )
       .join('\n');
     const fullPrompt = `context: ${context}\n${formattedHistory}\nquestion: ${question}\npriority: ${priority}`;
     const apiPath = '/api/generateResponse/';
@@ -78,17 +92,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         },
         body: JSON.stringify({ prompt: `${fullPrompt}` }),
       });
-    
+
       if (!response.body) {
         throw new Error('No response body');
       }
-    
+
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let accumulatedText = '';
       let isAnswerComplete = false;
-      let sourceText = ''
-    
+      let sourceText = '';
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
@@ -96,47 +110,59 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         accumulatedText += chunk;
         if (!isAnswerComplete) {
           if (accumulatedText.indexOf(' source') == -1) {
-            setMessages(prevMessages => {
+            setMessages((prevMessages) => {
               const lastMessage = prevMessages[prevMessages.length - 1];
               if (lastMessage && lastMessage.sender === 'chatbot') {
-                return [...prevMessages.slice(0, -1), {
-                  ...lastMessage,
-                  content: lastMessage.content + chunk,
-                }];
+                return [
+                  ...prevMessages.slice(0, -1),
+                  {
+                    ...lastMessage,
+                    content: lastMessage.content + chunk,
+                  },
+                ];
               }
-              return [...prevMessages, {
-                id: uuidv4(),
-                sender: 'chatbot',
-                content: chunk,
-                priority: selectedPriority,
-                source: [],
-              }];
+              return [
+                ...prevMessages,
+                {
+                  id: uuidv4(),
+                  sender: 'chatbot',
+                  content: chunk,
+                  priority: selectedPriority,
+                  source: [],
+                },
+              ];
             });
-          }else {
+          } else {
             isAnswerComplete = true;
           }
-        } 
+        }
       }
-      console.error(accumulatedText)
+      console.error(accumulatedText);
       const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
       sourceText = sourceMatch ? sourceMatch[1] : '';
 
-      const source = sourceText.split(/(?<=\.)\s+/).map(sentence => sentence.trim()).filter(sentence => sentence !== '');
-      setMessages(prevMessages => {
+      const source = sourceText
+        .split(/(?<=\.)\s+/)
+        .map((sentence) => sentence.trim())
+        .filter((sentence) => sentence !== '');
+      setMessages((prevMessages) => {
         const lastMessage = prevMessages[prevMessages.length - 1];
         if (lastMessage && lastMessage.sender === 'chatbot') {
-          return [...prevMessages.slice(0, -1), {
-            ...lastMessage,
-            source: source,
-          }];
+          return [
+            ...prevMessages.slice(0, -1),
+            {
+              ...lastMessage,
+              source: source,
+            },
+          ];
         }
         return [...prevMessages];
       });
     } catch (error) {
       console.error('Error fetching bot response:', error);
     }
-  }    
-  
+  };
+
   const fetchExampleQuestions = async (context: string) => {
     const apiPath = '/api/generateQuestions/';
     try {
@@ -157,7 +183,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       return [];
     }
   };
-  
+
   const handleClearMessages = () => {
     setMessages([]);
   };
@@ -179,55 +205,46 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handleSendButton = async () => {
     if (input.trim()) {
-      const userMessage: ChatMessage = { 
-        id: uuidv4(), 
-        sender: 'user', 
-        content: input, 
-        priority: selectedPriority 
+      const userMessage: ChatMessage = {
+        id: uuidv4(),
+        sender: 'user',
+        content: input,
+        priority: selectedPriority,
       };
       const updatedMessages: ChatMessage[] = [...messages, userMessage];
 
       setMessages(updatedMessages);
       setInput('');
       setIsLoading(true);
-  
-      await fetchBotResponse(
-        input,
-        messages,
-        selectedPriority
-      );
-  
-      setIsLoading(false); 
+
+      await fetchBotResponse(input, messages, selectedPriority);
+
+      setIsLoading(false);
     }
   };
 
   const removePrefix = (text: string) => {
-    return text.replace(/^\d+\.\s*/, ''); 
+    return text.replace(/^\d+\.\s*/, '');
   };
 
   const handleExampleClick = async (question: string) => {
-    const userMessage: ChatMessage = { 
-      id: uuidv4(), 
-      sender: 'user', 
-      content: removePrefix(question), 
-      priority: selectedPriority 
+    const userMessage: ChatMessage = {
+      id: uuidv4(),
+      sender: 'user',
+      content: removePrefix(question),
+      priority: selectedPriority,
     };
     const updatedMessages: ChatMessage[] = [...messages, userMessage];
-  
+
     setMessages(updatedMessages);
     setIsLoading(true);
-  
-    await fetchBotResponse(
-      removePrefix(question),
-      messages,
-      selectedPriority
-    );
-    setIsLoading(false); 
+
+    await fetchBotResponse(removePrefix(question), messages, selectedPriority);
+    setIsLoading(false);
   };
-  
+
   const handleSourceButton = (source: string | undefined) => {
-    if(source)
-    {
+    if (source) {
       setShowTextBox(source);
     }
   };
@@ -247,10 +264,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
         )}
         <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-2 dark:bg-gray-800">
-          <span className="text-xl font-medium p-2 dark:text-white">Chatbot</span>
+          <span className="text-xl font-medium p-2 dark:text-white">
+            {'Chatbot'}
+          </span>
           <div className="flex items-center">
             <span className="text-base font-medium text-gray-700 dark:text-gray-300">
-              Level of Expertise:
+              {'Level of Expertise:'}
             </span>
             <button
               className={`p-2 rounded-lg transition ${
@@ -278,7 +297,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               className="text-white bg-gray-700 hover:bg-gray-800 p-2 rounded-lg transition dark:bg-gray-600 dark:hover:bg-gray-500"
               onClick={() => setShowSettings(!showSettings)}
             >
-              ⚙️
+              {'⚙️'}
             </button>
             {showSettings && (
               <div className="absolute right-0 mt-12 bg-white border rounded-lg p-1 w-40 z-50 dark:bg-gray-800 dark:border-gray-700">
@@ -311,8 +330,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               className="flex items-center text-[#e86161] border-none bg-transparent hover:bg-gray-100 text-base font-medium p-2 rounded-lg dark:hover:bg-gray-700"
               onClick={() => handleViewModeChange('chat')}
             >
-              <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 12H5m7-7l-7 7 7 7" />
+              <svg
+                className="w-6 h-6 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 12H5m7-7l-7 7 7 7"
+                />
               </svg>
               {'Back to Chat'}
             </button>
@@ -330,9 +360,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     onClick={() => setShowExamples(false)}
                     className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-none text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
                   >
-                    <span className="mx-auto text-xs dark:text-gray-300">{'Example Questions'}</span>
-                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    <span className="mx-auto text-xs dark:text-gray-300">
+                      {'Example Questions'}
+                    </span>
+                    <svg
+                      className="w-4 h-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 15l7-7 7 7"
+                      />
                     </svg>
                   </button>
                   <div className="border-t dark:border-gray-600 max-h-[200px] overflow-y-auto">
@@ -354,9 +397,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   onClick={() => setShowExamples(true)}
                   className="w-full flex items-center justify-between p-1 bg-gray-200 hover:bg-gray-300 border-b text-sm dark:bg-gray-700 dark:hover:bg-gray-600"
                 >
-                  <span className="mx-auto text-xs dark:text-gray-300">{'Example Questions'}</span>
-                  <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <span className="mx-auto text-xs dark:text-gray-300">
+                    {'Example Questions'}
+                  </span>
+                  <svg
+                    className="w-4 h-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
               )}
@@ -376,7 +432,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                         borderColor = 'border-red-300 dark:border-red-600';
                         break;
                       default:
-                        borderColor = 'border-yellow-300 dark:border-yellow-600';
+                        borderColor =
+                          'border-yellow-300 dark:border-yellow-600';
                     }
                     return (
                       <div
@@ -403,7 +460,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                                 </button>
                               ))
                             ) : (
-                              <p className="dark:text-gray-300">No sources available</p>
+                              <p className="dark:text-gray-300">
+                                {'No sources available'}
+                              </p>
                             )}
                           </div>
                         )}
