@@ -16,6 +16,7 @@ const cspHeader = `
       https://*.ngrok-free.app
       https://support.tib.eu
       https://docs.google.com
+      https://glad-drop.pockethost.io/
     ;
     script-src 'self' 'unsafe-eval' 'unsafe-inline'
       https://support.tib.eu

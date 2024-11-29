@@ -6,13 +6,13 @@ import ChatWindow from '@/app/[locale]/item/[id]/[[...slug]]/ChatWindow';
 
 type ChatButtonProps = {
   itemText?: string;
+  itemId?: string;
 };
 
-const ChatButton: React.FC<ChatButtonProps> = ({ itemText }) => {
+const ChatButton: React.FC<ChatButtonProps> = ({ itemText, itemId }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const toggleChatWindow = () => setIsChatOpen(!isChatOpen);
-
   return (
     <>
       <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end">
@@ -69,6 +69,7 @@ const ChatButton: React.FC<ChatButtonProps> = ({ itemText }) => {
         <ChatWindow
           isOpen={isChatOpen}
           onClose={toggleChatWindow}
+          itemId={itemId || 'No abstract available'}
           itemText={itemText || 'No abstract available'}
         />
       </div>

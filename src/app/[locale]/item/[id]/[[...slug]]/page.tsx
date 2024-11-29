@@ -57,6 +57,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   const itemText = item.full_text || item.abstract;
+  const itemId = item.id;
 
   return (
     <div>
@@ -100,7 +101,10 @@ export default async function Page({ params }: PageProps) {
       <Suspense fallback={<LoadingRelatedItems />}>
         <RelatedItems itemId={params.id} />
       </Suspense>
-      <ChatButton itemText={itemText || 'No abstract available'} />
+      <ChatButton
+        itemText={itemText || 'No abstract available'}
+        itemId={itemId || 'No abstract available'}
+      />
     </div>
   );
 }

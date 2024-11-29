@@ -1,3 +1,4 @@
+import PocketBase from 'pocketbase';
 import React, {
   ChangeEvent,
   KeyboardEvent,
@@ -6,6 +7,9 @@ import React, {
   useState,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+const url = 'https://glad-drop.pockethost.io/';
+const client = new PocketBase(url);
 
 type ChatMessage = {
   id: string;
@@ -18,12 +22,14 @@ type ChatMessage = {
 type ChatWindowProps = {
   isOpen: boolean;
   onClose: () => void;
+  itemId: string;
   itemText: string;
 };
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   isOpen,
   onClose,
+  itemId,
   itemText,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -39,6 +45,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const settingsRef = useRef<HTMLDivElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const userId = '111111111111111';
+  const [LowExist, setLowExist] = useState(false);
+  const [HighExist, setHighExist] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,14 +69,180 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const handleViewModeChange = (mode: 'chat' | 'context') => {
+    setViewMode(mode);
+  };
+
   useEffect(() => {
     if (viewMode === 'chat' && itemText) {
       fetchExampleQuestions(itemText).then(setExampleQuestions);
     }
   }, [viewMode, itemText]);
 
+  const fetchExampleQuestions = async (context: string) => {
+    const apiPath = '/api/generateQuestions/';
+    try {
+      const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ context }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data.questions || [];
+    } catch (error) {
+      console.error('Error generating questions:', error);
+      return [];
+    }
+  };
+
+  const removePrefix = (text: string) => {
+    return text.replace(/^\d+\.\s*/, '');
+  };
+
+  const handleExampleClick = async (question: string) => {
+    const userMessage: ChatMessage = {
+      id: uuidv4(),
+      sender: 'user',
+      content: removePrefix(question),
+      priority: selectedPriority,
+    };
+    const updatedMessages: ChatMessage[] = [...messages, userMessage];
+
+    if (updatedMessages.length == 1) {
+      const data_m = {
+        itemId: itemId,
+        userId: userId,
+        ChatMessage: updatedMessages,
+        priority: selectedPriority,
+      };
+      await client.collection('Messages').create(data_m);
+      if (selectedPriority == 'low') {
+        setLowExist(true);
+      } else {
+        setHighExist(true);
+      }
+    } else {
+      const record = await client
+        .collection('Messages')
+        .getFirstListItem(
+          `userId = "${userId}" && itemId = "${itemId}" && priority="${selectedPriority}"`
+        );
+      if (record) {
+        const data_update = {
+          itemId: itemId,
+          userId: userId,
+          ChatMessage: updatedMessages,
+          priority: selectedPriority,
+        };
+        await client.collection('Messages').update(record.id, data_update);
+      }
+    }
+
+    setMessages(updatedMessages);
+    setIsLoading(true);
+
+    await fetchBotResponse(removePrefix(question), messages, selectedPriority);
+    setIsLoading(false);
+  };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+  };
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSendButton();
+    }
+  };
+
+  const handleSendButton = async () => {
+    if (input.trim()) {
+      const userMessage: ChatMessage = {
+        id: uuidv4(),
+        sender: 'user',
+        content: input,
+        priority: selectedPriority,
+      };
+      const updatedMessages: ChatMessage[] = [...messages, userMessage];
+
+      if (updatedMessages.length == 1) {
+        const data_m = {
+          itemId: itemId,
+          userId: userId,
+          ChatMessage: updatedMessages,
+          priority: selectedPriority,
+        };
+        await client.collection('Messages').create(data_m);
+        if (selectedPriority == 'low') {
+          setLowExist(true);
+        } else {
+          setHighExist(true);
+        }
+      } else {
+        const record = await client
+          .collection('Messages')
+          .getFirstListItem(
+            `userId = "${userId}" && itemId = "${itemId}" && priority="${selectedPriority}"`
+          );
+        if (record) {
+          const data_update = {
+            itemId: itemId,
+            userId: userId,
+            ChatMessage: updatedMessages,
+            priority: selectedPriority,
+          };
+          await client.collection('Messages').update(record.id, data_update);
+        }
+      }
+
+      setMessages(updatedMessages);
+      setInput('');
+      setIsLoading(true);
+
+      await fetchBotResponse(input, messages, selectedPriority);
+
+      setIsLoading(false);
+    }
+  };
+
+  const handlePriorityChange = async (priority: 'low' | 'high') => {
+    setSelectedPriority(priority);
+    if (priority == 'low') {
+      if (LowExist == true) {
+        const record = await client
+          .collection('Messages')
+          .getFirstListItem(
+            `userId = "${userId}" && itemId = "${itemId}" && priority="${priority}"`
+          );
+        setMessages(record.ChatMessage);
+      } else {
+        setMessages((prevMessages) => {
+          return [...prevMessages].filter(
+            (message) => message.priority == 'low'
+          );
+        });
+      }
+    } else {
+      if (HighExist == true) {
+        const record = await client
+          .collection('Messages')
+          .getFirstListItem(
+            `userId = "${userId}" && itemId = "${itemId}" && priority="${priority}"`
+          );
+        setMessages(record.ChatMessage);
+      } else {
+        setMessages((prevMessages) => {
+          return [...prevMessages].filter(
+            (message) => message.priority == 'high'
+          );
+        });
+      }
+    }
   };
 
   const fetchBotResponse = async (
@@ -108,8 +283,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
+
         if (!isAnswerComplete) {
-          if (accumulatedText.indexOf(' source') == -1) {
+          // Stream answer content
+          if (accumulatedText.indexOf(' source') === -1) {
             setMessages((prevMessages) => {
               const lastMessage = prevMessages[prevMessages.length - 1];
               if (lastMessage && lastMessage.sender === 'chatbot') {
@@ -121,23 +298,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                   },
                 ];
               }
-              return [
-                ...prevMessages,
-                {
-                  id: uuidv4(),
-                  sender: 'chatbot',
-                  content: chunk,
-                  priority: selectedPriority,
-                  source: [],
-                },
-              ];
+              const newMessage: ChatMessage = {
+                id: uuidv4(),
+                sender: 'chatbot', // Explicitly set sender to "chatbot"
+                content: chunk,
+                priority,
+                source: [],
+              };
+              // Add to PocketBase
+              updatePocketBase([...prevMessages, newMessage], priority);
+              return [...prevMessages, newMessage];
             });
           } else {
             isAnswerComplete = true;
           }
         }
       }
-      console.error(accumulatedText);
+
+      // Extract source after completion
       const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
       sourceText = sourceMatch ? sourceMatch[1] : '';
 
@@ -145,16 +323,21 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         .split(/(?<=\.)\s+/)
         .map((sentence) => sentence.trim())
         .filter((sentence) => sentence !== '');
+
+      // Update messages with source
       setMessages((prevMessages) => {
         const lastMessage = prevMessages[prevMessages.length - 1];
         if (lastMessage && lastMessage.sender === 'chatbot') {
-          return [
+          const updatedMessages = [
             ...prevMessages.slice(0, -1),
             {
               ...lastMessage,
-              source: source,
+              source,
             },
           ];
+          // Update PocketBase
+          updatePocketBase(updatedMessages, priority);
+          return updatedMessages;
         }
         return [...prevMessages];
       });
@@ -163,84 +346,31 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     }
   };
 
-  const fetchExampleQuestions = async (context: string) => {
-    const apiPath = '/api/generateQuestions/';
+  // Function to update PocketBase
+  const updatePocketBase = async (
+    updatedMessages: ChatMessage[],
+    priority: 'low' | 'high'
+  ) => {
     try {
-      const response = await fetch(apiPath, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ context }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data.questions || [];
-    } catch (error) {
-      console.error('Error generating questions:', error);
-      return [];
-    }
-  };
-
-  const handleClearMessages = () => {
-    setMessages([]);
-  };
-
-  const handlePriorityChange = (priority: 'low' | 'high') => {
-    setSelectedPriority(priority);
-    handleClearMessages();
-  };
-
-  const handleViewModeChange = (mode: 'chat' | 'context') => {
-    setViewMode(mode);
-  };
-
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSendButton();
-    }
-  };
-
-  const handleSendButton = async () => {
-    if (input.trim()) {
-      const userMessage: ChatMessage = {
-        id: uuidv4(),
-        sender: 'user',
-        content: input,
-        priority: selectedPriority,
+      const record = await client
+        .collection('Messages')
+        .getFirstListItem(
+          `userId = "${userId}" && itemId = "${itemId}" && priority="${priority}"`
+        );
+      const data = {
+        itemId: itemId,
+        userId: userId,
+        ChatMessage: updatedMessages,
+        priority,
       };
-      const updatedMessages: ChatMessage[] = [...messages, userMessage];
-
-      setMessages(updatedMessages);
-      setInput('');
-      setIsLoading(true);
-
-      await fetchBotResponse(input, messages, selectedPriority);
-
-      setIsLoading(false);
+      if (record) {
+        await client.collection('Messages').update(record.id, data);
+      } else {
+        await client.collection('Messages').create(data);
+      }
+    } catch (error) {
+      console.error('Error updating PocketBase:', error);
     }
-  };
-
-  const removePrefix = (text: string) => {
-    return text.replace(/^\d+\.\s*/, '');
-  };
-
-  const handleExampleClick = async (question: string) => {
-    const userMessage: ChatMessage = {
-      id: uuidv4(),
-      sender: 'user',
-      content: removePrefix(question),
-      priority: selectedPriority,
-    };
-    const updatedMessages: ChatMessage[] = [...messages, userMessage];
-
-    setMessages(updatedMessages);
-    setIsLoading(true);
-
-    await fetchBotResponse(removePrefix(question), messages, selectedPriority);
-    setIsLoading(false);
   };
 
   const handleSourceButton = (source: string | undefined) => {
@@ -248,6 +378,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       setShowTextBox(source);
     }
   };
+
+  const handleClearMessages = async () => {
+    setMessages([]);
+    await client.admins.authWithPassword('2456594919@qq.com', '1234567890');
+    const records = await client.collection('Messages').getFullList({
+      filter: `userId = "${userId}" && itemId = "${itemId}"`,
+    });
+
+    for (const record of records) {
+      await client.collection('Messages').delete(record.id);
+    }
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      handleClearMessages();
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
