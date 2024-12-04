@@ -381,6 +381,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handleClearMessages = async () => {
     setMessages([]);
+    client.autoCancellation(false);
     await client.admins.authWithPassword('2456594919@qq.com', '1234567890');
     const records = await client.collection('Messages').getFullList({
       filter: `userId = "${userId}" && itemId = "${itemId}"`,
