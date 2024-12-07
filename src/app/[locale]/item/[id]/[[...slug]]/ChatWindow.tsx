@@ -1,12 +1,16 @@
+import { jsPDF } from 'jspdf';
 import PocketBase from 'pocketbase';
 import React, {
   ChangeEvent,
   KeyboardEvent,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+import { IData } from '@/types/csl-json';
 
 const url = 'https://glad-drop.pockethost.io/';
 const client = new PocketBase(url);
@@ -22,8 +26,9 @@ type ChatMessage = {
 type ChatWindowProps = {
   isOpen: boolean;
   onClose: () => void;
-  itemId: string;
-  itemText: string;
+  itemId?: string;
+  itemText?: string;
+  selectedItems?: Array<{ id: string; cslData: IData; type: string }>;
 };
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
@@ -31,6 +36,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   onClose,
   itemId,
   itemText,
+  selectedItems,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState<string>('');
@@ -48,6 +54,46 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const userId = '111111111111111';
   const [LowExist, setLowExist] = useState(false);
   const [HighExist, setHighExist] = useState(false);
+  const item_context = useMemo(() => {
+    if (itemText) {
+      return itemText;
+    } else if (selectedItems && selectedItems.length === 1) {
+      return (
+        selectedItems[0].cslData?.abstract ||
+        selectedItems[0].cslData?.full_text ||
+        'No abstract available'
+      );
+    } else if (selectedItems && selectedItems.length > 1) {
+      return selectedItems
+        .map((item, index) => {
+          const { cslData } = item;
+          const title = cslData?.title || 'No title available';
+          const content =
+            cslData?.abstract || cslData?.full_text || 'No abstract available';
+
+          return `paper ${index + 1}: ${title}\n${content}`;
+        })
+        .join('\n\n');
+    }
+    return '';
+  }, [itemText, selectedItems]);
+
+  const item_id = useMemo(() => {
+    if (itemId) {
+      return itemId;
+    } else if (selectedItems && selectedItems.length === 1) {
+      return selectedItems[0].id || 'No id';
+    } else if (selectedItems && selectedItems.length > 1) {
+      console.log(itemId, selectedItems);
+      return selectedItems
+        .map((item) => {
+          const content = item.id || 'No id';
+          return `${content}`;
+        })
+        .join(',');
+    }
+    return '';
+  }, [itemId, selectedItems]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,10 +120,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   useEffect(() => {
-    if (viewMode === 'chat' && itemText) {
-      fetchExampleQuestions(itemText).then(setExampleQuestions);
+    if (viewMode === 'chat' && item_context) {
+      fetchExampleQuestions(item_context).then(setExampleQuestions);
     }
-  }, [viewMode, itemText]);
+  }, [viewMode, item_context]);
 
   const fetchExampleQuestions = async (context: string) => {
     const apiPath = '/api/generateQuestions/';
@@ -115,7 +161,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
     if (updatedMessages.length == 1) {
       const data_m = {
-        itemId: itemId,
+        itemId: item_id,
         userId: userId,
         ChatMessage: updatedMessages,
         priority: selectedPriority,
@@ -130,11 +176,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       const record = await client
         .collection('Messages')
         .getFirstListItem(
-          `userId = "${userId}" && itemId = "${itemId}" && priority="${selectedPriority}"`
+          `userId = "${userId}" && itemId = "${item_id}" && priority="${selectedPriority}"`
         );
       if (record) {
         const data_update = {
-          itemId: itemId,
+          itemId: item_id,
           userId: userId,
           ChatMessage: updatedMessages,
           priority: selectedPriority,
@@ -172,7 +218,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
       if (updatedMessages.length == 1) {
         const data_m = {
-          itemId: itemId,
+          itemId: item_id,
           userId: userId,
           ChatMessage: updatedMessages,
           priority: selectedPriority,
@@ -187,11 +233,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         const record = await client
           .collection('Messages')
           .getFirstListItem(
-            `userId = "${userId}" && itemId = "${itemId}" && priority="${selectedPriority}"`
+            `userId = "${userId}" && itemId = "${item_id}" && priority="${selectedPriority}"`
           );
         if (record) {
           const data_update = {
-            itemId: itemId,
+            itemId: item_id,
             userId: userId,
             ChatMessage: updatedMessages,
             priority: selectedPriority,
@@ -217,7 +263,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         const record = await client
           .collection('Messages')
           .getFirstListItem(
-            `userId = "${userId}" && itemId = "${itemId}" && priority="${priority}"`
+            `userId = "${userId}" && itemId = "${item_id}" && priority="${priority}"`
           );
         setMessages(record.ChatMessage);
       } else {
@@ -232,7 +278,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         const record = await client
           .collection('Messages')
           .getFirstListItem(
-            `userId = "${userId}" && itemId = "${itemId}" && priority="${priority}"`
+            `userId = "${userId}" && itemId = "${item_id}" && priority="${priority}"`
           );
         setMessages(record.ChatMessage);
       } else {
@@ -251,7 +297,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     priority: 'low' | 'high'
   ) => {
     setShowExamples(false);
-    const context = itemText;
+    const context = item_context;
     const formattedHistory = history
       .map(
         (msg) => `${msg.sender === 'user' ? 'user' : 'chatbot'}: ${msg.content}`
@@ -355,10 +401,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       const record = await client
         .collection('Messages')
         .getFirstListItem(
-          `userId = "${userId}" && itemId = "${itemId}" && priority="${priority}"`
+          `userId = "${userId}" && itemId = "${item_id}" && priority="${priority}"`
         );
       const data = {
-        itemId: itemId,
+        itemId: item_id,
         userId: userId,
         ChatMessage: updatedMessages,
         priority,
@@ -384,7 +430,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     client.autoCancellation(false);
     await client.admins.authWithPassword('2456594919@qq.com', '1234567890');
     const records = await client.collection('Messages').getFullList({
-      filter: `userId = "${userId}" && itemId = "${itemId}"`,
+      filter: `userId = "${userId}" && itemId = "${item_id}"`,
     });
 
     for (const record of records) {
@@ -397,6 +443,79 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       handleClearMessages();
     }
   }, [isOpen]);
+
+  const exportChatToPDF = () => {
+    const doc = new jsPDF();
+    doc.setFont('helvetica');
+    doc.setFontSize(12);
+
+    const marginLeft = 20;
+    const pageWidth = doc.internal.pageSize.width;
+    const contentWidth = pageWidth - 2 * marginLeft;
+
+    const pageHeight = doc.internal.pageSize.height;
+    let y = 20;
+
+    const addNewPageIfNeeded = (requiredHeight: number) => {
+      if (y + requiredHeight > pageHeight - 20) {
+        doc.addPage();
+        y = 20;
+      }
+    };
+
+    const contextText = `Context:\n ${item_context}`;
+    const contextLines = doc.splitTextToSize(contextText, contentWidth);
+    const contextHeight = contextLines.length * 5;
+    addNewPageIfNeeded(contextHeight);
+    doc.text(contextLines, marginLeft, y);
+    y += contextHeight + 5;
+
+    const itemIdText = `Item ID: ${item_id}`;
+    const itemIdLines = doc.splitTextToSize(itemIdText, contentWidth);
+    const itemIdHeight = itemIdLines.length * 5;
+    addNewPageIfNeeded(itemIdHeight);
+    doc.text(itemIdLines, marginLeft, y);
+    y += itemIdHeight + 5;
+
+    const userIdText = `User ID: ${userId}`;
+    const userIdLines = doc.splitTextToSize(userIdText, contentWidth);
+    const userIdHeight = userIdLines.length * 5;
+    addNewPageIfNeeded(userIdHeight);
+    doc.text(userIdLines, marginLeft, y);
+    y += userIdHeight + 5;
+
+    const chatHistoryHeader = 'Chat History:';
+    const headerLines = doc.splitTextToSize(chatHistoryHeader, contentWidth);
+    const headerHeight = headerLines.length * 5;
+    addNewPageIfNeeded(headerHeight);
+    doc.text(headerLines, marginLeft, y);
+    y += headerHeight + 5;
+
+    messages.forEach((message) => {
+      const sender = message.sender === 'user' ? 'You' : 'Chatbot';
+      const content = `${sender}: ${message.content}`;
+      const contentLines = doc.splitTextToSize(content, contentWidth);
+      const contentHeight = contentLines.length * 5;
+      addNewPageIfNeeded(contentHeight);
+      doc.text(contentLines, marginLeft, y);
+      y += contentHeight + 5;
+
+      if (message.source && message.source.length > 0) {
+        message.source.forEach((source) => {
+          const sourceText = `Source: ${source}`;
+          const sourceLines = doc.splitTextToSize(sourceText, contentWidth);
+          const sourceHeight = sourceLines.length * 5;
+          addNewPageIfNeeded(sourceHeight);
+          doc.text(sourceLines, marginLeft, y);
+          y += sourceHeight + 5;
+        });
+      }
+
+      y += 5;
+    });
+
+    doc.save(`chat-history-${item_id}.pdf`);
+  };
 
   if (!isOpen) return null;
 
@@ -496,7 +615,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               {'Back to Chat'}
             </button>
             <div className="p-2 border rounded-lg max-h-[70vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-              <p className="dark:text-gray-300">{itemText}</p>
+              <p className="dark:text-gray-300">
+                {item_context.split('\n').map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </p>
             </div>
           </div>
         )}
@@ -636,6 +762,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 className="text-white bg-[#e86161] hover:bg-[#d64949] p-2 rounded-lg transition"
               >
                 {'Send'}
+              </button>
+              <button
+                onClick={exportChatToPDF}
+                className="text-white bg-[#e86161] hover:bg-[#d64949] rounded-lg transition"
+              >
+                {'Export Chat'}
               </button>
             </div>
           </>

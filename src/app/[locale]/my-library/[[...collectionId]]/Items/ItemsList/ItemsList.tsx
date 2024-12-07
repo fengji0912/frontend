@@ -58,7 +58,6 @@ export default function ItemsList({
       );
     }
   };
-
   const isAllSelected = items.every((item) =>
     selectedItems.some((selectedItem) => selectedItem.id === item.id)
   );

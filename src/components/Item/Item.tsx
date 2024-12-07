@@ -13,9 +13,11 @@ import { push } from '@socialgouv/matomo-next';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
-import { ChangeEvent, ReactElement } from 'react';
+import { ChangeEvent, ReactElement, useContext } from 'react';
+import React, { useState } from 'react';
 import slugify from 'slugify';
 
+import ChatWindow from '@/app/[locale]/item/[id]/[[...slug]]/ChatWindow';
 import { ItemType } from '@/app/[locale]/search/SavedSearches/types';
 import {
   excludeItemsParser,
@@ -27,6 +29,7 @@ import ActionDropdown from '@/components/Item/ActionDropdown/ActionDropdown';
 import Authors from '@/components/Item/Authors/Authors';
 import { Link } from '@/components/Navigation/Navigation';
 import Checkbox from '@/components/NextUi/Checkbox/Checkbox';
+import SelectedItemsContext from '@/components/SelectedItemsProvider/selectedItemsContext';
 import ROUTES from '@/constants/routes';
 import useCslJsonDateFormatter from '@/lib/useCslJsonDateFormatter';
 import { IData } from '@/types/csl-json';
@@ -70,6 +73,10 @@ export default function Item({
     listFilterParser
   );
   const { formatDate } = useCslJsonDateFormatter();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const toggleChatWindow = () => setIsChatOpen(!isChatOpen);
+  const { selectedItems } = useContext(SelectedItemsContext);
 
   const {
     isOpen: isOpenCiteModal,
@@ -166,10 +173,38 @@ export default function Item({
                 size="sm"
                 onPress={onOpenCiteModal}
                 aria-label="cite this article"
-                className="mt-[-5px]"
+                className="mt-[-2px]"
               >
                 <FontAwesomeIcon icon={faQuoteLeft} size="lg" />
               </Button>
+              <Button
+                isIconOnly
+                color="secondary"
+                variant="light"
+                size="sm"
+                onPress={toggleChatWindow}
+                className="top-[7px]"
+              >
+                <svg
+                  className="w-7 h-7 secondary inline-block cursor-pointer"
+                  fill="none"
+                  stroke="#BCC6CC"
+                  viewBox="0 0 30 30"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8c-1.704 0-3.297-.48-4.637-1.312L3 20l1.689-3.542A7.962 7.962 0 0 1 4 12z"
+                  />
+                </svg>
+              </Button>
+              <ChatWindow
+                isOpen={isChatOpen}
+                onClose={toggleChatWindow}
+                selectedItems={selectedItems}
+              />
             </div>
             <div
               className={`lg:flex items-center text-small gap-x-2 min-h-8 ${

@@ -6,36 +6,51 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const {prompt} = await request.json(); 
-    const priority = (prompt.match(/priority:\s*(\w+)/))[1];
-    const messages = prompt.split('\n').map((line: string) => {
-      if (line.startsWith('context:')) {
-        return { role: 'system', content: line.replace('context:', '').trim() };
-      } else if (line.startsWith('user:')) {
-        return { role: 'user', content: line.replace('user:', '').trim() };
-      } else if (line.startsWith('chatbot:')) {
-        return { role: 'assistant', content: line.replace('chatbot:', '').trim() };
-      }else if (line.startsWith('question:')) {
-        return { role: 'user', content: line.replace('question:', '').trim() };
-      }
-      return null;
-    }).filter((msg: null) => msg !== null);
+    const { prompt } = await request.json();
+    const priority = prompt.match(/priority:\s*(\w+)/)[1];
+    const messages = prompt
+      .split('\n')
+      .map((line: string) => {
+        if (line.startsWith('context:')) {
+          return {
+            role: 'system',
+            content: line.replace('context:', '').trim(),
+          };
+        } else if (line.startsWith('user:')) {
+          return { role: 'user', content: line.replace('user:', '').trim() };
+        } else if (line.startsWith('chatbot:')) {
+          return {
+            role: 'assistant',
+            content: line.replace('chatbot:', '').trim(),
+          };
+        } else if (line.startsWith('question:')) {
+          return {
+            role: 'user',
+            content: line.replace('question:', '').trim(),
+          };
+        }
+        return null;
+      })
+      .filter((msg: null) => msg !== null);
 
-    console.log('Parsed messages:', messages,);
+    console.log('Parsed messages:', messages);
 
     let systemMessage: string;
     switch (priority) {
       case 'low':
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
-        Format your response as: "<generated answer>. source:<all the text excerpt>"`;
+        Format your response as: "<generated answer>. source:<all the text excerpt from the paper>".
+        If the question exceeds the scope of the literature provided, clearly inform and prompt the user to adjust the question.`;
         break;
       case 'high':
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be detailed, comprehensive and suitable for an expert, Include technical details and thorough explanations as needed,
-        Format your response as: "<generated answer>. source:<all the text excerpt>"`;
+        Format your response as: "<generated answer>. source:<all the text excerpt from the paper>".
+        If the question exceeds the scope of the literature provided, clearly inform and prompt the user to adjust the question.`;
         break;
       default:
         systemMessage = `answer the question based on the context and chat history and direct extract the used full sentences from the context as source(dont add any generated word into source, direct copy), the answer should be suitable for a non-expert, only use language that is understandable for people that are not familiar with the topic, avoid jargon, and explain concepts that require domain knowledge, 
-        Format your response as: "<generated answer>. source:<all the text excerpt>"`;
+        Format your response as: "<generated answer>. source:<all the text excerpt from the paper>".s
+        If the question exceeds the scope of the literature provided, clearly inform and prompt the user to adjust the question.`;
     }
 
     const response = await openai.chat.completions.create({
@@ -48,7 +63,7 @@ export async function POST(request: Request) {
         },
       ],
       max_tokens: 1000,
-      stream: true, 
+      stream: true,
     });
 
     const stream = new ReadableStream({
@@ -56,17 +71,21 @@ export async function POST(request: Request) {
         let accumulatedText = '';
         let isAnswerComplete = false;
         let sourceText = '';
-    
+
         for await (const chunk of response) {
           const { choices } = chunk;
-          if (choices && choices[0] && choices[0].delta && choices[0].delta.content) {
+          if (
+            choices &&
+            choices[0] &&
+            choices[0].delta &&
+            choices[0].delta.content
+          ) {
             const text = choices[0].delta.content;
             accumulatedText += text;
             if (!isAnswerComplete) {
               if (accumulatedText.indexOf(' source') == -1) {
                 controller.enqueue(new TextEncoder().encode(text));
-              }
-              else{
+              } else {
                 isAnswerComplete = true;
               }
             }
@@ -74,18 +93,18 @@ export async function POST(request: Request) {
         }
         const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
         sourceText = sourceMatch ? sourceMatch[0] : '';
-        console.log(accumulatedText)
-        console.log(sourceText)
-        controller.enqueue(new TextEncoder().encode(" " + sourceText));
+        console.log(accumulatedText);
+        console.log(sourceText);
+        controller.enqueue(new TextEncoder().encode(' ' + sourceText));
         controller.close();
       },
-    });    
+    });
 
     return new Response(stream, {
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
       },
     });
   } catch (error) {
