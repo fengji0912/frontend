@@ -15,6 +15,7 @@ import { useTranslations } from 'next-intl';
 import { useQueryState } from 'nuqs';
 import { ChangeEvent, ReactElement, useContext } from 'react';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import slugify from 'slugify';
 
 import ChatWindow from '@/app/[locale]/item/[id]/[[...slug]]/ChatWindow';
@@ -73,10 +74,20 @@ export default function Item({
     listFilterParser
   );
   const { formatDate } = useCslJsonDateFormatter();
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const toggleChatWindow = () => setIsChatOpen(!isChatOpen);
   const { selectedItems } = useContext(SelectedItemsContext);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isManuallyOpened, setIsManuallyOpened] = useState(false);
+
+  useEffect(() => {
+    if (isManuallyOpened && selectedItems && selectedItems.length > 0) {
+      setIsChatOpen(true);
+    }
+  }, [selectedItems, isManuallyOpened]);
+
+  const toggleChatWindow = () => {
+    setIsChatOpen((prev) => !prev);
+    setIsManuallyOpened((prev) => !prev);
+  };
 
   const {
     isOpen: isOpenCiteModal,

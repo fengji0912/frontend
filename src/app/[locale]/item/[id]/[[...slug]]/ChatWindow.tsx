@@ -54,28 +54,75 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const userId = '111111111111111';
   const [LowExist, setLowExist] = useState(false);
   const [HighExist, setHighExist] = useState(false);
-  const item_context = useMemo(() => {
-    if (itemText) {
-      return itemText;
-    } else if (selectedItems && selectedItems.length === 1) {
-      return (
-        selectedItems[0].cslData?.abstract ||
-        selectedItems[0].cslData?.full_text ||
-        'No abstract available'
-      );
-    } else if (selectedItems && selectedItems.length > 1) {
-      return selectedItems
-        .map((item, index) => {
-          const { cslData } = item;
-          const title = cslData?.title || 'No title available';
-          const content =
-            cslData?.abstract || cslData?.full_text || 'No abstract available';
+  const [item_context, setItemContext] = useState('');
 
-          return `paper ${index + 1}: ${title}\n${content}`;
-        })
-        .join('\n\n');
-    }
-    return '';
+  useEffect(() => {
+    const fetchAbstracts = async () => {
+      if (itemText) {
+        setItemContext(itemText);
+      } else if (selectedItems && selectedItems.length === 1) {
+        let content = '';
+        if (selectedItems[0].cslData.full_text) {
+          content = selectedItems[0].cslData.full_text;
+          const apiPath = '/api/generateAbstract/';
+          try {
+            const response = await fetch(apiPath, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ content }),
+            });
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setItemContext(data.abstract || 'No abstract available');
+          } catch (error) {
+            console.error('Error generating Abstract:', error);
+            setItemContext('No abstract available');
+          }
+        } else {
+          content =
+            selectedItems[0].cslData.abstract || 'No abstract available';
+          setItemContext(content);
+        }
+      } else if (selectedItems && selectedItems.length > 1) {
+        const abstracts = await Promise.all(
+          selectedItems.map(async (item, index) => {
+            const { cslData } = item;
+            const title = cslData?.title || 'No title available';
+            let content = '';
+            if (cslData.full_text) {
+              content = cslData.full_text || 'No full_text available';
+              const apiPath = '/api/generateAbstract/';
+              try {
+                const response = await fetch(apiPath, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ content }),
+                });
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                return `paper ${index + 1}: ${title}\n${data.abstract}`;
+              } catch (error) {
+                console.error('Error generating Abstract:', error);
+                return `paper ${index + 1}: ${title}\nNo abstract available`;
+              }
+            } else {
+              content = cslData.abstract || 'No abstract available';
+            }
+            return `paper ${index + 1}: ${title}\n${content}`;
+          })
+        );
+        setItemContext(abstracts.join('\n\n'));
+      }
+    };
+    fetchAbstracts();
   }, [itemText, selectedItems]);
 
   const item_id = useMemo(() => {
@@ -331,8 +378,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         accumulatedText += chunk;
 
         if (!isAnswerComplete) {
-          // Stream answer content
-          if (accumulatedText.indexOf(' source') === -1) {
+          if (accumulatedText.indexOf(' Source:') === -1) {
             setMessages((prevMessages) => {
               const lastMessage = prevMessages[prevMessages.length - 1];
               if (lastMessage && lastMessage.sender === 'chatbot') {
@@ -361,9 +407,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         }
       }
 
-      // Extract source after completion
-      const sourceMatch = accumulatedText.match(/source:\s*(.*)/);
+      console.log(accumulatedText);
+      const sourceMatch = accumulatedText.match(/Source:\s*(.*)/);
       sourceText = sourceMatch ? sourceMatch[1] : '';
+      console.log(sourceMatch, sourceText);
 
       const source = sourceText
         .split(/(?<=\.)\s+/)
