@@ -497,6 +497,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handleClearMessages = async () => {
     setMessages([]);
+    setLowExist(false);
+    setHighExist(false);
     client.autoCancellation(false);
     await client.admins.authWithPassword('2456594919@qq.com', '1234567890');
     const records = await client.collection('Messages').getFullList({
@@ -507,12 +509,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       await client.collection('Messages').delete(record.id);
     }
   };
-
-  useEffect(() => {
-    if (!isOpen) {
-      handleClearMessages();
-    }
-  }, [isOpen]);
 
   const exportChatToPDF = () => {
     const doc = new jsPDF();

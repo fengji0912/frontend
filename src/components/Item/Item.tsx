@@ -76,17 +76,16 @@ export default function Item({
   const { formatDate } = useCslJsonDateFormatter();
   const { selectedItems } = useContext(SelectedItemsContext);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isManuallyOpened, setIsManuallyOpened] = useState(false);
 
   useEffect(() => {
-    if (isManuallyOpened && selectedItems && selectedItems.length > 0) {
-      setIsChatOpen(true);
+    if (isChatOpen) {
+      setIsChatOpen(false);
+      setTimeout(() => setIsChatOpen(true), 0);
     }
-  }, [selectedItems, isManuallyOpened]);
+  }, [selectedItems]);
 
   const toggleChatWindow = () => {
     setIsChatOpen((prev) => !prev);
-    setIsManuallyOpened((prev) => !prev);
   };
 
   const {
