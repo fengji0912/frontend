@@ -89,7 +89,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         }
       } else if (selectedItems && selectedItems.length > 1) {
         const abstracts = await Promise.all(
-          selectedItems.map(async (item, index) => {
+          selectedItems.slice(0, 5).map(async (item, index) => {
             const { cslData } = item;
             const title = cslData?.title || 'No title available';
             let content = '';
@@ -378,7 +378,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         accumulatedText += chunk;
 
         if (!isAnswerComplete) {
-          if (accumulatedText.indexOf(' Source:') === -1) {
+          const sourceIndex = accumulatedText.indexOf(' Source');
+
+          if (sourceIndex === -1) {
             setMessages((prevMessages) => {
               const lastMessage = prevMessages[prevMessages.length - 1];
               if (lastMessage && lastMessage.sender === 'chatbot') {
@@ -402,6 +404,29 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               return [...prevMessages, newMessage];
             });
           } else {
+            const answer = accumulatedText.substring(0, sourceIndex);
+            setMessages((prevMessages) => {
+              const lastMessage = prevMessages[prevMessages.length - 1];
+              if (lastMessage && lastMessage.sender === 'chatbot') {
+                return [
+                  ...prevMessages.slice(0, -1),
+                  {
+                    ...lastMessage,
+                    content: answer,
+                  },
+                ];
+              }
+              const newMessage: ChatMessage = {
+                id: uuidv4(),
+                sender: 'chatbot',
+                content: answer,
+                priority,
+                source: [],
+              };
+              // Add to PocketBase
+              updatePocketBase([...prevMessages, newMessage], priority);
+              return [...prevMessages, newMessage];
+            });
             isAnswerComplete = true;
           }
         }
@@ -425,7 +450,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             ...prevMessages.slice(0, -1),
             {
               ...lastMessage,
-              source,
+              source: source,
             },
           ];
           // Update PocketBase
