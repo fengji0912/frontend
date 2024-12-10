@@ -374,46 +374,45 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
+
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
 
-        if (!isAnswerComplete) {
-          const sourceIndex = accumulatedText.indexOf(' Source');
+        // Check for Source using regex
+        const sourceRegex = /(?:\n| )Source:\s*(.*)/;
+        const sourceMatch = accumulatedText.match(sourceRegex);
 
-          if (sourceIndex === -1) {
+        if (!isAnswerComplete) {
+          if (!sourceMatch) {
+            // Stream answer if Source is not detected
             setMessages((prevMessages) => {
               const lastMessage = prevMessages[prevMessages.length - 1];
-              if (lastMessage && lastMessage.sender === 'chatbot') {
+              if (lastMessage?.sender === 'chatbot') {
                 return [
                   ...prevMessages.slice(0, -1),
-                  {
-                    ...lastMessage,
-                    content: lastMessage.content + chunk,
-                  },
+                  { ...lastMessage, content: lastMessage.content + chunk },
                 ];
               }
               const newMessage: ChatMessage = {
                 id: uuidv4(),
-                sender: 'chatbot', // Explicitly set sender to "chatbot"
+                sender: 'chatbot',
                 content: chunk,
                 priority,
                 source: [],
               };
-              // Add to PocketBase
               updatePocketBase([...prevMessages, newMessage], priority);
               return [...prevMessages, newMessage];
             });
           } else {
-            const answer = accumulatedText.substring(0, sourceIndex);
+            // Extract answer and mark as complete
+            const sourceIndex = sourceMatch.index;
+            const answer = accumulatedText.substring(0, sourceIndex).trim();
             setMessages((prevMessages) => {
               const lastMessage = prevMessages[prevMessages.length - 1];
-              if (lastMessage && lastMessage.sender === 'chatbot') {
+              if (lastMessage?.sender === 'chatbot') {
                 return [
                   ...prevMessages.slice(0, -1),
-                  {
-                    ...lastMessage,
-                    content: answer,
-                  },
+                  { ...lastMessage, content: answer },
                 ];
               }
               const newMessage: ChatMessage = {
@@ -423,7 +422,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 priority,
                 source: [],
               };
-              // Add to PocketBase
               updatePocketBase([...prevMessages, newMessage], priority);
               return [...prevMessages, newMessage];
             });
